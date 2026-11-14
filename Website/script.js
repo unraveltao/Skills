@@ -1,7 +1,7 @@
 const skills = [
   {name:'Disk Governance', category:'文件管理', description:'只读审计指定目录的空间占用，在本地工作台查看结果并生成离线报告。', boundary:'只读审计；不删除、移动或清理文件', keywords:'磁盘 空间 大文件 审计 disk', path:'disk-governance'},
-  {name:'Download Organizer', category:'文件管理', description:'发现和定位下载文件，预览分类方案并生成整理报告。', boundary:'执行整理前须确认具体方案', keywords:'下载 整理 文件 download', path:'download-organizer'},
-  {name:'Git Workflow', category:'开发工作流', description:'为仓库检查、提交、分支和恢复等操作提供清晰的工作流程。', boundary:'按操作风险和授权范围执行', keywords:'git 分支 提交 版本 开发', path:'git-workflow'}
+  {name:'Git Workflow', category:'开发工作流', description:'为仓库检查、提交、分支和恢复等操作提供清晰的工作流程。', boundary:'按操作风险和授权范围执行', keywords:'git 分支 提交 版本 开发', path:'git-workflow'},
+  {name:'Learning Coach', category:'学习与教学', description:'共同规划学习路径，讲解知识概念，指导实践并整理学习笔记。', boundary:'学习进度由学习者掌控；个人记录单独保存', keywords:'学习 教学 课程 知识 笔记 实践 评估 learning coach', path:'learning-coach'}
 ];
 const cards=document.querySelector('#cards'), search=document.querySelector('#search'), count=document.querySelector('#count'), empty=document.querySelector('#empty');
 let category='全部';
