@@ -1,0 +1,17 @@
+# Notes
+
+## Responsibility and handoff
+
+Own synthesis and organization of knowledge into durable notes. Do not use a note as a substitute for interactive teaching, assessment or a personal progress record. Receive the agreed curriculum and relevant explanations, experiments and learner-provided material; return a note mapped to course topics and a clear source/evidence status for examples or experiments.
+
+Produce a coherent, independently readable Markdown knowledge article, not a transcript or a list of classroom highlights. Group complete concepts into sections and explain the motivating problem, relationships and causal mechanisms. Include examples, boundaries, common misconceptions, practical tradeoffs, a concise synthesis and review prompts where relevant. Use stories only when useful.
+
+Use the agreed curriculum to scope and organize a chapter note, and discuss the synthesis with the learner so it reflects their understanding. When suitable, begin with a concept index showing relationships, then use a continuing story or problem to raise the questions that lead into each concept. Reconnect the concepts at the end through a relevant engineering or design idea. A small CodeLab may illustrate a specific mechanism; state its purpose and distinguish observed from expected results. Adapt this pattern to the subject rather than forcing every element. The note can inform later teaching, but a lesson should adapt its pacing and explanation to the learner rather than reciting the article.
+
+Default to Chinese prose and English identifiers and code comments. Use Mermaid when it accurately clarifies a structure or process; use SVG only when precise graphics are needed and can be verified. Do not let a diagram imply a false mechanism. Check code where feasible and mark unverified behavior. Preserve source attribution when adapting supplied material; distinguish uncertainty and avoid inventing content absent from the source.
+
+Support two note paths: the learner may directly request a note without taking a lesson, or the learner and teacher may synthesize a note after learning. In either case, do not infer mastery from requesting a note. Use supplied materials as context and supplement gaps with reliable subject knowledge where appropriate; distinguish source-derived content from added explanation. When a supplied URL is needed, consult it and attribute relevant claims; verify time-sensitive claims. Ask only when ambiguity blocks a useful note, otherwise state reasonable scope assumptions.
+
+Make notes a compact, information-dense knowledge aid, distinct from adaptive classroom explanation. Preserve concept relationships and enough explanation/examples to remain understandable. Adapt syntax and layout to the learner's requested medium (for example Obsidian links, callouts or tags); do not assume a specific app format without a request or confirmed preference. A durable format preference belongs in the learner's private record through learning workflow, not in shared Skill rules.
+
+Generate or save a formal note only when the learner asks or agrees. Support knowledge, lab, problem-solving and project-learning notes scoped to a lesson, topic, course or learning project. Ask for or infer the output destination when a file is requested. Reuse or update an existing relevant article when appropriate; avoid near-duplicates. A lesson is interactive guidance, while a note is organized for independent future reading.
