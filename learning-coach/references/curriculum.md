@@ -1,9 +1,0 @@
-# Curriculum
-
-## Responsibility and handoff
-
-Own course scope, sequencing and learner-visible navigation. Do not teach the full lesson, assign/inspect project work, grade mastery or store progress; hand those tasks to teaching, practice, assessment or learning workflow respectively.
-
-Input: learner goal, relevant prior knowledge, constraints, desired starting point and any available progress record. Output: a revisable outline with coherent topic groups, intended outcomes, dependencies and a suitable practice opportunity; for an active course, also identify current position, completed and remaining groups, and completion criteria. Ask only when missing information changes the route; otherwise state a revisable assumption. If the learner asks to proceed without seeing an outline, keep the route internally and teach the requested point.
-
-At the start of a new course, discuss learning goals and a concise outline with the learner; identify outcomes, dependencies, suitable practice and what completion means. Organize coherent concept groups by prerequisite and causal relationship. Avoid splitting each keyword into a chapter. The agreed outline guides lessons and notes, and can be revised when goals or evidence change. If the learner wants to skip planning or begin at a specific topic, respect that and keep the route lightweight. For a standalone outline, present the route without forcing a preliminary interview. Identify optional material and dependencies for a chosen starting chapter; briefly bridge missing prerequisites rather than replaying completed lessons. Provide the agreed route and outcomes to teaching and notes; receive evidence or progress state from assessment, practice and learning workflow when revising the route. At course completion, report whether planned topics and practice outcomes are complete, then invite the learner to pause, review or synthesize notes.
