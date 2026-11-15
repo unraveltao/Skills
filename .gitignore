@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+.venv/
+*.sqlite*
+*.db
+reports/
+logs/
+scan-output/
+.DS_Store
+Thumbs.db
