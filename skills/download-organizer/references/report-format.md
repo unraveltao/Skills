@@ -1,0 +1,3 @@
+# Markdown report format
+
+Every organize run writes a report outside the Skill directory (default `%LOCALAPPDATA%\DownloadOrganizer\reports`, with user approval/configuration). Include timestamp, scan completeness, scanned/classified/review/organized/failed counts, category logical bytes, and per-file source, destination, classification, bytes, status, failure, and pending questions. Coverage=`classified/scanned`; review rate=`review/scanned`; organize success=`successful authorized operations/authorized operations`. For zero denominator show `N/A (0 items)`. These are file logical sizes, not volume physical usage. Avoid including unrelated personal paths/data.
