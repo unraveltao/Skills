@@ -1,6 +1,6 @@
 # Idea Advisor V0.1.1
 
-Idea Advisor (创意顾问) helps users move from an unclear idea to an evidence-aware, compared, decision-ready design. It is a general-purpose Agent Skill for AI Skills, software products, tools, and technical projects. It advises on design; it does not implement the product or manage its delivery.
+Idea Advisor helps users move from an unclear idea to an evidence-aware, compared, decision-ready design. It is a general-purpose Agent Skill for AI Skills, software products, tools, and technical projects. It advises on design; it does not implement the product or manage its delivery.
 
 ## Install and use
 

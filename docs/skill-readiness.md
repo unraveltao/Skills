@@ -1,80 +1,80 @@
-# Skill 可用性与交付候选审计
+# Skill Readiness and Delivery Candidate Audit
 
-审计日期：2026-11-15  
-审计范围：本地 `skills/` 下所有 Skill 目录；不包含仓库展示前端。  
-判定依据：入口与用途清楚、主要流程完整、引用文件可访问、安全边界明确；含可执行实现的 Skill 还需有适用的隔离验证。结构检查与真实 Agent 行为验收分开记录。
+Audit date: 2026-11-15  
+Scope: All Skill directories under the local `skills/` directory; excludes the repository presentation frontend.  
+Criteria: A clear entry point and purpose, complete primary workflow, accessible references, and explicit safety boundaries. Skills with executable implementations also need relevant isolated verification. Structural checks and real-agent behavior validation are recorded separately.
 
-本记录评估的是审计时的本地工作区快照，不等于对 GitHub `main` 同路径代码的验收。审计发现本地 `disk-governance` 的现有源码与 GitHub 版本存在广泛差异；在该差异单独复核前，不将本地回归结果外推到 GitHub 版本。
+This record evaluates the local workspace snapshot at the time of the audit. It does not certify the same paths on GitHub `main`. The local `disk-governance` source differs substantially from the GitHub version; local regression results must not be applied to the remote version until that difference is reviewed separately.
 
-## 总览
+## Summary
 
-| Skill | 本地可用性 | 本轮交付候选 | 验证与限制 |
+| Skill | Local usability | Delivery candidate in this review | Verification and limits |
 | --- | --- | --- | --- |
-| `download-organizer` | 可用 | 是 | PowerShell 5.1 隔离测试 19/19 通过；Apply 测试只操作临时目录。 |
-| `git-workflow` | 可用 | 是 | 指导型 Skill；涵盖只读检查、分支、同步、恢复及授权边界。未做独立 Agent 行为测试。 |
-| `github-project-coach` | 可用 | 是 | 指导型 Skill；说明来源核验、首次使用路径和工具不可用时的处理。未做独立 Agent 行为测试。 |
-| `idea-advisor` | 可用 | 是，行为验收待补 | 主流程、引用和手工场景齐全；没有真实 Agent 场景结果，不宣称通过行为验收。 |
-| `learning-coach` | 可用 | 是，行为验收待补 | 主要模块和 7 个引用均存在；尚无独立的行为验收记录。 |
-| `unravel` | 可用 | 是，行为验收待补 | 静态检查记录通过，但真实 Agent 行为仍标记为未验证；不可把静态检查当作验收。 |
-| `disk-governance` | 功能主体存在，验证未完成 | 暂缓 | 回归 6 项通过、1 项跳过、1 项失败、2 项错误；失败涉及子进程访问临时数据库和本地 socket 的环境权限，须在适当环境复验。 |
+| `download-organizer` | Usable | Yes | PowerShell 5.1 isolated tests: 19/19 passed; Apply tests operate only on temporary directories. |
+| `git-workflow` | Usable | Yes | Instructional Skill covering read-only checks, branches, synchronization, recovery, and authorization boundaries. No independent Agent behavior test. |
+| `github-project-coach` | Usable | Yes | Instructional Skill covering source verification, first-use steps, and unavailable-tool handling. No independent Agent behavior test. |
+| `idea-advisor` | Usable | Yes; behavior validation pending | Main workflow, references, and manual scenarios are present; no real-Agent scenario results are claimed as passed. |
+| `learning-coach` | Usable | Yes; behavior validation pending | Main modules and all seven references are present; no independent behavior validation record yet. |
+| `unravel` | Usable | Yes; behavior validation pending | Static checks are recorded as passed, but real-Agent behavior remains unverified. Static checks are not behavior acceptance. |
+| `disk-governance` | Core functionality present; verification incomplete | Deferred | Regression: 6 passed, 1 skipped, 1 failed, 2 errors. The failure involved a child process accessing a temporary database and local socket permissions; rerun in a suitable environment. |
 
-“候选”只表示结构和已声明能力达到本轮最小可用门槛、可纳入后续变更审阅，不代表已提交或已推送。标注“行为验收待补”的指导型 Skill 可以按说明使用，但本审计没有证明真实 Agent 一定稳定遵循其流程。所有 Skill 的真实使用效果仍受 Agent、客户端和可用工具影响。
+“Candidate” means the structure and declared capabilities meet the minimum usability bar for inclusion in a future change review. It does not mean committed or pushed. Instructional Skills marked “behavior validation pending” can be used according to their instructions, but this audit does not prove that an Agent will consistently follow their workflow. Actual results depend on the Agent, client, and available tools.
 
-## 逐项记录
+## Per-Skill Findings
 
-### `download-organizer` — 可用，候选
+### `download-organizer` — Usable, candidate
 
-- 有 PowerShell 5.1 脚本、调用示例、报告格式和分类/安全参考文件。
-- 清楚区分只读 Scan、仅生成计划的 Plan 与需明确授权的 Apply；说明跨卷复制保留源文件。
-- `powershell -NoProfile -ExecutionPolicy Bypass -File .\skills\download-organizer\tests\test-organizer.ps1`：19 项通过，0 项失败，0 项跳过。测试创建并清理临时目录。
-- 后续验证：如修改脚本或分类规则，重跑隔离测试，并继续确认 Apply 测试目标仅为临时夹具。
+- Includes PowerShell 5.1 scripts, examples, report formats, and classification/safety references.
+- Clearly separates read-only Scan, plan-only Plan, and Apply requiring explicit approval; cross-volume copying preserves the source.
+- `powershell -NoProfile -ExecutionPolicy Bypass -File .\skills\download-organizer\tests\test-organizer.ps1`: 19 passed, 0 failed, 0 skipped. Tests create and clean up temporary directories.
+- Follow-up: rerun isolated tests after changing scripts or classification rules, and keep Apply targets limited to temporary fixtures.
 
-### `git-workflow` — 可用，候选
+### `git-workflow` — Usable, candidate
 
-- 说明按风险选择最小工作流，保护预存的工作区变更，并覆盖远程同步、冲突和恢复操作。
-- 对提交、推送、历史改写和发布设有清晰授权边界；内容与仓库 Git 安全要求一致。
-- 这是提示和流程指导，不含可运行 Runtime；没有自动化测试不等同于功能缺失。
-- 后续验证：在独立 Agent 会话中覆盖只读检查、脏工作区保护、同步前核对和高风险操作暂停场景。
+- Chooses a workflow based on risk, protects pre-existing workspace changes, and covers remote synchronization, conflicts, and recovery.
+- Sets clear authorization boundaries for commits, pushes, history rewrites, and publishing; aligns with repository Git safety requirements.
+- This is a guidance Skill with no executable runtime. Lack of automated tests is not a functional omission.
+- Follow-up: in an independent Agent session, cover read-only inspection, dirty-workspace protection, pre-sync checks, and pausing before high-risk actions.
 
-### `github-project-coach` — 可用，候选
+### `github-project-coach` — Usable, candidate
 
-- 有明确的输入（仓库或 Gist）、源码核对方法、首次使用说明和证据边界。
-- 明确要求工具不可访问时如实说明，不运行不可信代码，不擅自安装或修改远程仓库。
-- 后续验证：在真实 Agent 会话中检查它是否能根据项目源文件给出可执行的首用步骤，并区分文档说法与源码验证结果。
+- Defines inputs (repository or Gist), source review, first-use instructions, and evidence boundaries.
+- Requires honest disclosure when tools are unavailable, prohibits running untrusted code, and avoids unauthorized installation or remote repository changes.
+- Follow-up: in a real Agent session, check whether it can provide actionable first-use steps from project sources and distinguish documented claims from source-verified facts.
 
-### `idea-advisor` — 可用，候选；行为验收待补
+### `idea-advisor` — Usable, candidate; behavior validation pending
 
-- 主 Skill、README、模板、参考文件和场景测试均存在；内部相对引用通过检查。
-- 缺少真实 Agent 场景的结果记录，当前测试文件定义的是评估方法，不是已通过的证明。
-- 后续步骤：在可确认已加载该 Skill 的新会话中运行 `tests/README.md` 的核心场景，记录客户端、日期、结果和证据；如失败再修复并复审。
-- 行为验收条件：至少完成设计意图/直接讲解边界、资料研究与推荐、决策变更记录三个关键场景。未完成前不得称为 Agent 行为已验收。
+- The main Skill, README, templates, references, and scenario tests are present; internal relative references pass inspection.
+- There are no recorded real-Agent scenario results. The test files define an evaluation method; they are not evidence of passing behavior.
+- Follow-up: run the core scenarios in a new session where the Skill is confirmed loaded, then record the client, date, results, and evidence. Fix and review any failures.
+- Behavior acceptance requires at least the design-versus-execution boundary, research and recommendation, and decision-change history scenarios. Do not mark behavior accepted before completing them.
 
-### `learning-coach` — 可用，候选；行为验收待补
+### `learning-coach` — Usable, candidate; behavior validation pending
 
-- 主 Skill 引用了课程、教学、练习、评估、笔记、进度和演化模块；7 个引用文件均存在。
-- 当前未发现针对真实 Agent 行为的场景验收记录，无法确认模块路由和学习者控制边界在实际使用中稳定。
-- 后续步骤：补充并记录最小行为场景，覆盖新课程、概念补缺、评估后补救、笔记/进度需用户同意等；在加载该 Skill 的 Agent 会话中执行。
-- 行为验收条件：核心模块路由与不自动保存个人记录等边界有可复核的通过证据。
+- The main Skill references modules for courses, teaching, practice, assessment, notes, progress, and evolution; all seven reference files exist.
+- No real-Agent behavior acceptance record was found, so module routing and learner-control boundaries have not been confirmed in actual use.
+- Follow-up: run and record minimum scenarios for a new course, concept remediation, post-assessment recovery, and user approval for notes/progress, in an Agent session with the Skill loaded.
+- Behavior acceptance requires reviewable evidence for core module routing and the boundary against automatically saving personal records.
 
-### `unravel` — 可用，候选；行为验收待补
+### `unravel` — Usable, candidate; behavior validation pending
 
-- Skill 与手工行为清单存在；现有记录称静态检查通过。
-- `tests/README.md` 明确真实行为仍未验证，并记录既往隔离 Codex CLI 会话没有产出可用结果。PyYAML 缺失导致当时的 `quick_validate.py` 未运行。
-- 后续步骤：在支持该 Skill 的真实 Agent 会话中运行正确触发、错误触发、适应式解释和结束条件场景；可用时补跑结构验证。
-- 行为验收条件：真实会话结果和加载证据已记录；若验证工具缺失，记录限制而不把它写成通过。
+- The Skill and manual behavior checklist are present; existing records report static checks passed.
+- `tests/README.md` states that real behavior remains unverified and records that a previous isolated Codex CLI session did not produce usable results. `quick_validate.py` was not run then because PyYAML was missing.
+- Follow-up: in a real Agent session supporting the Skill, test correct and incorrect triggers, adaptive explanations, and stop conditions; run structural validation when available.
+- Behavior acceptance requires recorded real-session results and evidence that the Skill loaded. If a validation tool is unavailable, record that limitation rather than marking it passed.
 
-### `disk-governance` — 暂缓
+### `disk-governance` — Deferred
 
-- 本地包含 Runtime、工作台 UI、离线报告、数据库、扫描/候选/规划模块和隔离测试；安全边界与项目规则一致。
-- 按仓库要求运行：`python -m unittest discover -s skills/disk-governance/tests -v`。结果为 10 项：6 通过、1 跳过（Windows 符号链接权限不可用）、1 失败、2 错误。
-- GitHub `main` 当前没有 `skills/disk-governance/tests/` 目录，尽管远程 `AGENTS.md` 要求运行该测试命令；本地测试目录属于与远程代码不同的工作区版本，不能直接作为远程代码的测试套件提交。
-- 组织计划 CLI 子进程无法打开测试临时目录中的 SQLite 文件（`sqlite3.OperationalError: unable to open database file`）；两个服务测试因本地 socket 权限错误（`WinError 10013`）失败，另有服务锁文件被子进程占用导致临时目录清理错误。当前受限运行环境不足以判定这些失败是产品缺陷还是环境限制，因此不记为通过。
-- 后续步骤：在允许子进程读写临时目录及绑定 `127.0.0.1` 的 Windows 环境重跑完整套件；若仍失败，再按具体失败栈修复 Runtime。保持目标仅为临时夹具。
-- 重新评估条件：上述回归完整通过，或每个环境限制/真实缺陷都有可复核的隔离结果；任何时候都不得用真实磁盘做测试。
+- The local copy contains runtime, workbench UI, offline reports, database, scanning/candidate/planning modules, and isolated tests; its safety boundaries align with project rules.
+- Required command: `python -m unittest discover -s skills/disk-governance/tests -v`. Result: 10 tests; 6 passed, 1 skipped (Windows symbolic-link permission unavailable), 1 failed, and 2 errored.
+- GitHub `main` currently has no `skills/disk-governance/tests/` directory, although the remote `AGENTS.md` requires that test command. The local test directory belongs to a different workspace version and cannot be submitted as a test suite for the remote code without review.
+- The planning CLI subprocess could not open the SQLite file in the test temporary directory (`sqlite3.OperationalError: unable to open database file`). Two service tests failed with local socket permission error (`WinError 10013`); a service lock file held by a subprocess also prevented temporary-directory cleanup. The current restricted environment cannot determine whether these are product defects or environment limitations, so they are not recorded as passed.
+- Follow-up: rerun the full suite in a Windows environment that allows subprocess access to temporary directories and binding to `127.0.0.1`. If failures remain, fix the runtime based on the failure traces. Keep all targets within temporary fixtures.
+- Reassessment condition: the regression suite passes, or each environment limitation/real defect has a reviewable isolated result. Never use a real disk for tests.
 
-## 审计方法与边界
+## Audit Method and Boundaries
 
-- 检查了各 `SKILL.md` 的 frontmatter 名称、说明、工作流和安全边界；`idea-advisor` 与 `learning-coach` 的相对引用均存在。
-- 对指导型 Skill 的内容审阅只能证明结构和声明，不证明 Agent 一定会按预期执行。除非记录真实加载与场景结果，不标记为行为验收通过。
-- 空的 `skills/learning-skill/` 目录不含 `SKILL.md`，不视为 Skill，也未纳入候选。
-- 本记录不授权删除、移动、迁移被审计文件，也不授权提交或推送。
+- Reviewed each `SKILL.md` frontmatter, purpose, workflow, and safety boundaries; checked relative references for `idea-advisor` and `learning-coach`.
+- Content review of instructional Skills verifies structure and declared behavior, not that an Agent always follows the instructions. Do not mark behavior acceptance as passed without recorded evidence of real loading and scenarios.
+- The empty `skills/learning-skill/` directory contains no `SKILL.md`, so it is not considered a Skill and was excluded from candidates.
+- This record does not authorize deleting, moving, or migrating audited files, nor committing or pushing them.
