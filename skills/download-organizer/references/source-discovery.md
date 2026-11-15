@@ -1,7 +1,7 @@
 # Source discovery and registration
 
-Direct: browser/app supports a user-configurable path; set to `<root>\00-Inbox` only with authorization and verify in that app. Examples: Chrome, Edge, Firefox, IDM, 迅雷, GitHub Desktop (clone location), cloud sync clients.
+**Direct:** A browser or app may support a user-configurable download path. Set it to `<root>\00-Inbox` only with authorization, then verify the setting in that app. Examples include Chrome, Edge, Firefox, Internet Download Manager, Xunlei, GitHub Desktop clone locations, and cloud sync clients.
 
-Registered Source: register a dedicated download directory for read-only scans; only complete ordinary files are candidates. Do not recursively scan application databases, caches, or sync-managed internals. Common sources include 百度网盘, 微信, QQ, Telegram, cloud drives and tools with fixed paths. Confirm actual path with user; do not guess.
+**Registered source:** Register a dedicated download directory for read-only scans. Only complete ordinary files are candidates. Do not recursively scan application databases, caches, or sync-managed internals. Common sources include Baidu Netdisk, WeChat, QQ, Telegram, cloud drives, and tools with fixed paths. Confirm the actual path with the user; do not guess.
 
-Manual Import: user names a directory for one scan/plan. Scope stays within it and does not follow links. Windows Known Folder Downloads changes do not guarantee other apps follow. Check each app's settings individually. Keep registration in user-local config, never repository.
+**Manual import:** The user names a directory for one scan or plan. Keep the scope inside that directory and do not follow links. Changing the Windows Known Folder for Downloads does not guarantee that other apps will follow it. Check each app's settings individually. Keep registrations in user-local configuration, never in the repository.
