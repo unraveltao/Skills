@@ -1,0 +1,23 @@
+---
+import Base from '../../layouts/Base.astro';
+import { installCommand } from '../../lib/catalog';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Docs — Unravel Skills">
+  <div class="container docs-grid">
+    <aside class="docs-sidebar"><span class="eyebrow small">GETTING STARTED</span><a class="sidebar-current" href="#introduction">Introduction</a><a href="#installation">Installation</a><a href="#usage">Using Skills</a><a href="#agents">For Agents</a><a href="#faq">FAQ</a></aside>
+    <article class="article-main">
+      <div class="breadcrumb"><a href={`${base}/`}>Home</a> / Docs</div>
+      <h1>Getting Started</h1><p class="article-lead">A small collection of reusable Agent Skills, with practical usage guidance and clear boundaries.</p>
+      <div class="prose">
+        <h2 id="introduction">Introduction</h2><p>Unravel Skills publishes independently maintained Skills for learning, development, planning, and utilities. A Skill is an instruction package intended for compatible AI coding agents. Actual features and safety requirements vary by Skill.</p>
+        <h2 id="installation">Installation</h2><p>The following generic Skills CLI command is a candidate pending integration validation. Read the repository and Skill requirements before use.</p>
+      </div>
+      <div class="command-line standalone"><code>{installCommand}</code><button class="copy-button" data-copy={installCommand}>Copy</button></div>
+      <div class="prose"><h2 id="usage">Using Skills</h2><p>Choose a Skill from the catalog, review its description and source, then follow your Agent's documentation for installation, discovery, and invocation. Installation alone does not guarantee tool permissions or runtime compatibility.</p>
+      <h2 id="agents">For Agents</h2><p>Agent-friendly catalog, llms.txt, and exported Markdown documents are planned for M3.2. They are not yet implemented here.</p>
+      <h2 id="faq">FAQ</h2><h3>Are all Skills verified?</h3><p>No. A listed Skill has not necessarily passed live-Agent acceptance testing. Inspect its own instructions and test evidence.</p><h3>Can the website install Skills?</h3><p>No. It provides instructions and links; installation happens through an authorized Agent or local terminal.</p></div>
+    </article>
+    <aside class="toc-sidebar"><span class="eyebrow small">ON THIS PAGE</span><nav><a href="#introduction">Introduction</a><a href="#installation">Installation</a><a href="#usage">Using Skills</a><a href="#agents">For Agents</a><a href="#faq">FAQ</a></nav></aside>
+  </div>
+</Base>

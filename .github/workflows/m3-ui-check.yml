@@ -1,0 +1,37 @@
+name: M3 UI prototype check
+on:
+  push:
+    branches:
+      - chore/repo-structure-scaffold
+    paths:
+      - 'web/**'
+      - 'skills/**'
+      - '.github/workflows/m3-ui-check.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run check:data
+      - run: npm run build
+      - name: Verify generated routes and legacy preservation
+        run: |
+          test -f dist/index.html
+          test -f dist/docs/index.html
+          test -f dist/blog/index.html
+          test -f dist/blog/hello-world/index.html
+          test -f dist/skills/idea-advisor/index.html
+          test -f ../index.html
+          echo "M3.1 route smoke checks passed"

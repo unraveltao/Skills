@@ -1,0 +1,12 @@
+---
+import Base from '../../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Blog — Unravel Skills">
+  <section class="container blog-page">
+    <span class="eyebrow small">FROM THE WORKBENCH</span>
+    <h1>Blog<span class="accent-dot">.</span></h1>
+    <p class="article-lead">Notes, experiments and updates from Unravel Skills.</p>
+    <a class="blog-card" href={`${base}/blog/hello-world/`}><span class="eyebrow small">WELCOME · FIRST POST</span><h2>Hello World 👋</h2><p>Introducing Unravel Skills: a home for reusable Skills, engineering experiments and ideas about AI-assisted development.</p><span class="read-more">Read article →</span></a>
+  </section>
+</Base>
