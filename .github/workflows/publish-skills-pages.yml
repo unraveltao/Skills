@@ -23,7 +23,7 @@ jobs:
       - name: Check out approved M3 UI development branch
         uses: actions/checkout@v4
         with:
-          ref: chore/repo-structure-scaffold
+          ref: 8eafe49f6bc36555884b6b9341504448e47e954f
           persist-credentials: false
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -41,6 +41,8 @@ jobs:
       - name: Verify generated routes
         run: |
           test -f web/dist/index.html
+          test -f web/dist/brand-mark.svg
+          grep -q 'brand-mark.svg' web/dist/index.html
           test -f web/dist/docs/index.html
           test -f web/dist/blog/index.html
           test -f web/dist/blog/hello-world/index.html
