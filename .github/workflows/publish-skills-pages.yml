@@ -23,7 +23,7 @@ jobs:
       - name: Check out approved M3 UI development branch
         uses: actions/checkout@v4
         with:
-          ref: 8eafe49f6bc36555884b6b9341504448e47e954f
+          ref: 9f17b71defcf1dd6ce47681cdc190bc79a00f48e
           persist-credentials: false
       - name: Set up Node
         uses: actions/setup-node@v4
