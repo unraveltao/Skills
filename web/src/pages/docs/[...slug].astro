@@ -1,0 +1,7 @@
+---
+import DocsArticle from '../../components/DocsArticle.astro';
+import {pages} from '../../lib/docs';
+export function getStaticPaths() { return pages.filter(p=>p.slug!=='introduction').map(p=>({params:{slug:p.slug},props:{page:p}})); }
+const {page}=Astro.props;
+---
+<DocsArticle page={page}/>

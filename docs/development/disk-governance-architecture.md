@@ -1,4 +1,4 @@
-# Architecture
+# Disk Governance Architecture (historical technical record)
 
 The repository is a monorepo: each `skills/<name>/` directory is an independent distribution unit. Its `SKILL.md` defines the trigger, workflow, and boundaries; any required scripts, Runtime source, references, UI, and tests stay inside that directory. Disk Governance's Python Runtime uses only the standard library.
 
@@ -16,6 +16,6 @@ Candidate records are bound to a scan batch and rule version. Risk, category, an
 
 - V0.1: read-only scanning, SQLite storage, and view-only HTML reports.
 - V0.2: local workbench, candidate review records, and offline reports. There is no file-delete, move, cleanup, or reclaim-simulation API.
-- Cleanup, Planning, and Migration are unimplemented. [The roadmap](../skills/disk-governance/references/roadmap.md) records boundaries and proposals only; it does not add executable capability or authorization.
+- Cleanup, Planning, and Migration are unimplemented. [The roadmap](../../skills/disk-governance/references/roadmap.md) records boundaries and proposals only; it does not add executable capability or authorization.
 
 This document describes architecture and safety constraints. It is not authorization to change audited files.

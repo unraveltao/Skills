@@ -32,3 +32,7 @@ The Skills CLI commands are **unverified candidates** for this repository. Actua
 M3.2 will create `catalog.json`, `llms.txt`, machine-readable Markdown exports, and data schema validation. No agent-discovery APIs or backend services have been implemented here.
 
 Existing root `index.html`, `script.js`, `style.css`, and every Skill remain untouched.
+
+## Docs content source
+
+Website Docs pages are generated from Markdown under the root `docs/` tree. The navigation registry lives in `web/src/lib/docs.ts`. The former single-page Getting Started prototype is replaced by multi-page Markdown-driven Docs. Historical development records are preserved under `docs/development/`; their statements and dates are not updated or reclassified as current verification.

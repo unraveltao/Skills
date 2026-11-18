@@ -16,3 +16,11 @@
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*::before,*::after{animation-duration:.01ms!important;transition-duration:.01ms!important}}
 
 .brand-mark img{display:block;width:25px;height:25px;border-radius:6px}
+
+.doc-section{display:flex;flex-direction:column;gap:10px;padding-bottom:15px;border-bottom:1px solid var(--border)}
+.doc-section .eyebrow{margin:7px 0 3px}.doc-section a[aria-current="page"]{color:var(--fg);font-weight:700;border-left:2px solid var(--accent);padding-left:9px}
+.mobile-doc-nav nav>div{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}
+.mobile-doc-nav nav strong{font-size:12px;color:var(--fg)}
+.mobile-doc-nav nav a{font-size:13px;color:var(--muted)}
+.mobile-doc-nav nav a[aria-current="page"]{color:var(--accent);font-weight:700}
+@media(max-width:680px){.mobile-doc-nav{display:block}}

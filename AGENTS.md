@@ -1,6 +1,6 @@
 # Agent development rules
 
-- Follow `docs/architecture.md`; keep every Skill independently installable, with its Runtime source shipped inside the Skill and dependent only on the Python standard library.
+- Follow `docs/concepts/architecture.md` and `docs/development/disk-governance-architecture.md`; keep every Skill independently installable, with its Runtime source shipped inside the Skill and dependent only on the Python standard library.
 - Disk scanning and reporting are read-only by default. v0.2 may write local SQLite audit data and human review records; there is no file-delete, migration, or cleanup API. Never use the workbench to change audited files, the registry, or environment variables.
 - Never commit user scan paths, scan data, databases, logs, or reports to version control.
 - Directory traversal does not follow symbolic links or reparse points; permission errors are recorded one by one and the scan continues, and the result must state its scan integrity. Volume physical capacity and in-tree file logical size are reported separately.

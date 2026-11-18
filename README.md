@@ -35,7 +35,7 @@ A personal collection of independently installable Agent Skills. Each directory 
 
 Each Skill is a distribution unit: keep its supporting files together and add directories only when needed. Shared project documentation belongs in `docs/`.
 
-For the current per-Skill usability and delivery-candidate review, see [Skill readiness](docs/skill-readiness.md). It distinguishes structural review from real-agent behavior validation; a listed Skill is not automatically behavior-tested.
+For the current per-Skill usability and delivery-candidate review, see [Skill readiness](docs/development/skill-readiness.md). It distinguishes structural review from real-agent behavior validation; a listed Skill is not automatically behavior-tested.
 
 ## Install and use
 
@@ -45,5 +45,5 @@ Disk Governance uses a local data directory outside the Skill. Pass `--data-dir`
 
 ## Development
 
-Read [AGENTS.md](AGENTS.md) and [architecture](docs/architecture.md). Follow each executable Skill's own test instructions and use isolated temporary directories. Download Organizer's PowerShell test is `skills/download-organizer/tests/test-organizer.ps1`. Do not commit personal scan paths, databases, reports, or logs.
+Read [AGENTS.md](AGENTS.md) and [architecture](docs/concepts/architecture.md). Follow each executable Skill's own test instructions and use isolated temporary directories. Download Organizer's PowerShell test is `skills/download-organizer/tests/test-organizer.ps1`. Do not commit personal scan paths, databases, reports, or logs.
 
