@@ -1,0 +1,20 @@
+{
+  "name": "unravel-skills-web",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "check:data": "node scripts/check-data.mjs"
+  },
+  "dependencies": {
+    "astro": "^5.13.0",
+    "marked": "^16.0.0",
+    "sanitize-html": "^2.17.0"
+  },
+  "devDependencies": {
+    "@types/sanitize-html": "^2.16.0",
+    "typescript": "^5.9.0"
+  }
+}

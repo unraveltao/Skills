@@ -1,0 +1,96 @@
+---
+import '../styles/global.css';
+const { title = 'Unravel Skills', description = 'Discover, understand and install reusable Agent Skills.' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const current = Astro.url.pathname;
+---
+<!doctype html>
+<html lang="en" data-theme="dark" data-accent="blue">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <meta name="description" content={description}/>
+    <meta name="theme-color" content="#0b1020"/>
+    <link rel="icon" type="image/svg+xml" href={`${base}/brand-mark.svg?v=2`}/>
+    <title>{title}</title>
+    <script is:inline>
+      try {
+        const mode = localStorage.getItem('unravel-mode');
+        const accent = localStorage.getItem('unravel-accent');
+        document.documentElement.dataset.theme = mode === 'light' ? 'light' : 'dark';
+        if (['blue','teal','green','orange','rose','indigo'].includes(accent)) document.documentElement.dataset.accent = accent;
+      } catch {}
+    </script>
+  </head>
+  <body>
+    <a class="skip" href="#content">Skip to content</a>
+    <header class="navbar">
+      <div class="container nav-inner">
+        <a class="brand" href={`${base}/`} aria-label="Unravel Skills home">
+          <span class="brand-mark" aria-hidden="true"><img src={`${base}/brand-mark.svg`} width="25" height="25" alt="" decoding="async" /></span><span>Unravel <strong>Skills</strong></span>
+        </a>
+        <nav class="desktop-nav" aria-label="Primary">
+          <a class:list={[{ active: current === `${base}/` || current.startsWith(`${base}/skills/`) }]} href={`${base}/#explore`}>Skills</a>
+          <a class:list={[{ active: current.startsWith(`${base}/docs/`) }]} href={`${base}/docs/`}>Docs</a>
+          <a class:list={[{ active: current.startsWith(`${base}/blog/`) }]} href={`${base}/blog/`}>Blog</a>
+        </nav>
+        <div class="nav-actions">
+          <a class="icon-button" href={`${base}/#explore`} aria-label="Search Skills" title="Search Skills"><span aria-hidden="true">⌕</span></a>
+          <button class="icon-button" id="theme-toggle" aria-label="Switch light or dark theme" title="Toggle theme"><span aria-hidden="true">☾</span></button>
+          <a class="icon-button desktop-github" href="https://github.com/unraveltao/Skills" rel="noopener noreferrer" target="_blank" aria-label="GitHub repository" title="GitHub"><svg viewBox="0 0 24 24" width="19" height="19" fill="currentColor" aria-hidden="true"><path d="M12 .8a11.2 11.2 0 0 0-3.54 21.83c.56.1.77-.24.77-.54v-2.09c-3.13.68-3.79-1.33-3.79-1.33-.51-1.29-1.25-1.63-1.25-1.63-1.02-.7.08-.69.08-.69 1.13.08 1.72 1.16 1.72 1.16 1 .1.78 2.02 3.28 1.44a2.41 2.41 0 0 1 .72-1.52c-2.5-.28-5.12-1.25-5.12-5.56 0-1.23.44-2.24 1.16-3.03-.12-.29-.5-1.43.11-2.98 0 0 .94-.3 3.08 1.16a10.64 10.64 0 0 1 5.6 0c2.14-1.45 3.08-1.16 3.08-1.16.61 1.55.23 2.69.11 2.98a4.35 4.35 0 0 1 1.16 3.03c0 4.32-2.63 5.28-5.14 5.56a2.7 2.7 0 0 1 .77 2.1v3.11c0 .3.2.65.78.54A11.2 11.2 0 0 0 12 .8z"/></svg></a>
+          <button class="icon-button mobile-menu-button" id="menu-toggle" aria-expanded="false" aria-controls="mobile-menu" aria-label="Toggle navigation">☰</button>
+        </div>
+      </div>
+      <nav class="mobile-menu" id="mobile-menu" aria-label="Mobile" hidden>
+        <a href={`${base}/#explore`}>Skills</a>
+        <a href={`${base}/docs/`}>Docs</a>
+        <a href={`${base}/blog/`}>Blog</a>
+        <a href="https://github.com/unraveltao/Skills" target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+      </nav>
+    </header>
+    <main id="content"><slot /></main>
+    <footer class="site-footer"><div class="container footer-inner"><span>Unravel Skills · Built for curious agents.</span><a href="https://github.com/unraveltao/Skills">View on GitHub ↗</a></div></footer>
+    <div class="theme-dock" aria-label="Accent color picker">
+      <span class="theme-dock-label">Accent</span>
+      {['blue','teal','green','orange','rose','indigo'].map(color => <button type="button" class={`swatch swatch-${color}`} data-set-accent={color} aria-label={`Use ${color} accent`} title={color}></button>)}
+    </div>
+    <script>
+      const html = document.documentElement;
+      const toggle = document.querySelector<HTMLButtonElement>('#theme-toggle');
+      const syncTheme = () => { if(toggle) toggle.textContent = html.dataset.theme === 'light' ? '☀' : '☾'; };
+      syncTheme();
+      toggle?.addEventListener('click', () => {
+        html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
+        try { localStorage.setItem('unravel-mode', html.dataset.theme); } catch {}
+        syncTheme();
+      });
+      document.querySelectorAll<HTMLButtonElement>('[data-set-accent]').forEach(button => {
+        button.addEventListener('click', () => {
+          html.dataset.accent = button.dataset.setAccent;
+          try { localStorage.setItem('unravel-accent', html.dataset.accent ?? 'blue'); } catch {}
+          syncAccent();
+        });
+      });
+      const syncAccent = () => document.querySelectorAll<HTMLButtonElement>('[data-set-accent]').forEach(button => button.setAttribute('aria-pressed', String(button.dataset.setAccent === html.dataset.accent)));
+      syncAccent();
+      const menuButton = document.querySelector<HTMLButtonElement>('#menu-toggle');
+      const menu = document.querySelector<HTMLElement>('#mobile-menu');
+      menuButton?.addEventListener('click', () => {
+        const open = menu?.hasAttribute('hidden');
+        if (!menu) return;
+        menu.toggleAttribute('hidden', !open);
+        menuButton.setAttribute('aria-expanded', String(open));
+        menuButton.textContent = open ? '×' : '☰';
+      });
+      document.querySelectorAll<HTMLButtonElement>('[data-copy]').forEach(button => button.addEventListener('click', async () => {
+        const value = button.dataset.copy ?? '';
+        try {
+          await navigator.clipboard.writeText(value);
+          const previous = button.textContent ?? 'Copy';
+          button.textContent = 'Copied!';
+          window.setTimeout(() => {button.textContent = previous;}, 1500);
+        } catch { button.textContent = 'Select the command to copy'; }
+      }));
+    </script>
+  </body>
+</html>

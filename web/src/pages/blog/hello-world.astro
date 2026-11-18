@@ -1,0 +1,18 @@
+---
+import Base from '../../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Hello World — Unravel Skills">
+  <article class="blog-article container">
+    <div class="breadcrumb"><a href={`${base}/blog/`}>Blog</a> / Hello World</div>
+    <span class="eyebrow small">WELCOME</span>
+    <h1>Hello World 👋</h1>
+    <p class="article-lead">Welcome to Unravel Skills.</p>
+    <div class="prose">
+      <p>This is a home for reusable Agent Skills, experiments, and ideas about building better AI-assisted workflows.</p>
+      <p>We will share improvements, lessons and project notes here as the collection evolves.</p>
+      <p>For now, explore the Skills catalog or read the getting-started guide.</p>
+    </div>
+    <div class="hero-actions"><a class="button primary" href={`${base}/#explore`}>Explore Skills</a><a class="button secondary" href={`${base}/docs/`}>Read Docs</a></div>
+  </article>
+</Base>

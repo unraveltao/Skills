@@ -1,0 +1,6 @@
+---
+import DocsArticle from '../../components/DocsArticle.astro';
+import {getDoc} from '../../lib/docs';
+const page = getDoc('introduction')!;
+---
+<DocsArticle page={page}/>

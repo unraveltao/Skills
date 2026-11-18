@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/publish-skills-pages.yml'
+      - 'web/**'
+      - 'docs/**'
+      - 'skills/**'
   workflow_dispatch:
 
 permissions:
@@ -20,10 +23,10 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - name: Check out approved M3 UI development branch
+      - name: Check out the commit that triggered this workflow
         uses: actions/checkout@v4
         with:
-          ref: 198aaa071b00abe3ae5adf71bcd68704deae2bb7
+          ref: ${{ github.sha }}
           persist-credentials: false
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -38,20 +41,39 @@ jobs:
       - name: Build Astro Pages site
         working-directory: web
         run: npm run build
-      - name: Verify generated routes
+      - name: Verify generated routes and repository files
         run: |
           test -f web/dist/index.html
           test -f web/dist/brand-mark.svg
           grep -q 'brand-mark.svg' web/dist/index.html
           test -f web/dist/docs/index.html
           test -f web/dist/docs/getting-started/installation/index.html
+          test -f web/dist/docs/getting-started/faq/index.html
           test -f web/dist/docs/guides/using-skills/index.html
           test -f web/dist/docs/concepts/architecture/index.html
           test -f web/dist/docs/reference/skill-structure/index.html
+          test -f web/dist/docs/reference/for-agents/index.html
+          test -f web/dist/docs/development/contributing/index.html
+          test -f web/dist/docs/development/documentation-standards/index.html
           test -f web/dist/docs/development/skill-readiness/index.html
+          test -f web/dist/docs/development/repo-structure-plan/index.html
           test -f web/dist/blog/index.html
           test -f web/dist/blog/hello-world/index.html
-          test -f web/dist/skills/idea-advisor/index.html
+          for skill in \
+            disk-governance \
+            download-organizer \
+            git-workflow \
+            github-project-coach \
+            idea-advisor \
+            learning-coach \
+            unravel
+          do
+            test -f "web/dist/skills/$skill/index.html"
+          done
+          test -f README.md
+          test -f CONTRIBUTING.md
+          test -f LICENSE
+          test -f index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
       - name: Upload site artifact

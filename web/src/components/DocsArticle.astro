@@ -1,0 +1,31 @@
+---
+import Base from '../layouts/Base.astro';
+import { sections, readDoc, headingsFromDoc, type DocPage } from '../lib/docs';
+import { renderMarkdown } from '../lib/markdown';
+const { page } = Astro.props as { page:DocPage };
+const base = import.meta.env.BASE_URL.replace(/\/$/,'');
+const source = readDoc(page);
+const rendered = renderMarkdown(source, undefined, page.file);
+const toc = headingsFromDoc(source);
+const sourceLink = `https://github.com/unraveltao/Skills/blob/chore/repo-structure-scaffold/docs/${page.file}`;
+---
+<Base title={`${page.title} — Unravel Skills Docs`}>
+  <div class="container docs-grid">
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      {sections.map(section=><div class="doc-section"><span class="eyebrow small">{section.title}</span>
+        {section.pages.map(entry=><a href={entry.slug==='introduction' ? `${base}/docs/`:`${base}/docs/${entry.slug}/`} class:list={[{'sidebar-current':entry.slug===page.slug}]} aria-current={entry.slug===page.slug?'page':undefined}>{entry.title}</a>)}
+      </div>)}
+    </aside>
+    <article class="article-main">
+      <div class="breadcrumb"><a href={`${base}/`}>Home</a> / <a href={`${base}/docs/`}>Docs</a> / {page.title}</div>
+      <details class="mobile-toc mobile-doc-nav"><summary>Browse documentation</summary>
+        <nav aria-label="Mobile documentation navigation">
+        {sections.map(section=><div><strong>{section.title}</strong>{section.pages.map(entry=><a aria-current={entry.slug===page.slug?'page':undefined} href={entry.slug==='introduction' ? `${base}/docs/`:`${base}/docs/${entry.slug}/`}>{entry.title}</a>)}</div>)}
+        </nav>
+      </details>
+      <div class="prose" set:html={rendered}/>
+      <div class="source-footer"><a href={sourceLink} target="_blank" rel="noopener noreferrer">Read Markdown source ↗</a></div>
+    </article>
+    <aside class="toc-sidebar" aria-label="Table of contents"><span class="eyebrow small">ON THIS PAGE</span><nav>{toc.map(item=><a href={`#${item.id}`}>{item.title}</a>)}</nav></aside>
+  </div>
+</Base>

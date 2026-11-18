@@ -1,49 +1,51 @@
-# Skills
+# Unravel Skills
 
-A personal collection of independently installable Agent Skills. Each directory under `skills/` contains its own instructions and, where needed, scripts, references, runtime code, UI, and tests.
+A curated collection of independently installable Agent Skills.
 
-## Available Skills
+<p align="center">
+  <img src="web/public/brand-mark.svg" alt="Unravel Skills" width="96">
+</p>
 
-| Skill | Purpose | Requirements and boundaries |
-| --- | --- | --- |
-| [disk-governance](skills/disk-governance/SKILL.md) | Audit disk usage, review candidates in a local workbench, and generate offline reports. | Windows; Python 3.10+ (standard library). Scans are read-only; no deletion, cleanup, or migration. |
-| [download-organizer](skills/download-organizer/SKILL.md) | Inspect downloads, preview filing plans, locate files, and create reports. | Windows and PowerShell. Applying a specific plan requires explicit approval. |
-| [git-workflow](skills/git-workflow/SKILL.md) | Guide repository inspection, commits, branches, synchronization, and recovery. | Git and an Agent that supports Skills; potentially destructive or published actions require appropriate authorization. |
-| [GitHub Project Coach](skills/github-project-coach/SKILL.md) | Quickly understand a GitHub repository or Gist and learn how to use its main capability. | Agent with Skill support and a way to read the supplied GitHub project. |
-| [idea-advisor](skills/idea-advisor/SKILL.md) | Shape an idea into a researched, compared, decision-ready product or Skill design. | Agent with Skill support; research quality depends on available sources and tools. |
-| [learning-coach](skills/learning-coach/SKILL.md) | Plan learning paths, teach interactively, organize notes, assess understanding, and resume progress. | Agent with Skill support; personal learning records stay outside the Skill package. |
-| [unravel](skills/unravel/SKILL.md) | Understand a subject by unpacking its structure, relationships, principles, and mechanisms. | Agent with Skill support; research and rendered diagrams depend on available tools. |
+<p align="center">
+  <a href="https://unraveltao.github.io/Skills/docs/"><img src="https://img.shields.io/badge/docs-Documentation-111111?style=flat-square" alt="Documentation"></a>
+  <a href="https://unraveltao.github.io/Skills/"><img src="https://img.shields.io/badge/catalog-Skills-111111?style=flat-square" alt="Skills catalog"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square" alt="MIT License"></a>
+</p>
+
+> Build once, reuse across compatible Agents.
+
+Unravel Skills is a collection of self-contained Skill packages. Each Skill lives under `skills/<name>/` and contains its own instructions and, when needed, references, scripts, runtime code, UI, and tests.
+
+## Explore
+
+Browse the [Unravel Skills website](https://unraveltao.github.io/Skills/) to discover available Skills and read their documentation.
+
+For project documentation, start with the [Docs](https://unraveltao.github.io/Skills/docs/).
 
 ## Repository layout
 
 ```text
 .
-├── AGENTS.md                 # Project development and safety rules
+├── AGENTS.md
 ├── README.md
-├── .gitignore
-├── LICENSE
-├── docs/                     # Shared architecture and readiness notes
-└── skills/
-    ├── disk-governance/      # SKILL.md, runtime, UI, scripts, references
-    ├── download-organizer/   # SKILL.md, scripts, references, tests
-    ├── git-workflow/         # SKILL.md
-    ├── learning-coach/       # SKILL.md and references
-    ├── github-project-coach/ # SKILL.md
-    ├── idea-advisor/         # Product-design advisor, references, templates, scenarios
-    └── unravel/              # Concept and mechanism explainer with adaptive interaction
+├── docs/                 # Shared project documentation
+├── skills/               # Independently installable Skills
+├── web/                  # Static catalog and documentation site
+└── .github/workflows/    # Verification and publishing
 ```
 
-Each Skill is a distribution unit: keep its supporting files together and add directories only when needed. Shared project documentation belongs in `docs/`.
+The root `docs/` directory describes the **repository as a whole**. Skill-specific architecture, usage details, references, scripts, and tests stay inside the corresponding `skills/<name>/` directory.
 
-For the current per-Skill usability and delivery-candidate review, see [Skill readiness](docs/skill-readiness.md). It distinguishes structural review from real-agent behavior validation; a listed Skill is not automatically behavior-tested.
+## Install
 
-## Install and use
+Copy the complete desired Skill directory into the Skills location supported by your Agent client, then read its `SKILL.md`.
 
-Copy the entire desired `skills/<name>` directory to your Agent's Skills directory. For Codex on Windows, this is `%USERPROFILE%\.codex\skills\<name>`; for WorkBuddy, `%USERPROFILE%\.workbuddy-ai\skills\<name>`. Consult your Agent's documentation for its discovery and reload behavior. Open the Skill's `SKILL.md` for its workflow, commands, dependencies, and safety rules.
-
-Disk Governance uses a local data directory outside the Skill. Pass `--data-dir` explicitly for `scan` and `report`; otherwise they use the legacy scanner and output location. Use isolated test directories for initial verification. Download Organizer scans and plans before any approved filing action; review the precise plan before applying it.
+For the current installation guidance and compatibility notes, see [Installation](https://unraveltao.github.io/Skills/docs/getting-started/installation/).
 
 ## Development
 
-Read [AGENTS.md](AGENTS.md) and [architecture](docs/architecture.md). Follow each executable Skill's own test instructions and use isolated temporary directories. Download Organizer's PowerShell test is `skills/download-organizer/tests/test-organizer.ps1`. Do not commit personal scan paths, databases, reports, or logs.
+Read [AGENTS.md](AGENTS.md) before changing the repository. Use the project Docs for repository-level architecture and development records. For Skill-specific behavior, always use that Skill's own `SKILL.md` and supporting references as the source of truth.
 
+## Contributing and license
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for repository and documentation standards. This repository is licensed under the [MIT License](LICENSE).

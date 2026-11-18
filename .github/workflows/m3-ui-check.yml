@@ -1,0 +1,92 @@
+name: M3 UI and repository checks
+
+on:
+  push:
+    branches:
+      - chore/repo-structure-scaffold
+    paths:
+      - 'web/**'
+      - 'skills/**'
+      - 'docs/**'
+      - 'CONTRIBUTING.md'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'LICENSE'
+      - '.github/workflows/m3-ui-check.yml'
+      - '.github/workflows/publish-skills-pages.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'web/**'
+      - 'skills/**'
+      - 'docs/**'
+      - 'CONTRIBUTING.md'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'LICENSE'
+      - '.github/workflows/m3-ui-check.yml'
+      - '.github/workflows/publish-skills-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: web
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: npm install --no-audit --no-fund
+      - run: npm run check:data
+      - run: npm run build
+      - name: Verify generated routes and repository policies
+        run: |
+          test -f dist/index.html
+          test -f dist/brand-mark.svg
+          grep -q 'brand-mark.svg' dist/index.html
+          test -f dist/docs/index.html
+          test -f dist/blog/index.html
+          test -f dist/blog/hello-world/index.html
+          for skill in \
+            disk-governance \
+            download-organizer \
+            git-workflow \
+            github-project-coach \
+            idea-advisor \
+            learning-coach \
+            unravel
+          do
+            test -f "dist/skills/$skill/index.html"
+          done
+          for page in \
+            introduction \
+            getting-started/installation \
+            getting-started/faq \
+            guides/using-skills \
+            concepts/architecture \
+            reference/skill-structure \
+            reference/for-agents \
+            development/contributing \
+            development/documentation-standards \
+            development/skill-readiness \
+            development/repo-structure-plan
+          do
+            if [ "$page" = "introduction" ]; then target=dist/docs/index.html; else target="dist/docs/$page/index.html"; fi
+            test -f "$target"
+          done
+          grep -q 'docs/getting-started/installation/' dist/docs/index.html
+          grep -q 'docs/development/skill-readiness/' dist/docs/index.html
+          test -f ../README.md
+          test -f ../CONTRIBUTING.md
+          grep -q "A new Skill must be discussed" ../CONTRIBUTING.md
+          grep -q "Every pull request must receive explicit approval" ../CONTRIBUTING.md
+          test -f ../LICENSE
+          test -f ../index.html
+          echo "M3 repository and route checks passed"

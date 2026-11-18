@@ -1,0 +1,13 @@
+---
+import type { Skill } from '../lib/catalog';
+import { categoryNames } from '../lib/catalog';
+const { skill } = Astro.props as { skill: Skill };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const icons: Record<string, string> = { 'idea-advisor': '✧','git-workflow': '⌘','learning-coach':'◉','github-project-coach':'⌁','disk-governance':'▤','download-organizer':'▣','unravel':'◇' };
+---
+<a class="skill-card" href={`${base}/skills/${skill.slug}/`} data-skill-card data-search={`${skill.name} ${skill.description} ${skill.category} ${skill.tags.join(' ')}`.toLocaleLowerCase()} data-category={skill.category}>
+  <span class="card-icon" aria-hidden="true">{icons[skill.slug] ?? '◇'}</span>
+  <span class="card-title">{skill.name}<span class="card-arrow" aria-hidden="true">↗</span></span>
+  <span class="card-description">{skill.description}</span>
+  <span class="card-footer"><span class="category-pill">{categoryNames[skill.category]}</span></span>
+</a>

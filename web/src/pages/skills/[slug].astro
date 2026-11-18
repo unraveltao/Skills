@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { skills, categoryNames, installCommand } from '../../lib/catalog';
+import { renderMarkdown } from '../../lib/markdown';
+export function getStaticPaths() { return skills.map(skill => ({ params: { slug: skill.slug }, props: { skill } })); }
+const { skill } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const content = skill.readme ? renderMarkdown(skill.readme, skill.slug) : null;
+const headings = skill.readme ? Array.from(skill.readme.matchAll(/^##\s+(.+)$/gm), m => ({ text: m[1], id: m[1].toLowerCase().replace(/[^\w -]/g, '').replace(/\s+/g, '-') })) : [];
+const command = `${installCommand} --skill ${skill.slug}`;
+---
+<Base title={`${skill.name} — Unravel Skills`} description={skill.description}>
+  <div class="container docs-grid">
+    <aside class="docs-sidebar"><a class="back-link" href={`${base}/#explore`}>← All Skills</a><span class="eyebrow small">SKILL CATALOG</span><p class="sidebar-current">{skill.name}</p><a href={`${base}/docs/`}>Documentation ↗</a><a href={skill.sourceUrl} target="_blank" rel="noopener noreferrer">View SKILL.md ↗</a></aside>
+    <article class="article-main">
+      <div class="breadcrumb"><a href={`${base}/#explore`}>Skills</a> / {skill.name}</div>
+      <span class="eyebrow small">{categoryNames[skill.category]}</span>
+      <h1>{skill.name}</h1>
+      <p class="article-lead">{skill.description}</p>
+      <div class="tag-list">{skill.tags.map(tag => <span class="tag">#{tag}</span>)}</div>
+      <section class="install-panel"><div class="install-panel-head"><strong>Install this Skill</strong><span>Unverified command</span></div><div class="command-line"><code>{command}</code><button class="copy-button" data-copy={command}>Copy</button></div><p>Review the source and your Agent's requirements before installing.</p></section>
+      <details class="mobile-toc"><summary>On this page</summary><nav>{headings.map(h => <a href={`#${h.id}`}>{h.text}</a>)}</nav></details>
+      {content ? <div class="prose" set:html={content} /> : <div class="prose"><h2>Documentation pending</h2><p>This Skill does not yet include a README.md. Please read its source instructions for current functionality, requirements, and boundaries.</p><p><a href={skill.sourceUrl} target="_blank" rel="noopener noreferrer">Read SKILL.md ↗</a></p></div>}
+      <div class="source-footer"><a href={skill.sourceUrl} target="_blank" rel="noopener noreferrer">View SKILL.md ↗</a>{skill.readmeUrl && <a href={skill.readmeUrl} target="_blank" rel="noopener noreferrer">View README source ↗</a>}</div>
+    </article>
+    <aside class="toc-sidebar"><span class="eyebrow small">ON THIS PAGE</span><nav>{headings.length ? headings.map(h => <a href={`#${h.id}`}>{h.text}</a>) : <span class="muted">README not available</span>}</nav></aside>
+  </div>
+</Base>
