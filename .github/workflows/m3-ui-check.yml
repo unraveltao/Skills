@@ -33,5 +33,22 @@ jobs:
           test -f dist/blog/index.html
           test -f dist/blog/hello-world/index.html
           test -f dist/skills/idea-advisor/index.html
+          for page in \
+            introduction \
+            getting-started/installation \
+            getting-started/faq \
+            guides/using-skills \
+            concepts/architecture \
+            reference/skill-structure \
+            reference/for-agents \
+            development/skill-readiness \
+            development/repo-structure-plan \
+            development/disk-governance-architecture
+          do
+            if [ "$page" = "introduction" ]; then target=dist/docs/index.html; else target="dist/docs/$page/index.html"; fi
+            test -f "$target"
+          done
+          grep -q 'docs/getting-started/installation/' dist/docs/index.html
+          grep -q 'docs/development/skill-readiness/' dist/docs/index.html
           test -f ../index.html
           echo "M3.1 route smoke checks passed"
