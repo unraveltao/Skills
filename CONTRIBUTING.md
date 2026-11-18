@@ -4,7 +4,7 @@ Thank you for your interest in contributing to **Unravel Skills**.
 
 Unravel Skills is a collection of independently installable Agent Skills, supported by a public catalog and project documentation. Contributions are welcome in the form of new Skills, improvements, bug fixes, tests, documentation, and website changes.
 
-This guide explains how to propose and validate changes while keeping the repository safe, understandable, and maintainable.
+This guide explains how to propose and validate changes while keeping the repository safe, understandable, and maintainable. The project is currently maintained by its project owner; external contributions are welcome, but they are reviewed individually and are not merged automatically.
 
 ## 1. Before You Start
 
@@ -247,7 +247,7 @@ What remains untested, unsupported, or intentionally out of scope?
 
 Use a concise, descriptive pull request title. If the change affects user-facing behavior, include screenshots or a short reproduction procedure when useful.
 
-Maintainers may request changes, ask for additional validation, or decline a contribution that is outside the project's scope or does not meet its safety and maintenance requirements.
+The project owner may request changes, ask for additional validation, or decline a contribution that is outside the project's scope or does not meet its safety and maintenance requirements.
 
 ### Project owner approval
 
