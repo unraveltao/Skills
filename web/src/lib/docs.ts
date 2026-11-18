@@ -17,8 +17,7 @@ export const sections = [
   ]},
   { title: 'Development', pages: [
     {slug:'development/skill-readiness',title:'Skill Readiness',file:'development/skill-readiness.md'},
-    {slug:'development/repo-structure-plan',title:'Repository Structure Plan',file:'development/repo-structure-plan.md'},
-    {slug:'development/disk-governance-architecture',title:'Disk Governance Architecture',file:'development/disk-governance-architecture.md'}
+    {slug:'development/repo-structure-plan',title:'Repository Structure Plan',file:'development/repo-structure-plan.md'}
   ]}
 ] as const;
 export const pages = sections.flatMap(section => section.pages);
