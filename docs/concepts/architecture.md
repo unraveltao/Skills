@@ -12,7 +12,7 @@ Unravel Skills separates **Skill packages** (the installable instructions) from 
 | `scripts/` | Repository automation as introduced |
 | `.github/workflows/` | Verification and publishing |
 
-The root `AGENTS.md` defines engineering safety constraints; each Skill's `SKILL.md` defines its own workflow.
+The root `AGENTS.md` defines repository-wide engineering rules; each Skill's `SKILL.md` defines its own workflow. Skill-specific architecture, safety policies, runtime details, and supporting references stay inside that Skill's package rather than in this global document.
 
 ## Current website data (M3.1)
 
