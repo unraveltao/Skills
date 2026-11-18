@@ -6,6 +6,7 @@ on:
     paths:
       - 'web/**'
       - 'skills/**'
+      - 'docs/**'
       - '.github/workflows/m3-ui-check.yml'
   workflow_dispatch:
 
@@ -41,9 +42,10 @@ jobs:
             concepts/architecture \
             reference/skill-structure \
             reference/for-agents \
+            development/contributing \
+            development/documentation-standards \
             development/skill-readiness \
-            development/repo-structure-plan \
-            development/disk-governance-architecture
+            development/repo-structure-plan
           do
             if [ "$page" = "introduction" ]; then target=dist/docs/index.html; else target="dist/docs/$page/index.html"; fi
             test -f "$target"
