@@ -54,7 +54,17 @@ jobs:
           test -f dist/docs/index.html
           test -f dist/blog/index.html
           test -f dist/blog/hello-world/index.html
-          test -f dist/skills/idea-advisor/index.html
+          for skill in \
+            disk-governance \
+            download-organizer \
+            git-workflow \
+            github-project-coach \
+            idea-advisor \
+            learning-coach \
+            unravel
+          do
+            test -f "dist/skills/$skill/index.html"
+          done
           for page in \
             introduction \
             getting-started/installation \
