@@ -2,12 +2,14 @@
 
 A curated collection of independently installable Agent Skills.
 
-[![Docs](https://img.shields.io/badge/docs-unravel%20skills-111111?style=flat-square)](https://unraveltao.github.io/Skills/docs/)
-[![Skills](https://img.shields.io/badge/catalog-Skills-111111?style=flat-square)](https://unraveltao.github.io/Skills/)
-[![License](https://img.shields.io/github/license/unraveltao/Skills?style=flat-square)](https://github.com/unraveltao/Skills/blob/main/LICENSE)
-
 <p align="center">
   <img src="web/public/brand-mark.svg" alt="Unravel Skills" width="96">
+</p>
+
+<p align="center">
+  <a href="https://unraveltao.github.io/Skills/docs/"><img src="https://img.shields.io/badge/docs-Documentation-111111?style=flat-square" alt="Documentation"></a>
+  <a href="https://unraveltao.github.io/Skills/"><img src="https://img.shields.io/badge/catalog-Skills-111111?style=flat-square" alt="Skills catalog"></a>
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square" alt="MIT License"></a>
 </p>
 
 > Build once, reuse across compatible Agents.
