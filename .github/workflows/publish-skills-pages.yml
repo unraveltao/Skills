@@ -53,11 +53,23 @@ jobs:
           test -f web/dist/docs/concepts/architecture/index.html
           test -f web/dist/docs/reference/skill-structure/index.html
           test -f web/dist/docs/reference/for-agents/index.html
-          test -f web/dist/docs/development/skill-readiness/index.html
+          test -f web/dist/docs/development/contributing/index.html
           test -f web/dist/docs/development/documentation-standards/index.html
+          test -f web/dist/docs/development/skill-readiness/index.html
+          test -f web/dist/docs/development/repo-structure-plan/index.html
           test -f web/dist/blog/index.html
           test -f web/dist/blog/hello-world/index.html
-          test -f web/dist/skills/idea-advisor/index.html
+          for skill in \
+            disk-governance \
+            download-organizer \
+            git-workflow \
+            github-project-coach \
+            idea-advisor \
+            learning-coach \
+            unravel
+          do
+            test -f "web/dist/skills/$skill/index.html"
+          done
           test -f README.md
           test -f CONTRIBUTING.md
           test -f LICENSE
