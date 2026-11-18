@@ -23,7 +23,3 @@ The website is **static**. It does not run an Agent, scan a visitor's disks, or 
 ## Planned catalog generation (M3.2)
 
 A future build-time generator is intended to validate `SKILL.md`, `README.md`, and manifests, then export `catalog.json`, `llms.txt`, and Markdown. These are **not currently implemented**, and publication alone cannot force clients to discover Skills.
-
-## Separate Skill-specific architecture
-
-Disk Governance's Python, SQLite, and local workbench architecture is **not** the architecture of the whole repository. Its original technical description now lives in [Disk Governance Architecture](/Skills/docs/development/disk-governance-architecture/).
