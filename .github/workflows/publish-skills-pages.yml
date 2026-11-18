@@ -23,7 +23,7 @@ jobs:
       - name: Check out approved M3 UI development branch
         uses: actions/checkout@v4
         with:
-          ref: 9f17b71defcf1dd6ce47681cdc190bc79a00f48e
+          ref: 198aaa071b00abe3ae5adf71bcd68704deae2bb7
           persist-credentials: false
       - name: Set up Node
         uses: actions/setup-node@v4
@@ -44,6 +44,11 @@ jobs:
           test -f web/dist/brand-mark.svg
           grep -q 'brand-mark.svg' web/dist/index.html
           test -f web/dist/docs/index.html
+          test -f web/dist/docs/getting-started/installation/index.html
+          test -f web/dist/docs/guides/using-skills/index.html
+          test -f web/dist/docs/concepts/architecture/index.html
+          test -f web/dist/docs/reference/skill-structure/index.html
+          test -f web/dist/docs/development/skill-readiness/index.html
           test -f web/dist/blog/index.html
           test -f web/dist/blog/hello-world/index.html
           test -f web/dist/skills/idea-advisor/index.html
