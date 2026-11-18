@@ -34,6 +34,22 @@ You can contribute in several ways:
 
 Please explain the problem being solved, not only the implementation you have in mind.
 
+## 2.1 Proposing a New Skill
+
+**A new Skill must be discussed with the project owner before implementation or submission.**
+
+Before building a new Skill, open a GitHub Discussion or Issue describing:
+
+- the problem the Skill is intended to solve;
+- its expected users and use cases;
+- its proposed scope and explicit non-goals;
+- whether it needs scripts, external tools, credentials, or platform-specific access;
+- any known safety, privacy, licensing, or maintenance concerns.
+
+Wait for the project owner's feedback before investing in implementation. This early discussion is intended to avoid duplicated work and keep the collection aligned with the project's direction. It is not a formal acceptance review and does not guarantee that the proposal will be accepted.
+
+This prior-discussion requirement applies specifically to **new Skills**. Routine bug fixes, documentation improvements, tests, and website changes can follow the normal contribution workflow.
+
 ## 3. Development Workflow
 
 A typical contribution follows this workflow:
@@ -232,6 +248,17 @@ What remains untested, unsupported, or intentionally out of scope?
 Use a concise, descriptive pull request title. If the change affects user-facing behavior, include screenshots or a short reproduction procedure when useful.
 
 Maintainers may request changes, ask for additional validation, or decline a contribution that is outside the project's scope or does not meet its safety and maintenance requirements.
+
+### Project owner approval
+
+Unravel Skills is currently maintained as a solo-led project. **Every pull request must receive explicit approval from the repository owner before it is merged into the target branch.**
+
+- A passing CI run is necessary when checks apply, but it is not approval.
+- A contributor must not merge their own pull request without the repository owner's explicit approval.
+- Do not enable auto-merge or treat requested changes as approved.
+- The repository owner makes the final decision on scope, timing, and merge readiness.
+
+At this stage, the project does **not** define a universal minimum acceptance checklist or numeric quality threshold for Skills. Contributions are reviewed case by case. This does not remove the need to describe scope, safety boundaries, available tests, and known limitations honestly.
 
 ## 9. Third-Party Code, Content, and Assets
 
