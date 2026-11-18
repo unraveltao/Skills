@@ -1,4 +1,5 @@
-name: M3 UI prototype check
+name: M3 UI and repository checks
+
 on:
   push:
     branches:
@@ -12,6 +13,20 @@ on:
       - 'AGENTS.md'
       - 'LICENSE'
       - '.github/workflows/m3-ui-check.yml'
+      - '.github/workflows/publish-skills-pages.yml'
+  pull_request:
+    branches:
+      - main
+    paths:
+      - 'web/**'
+      - 'skills/**'
+      - 'docs/**'
+      - 'CONTRIBUTING.md'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'LICENSE'
+      - '.github/workflows/m3-ui-check.yml'
+      - '.github/workflows/publish-skills-pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -31,9 +46,11 @@ jobs:
       - run: npm install --no-audit --no-fund
       - run: npm run check:data
       - run: npm run build
-      - name: Verify generated routes and legacy preservation
+      - name: Verify generated routes and repository policies
         run: |
           test -f dist/index.html
+          test -f dist/brand-mark.svg
+          grep -q 'brand-mark.svg' dist/index.html
           test -f dist/docs/index.html
           test -f dist/blog/index.html
           test -f dist/blog/hello-world/index.html
@@ -56,8 +73,10 @@ jobs:
           done
           grep -q 'docs/getting-started/installation/' dist/docs/index.html
           grep -q 'docs/development/skill-readiness/' dist/docs/index.html
-          test -f ../index.html
+          test -f ../README.md
           test -f ../CONTRIBUTING.md
-          grep -q "Pull Request Guidelines" ../CONTRIBUTING.md
-          grep -q "Safety requirements" ../CONTRIBUTING.md
-          echo "M3.1 route smoke checks passed"
+          grep -q "A new Skill must be discussed" ../CONTRIBUTING.md
+          grep -q "Every pull request must receive explicit approval" ../CONTRIBUTING.md
+          test -f ../LICENSE
+          test -f ../index.html
+          echo "M3 repository and route checks passed"
