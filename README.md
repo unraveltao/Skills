@@ -43,3 +43,7 @@ For the current installation guidance and compatibility notes, see [Installation
 ## Development
 
 Read [AGENTS.md](AGENTS.md) before changing the repository. Use the project Docs for repository-level architecture and development records. For Skill-specific behavior, always use that Skill's own `SKILL.md` and supporting references as the source of truth.
+
+## Contributing and license
+
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for repository and documentation standards. This repository is licensed under the [MIT License](LICENSE).
