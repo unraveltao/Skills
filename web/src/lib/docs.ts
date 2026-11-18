@@ -16,6 +16,8 @@ export const sections = [
     {slug:'reference/for-agents',title:'For Agents',file:'reference/for-agents.md'}
   ]},
   { title: 'Development', pages: [
+    {slug:'development/contributing',title:'Contributing',file:'development/contributing.md'},
+    {slug:'development/documentation-standards',title:'Documentation Standards',file:'development/documentation-standards.md'},
     {slug:'development/skill-readiness',title:'Skill Readiness',file:'development/skill-readiness.md'},
     {slug:'development/repo-structure-plan',title:'Repository Structure Plan',file:'development/repo-structure-plan.md'}
   ]}
