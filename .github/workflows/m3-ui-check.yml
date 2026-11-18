@@ -7,6 +7,10 @@ on:
       - 'web/**'
       - 'skills/**'
       - 'docs/**'
+      - 'CONTRIBUTING.md'
+      - 'README.md'
+      - 'AGENTS.md'
+      - 'LICENSE'
       - '.github/workflows/m3-ui-check.yml'
   workflow_dispatch:
 
@@ -53,4 +57,7 @@ jobs:
           grep -q 'docs/getting-started/installation/' dist/docs/index.html
           grep -q 'docs/development/skill-readiness/' dist/docs/index.html
           test -f ../index.html
+          test -f ../CONTRIBUTING.md
+          grep -q "Pull Request Guidelines" ../CONTRIBUTING.md
+          grep -q "Safety requirements" ../CONTRIBUTING.md
           echo "M3.1 route smoke checks passed"
