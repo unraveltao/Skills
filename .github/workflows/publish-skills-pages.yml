@@ -1,0 +1,71 @@
+name: Publish Unravel Skills (Astro)
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/publish-skills-pages.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out approved M3 UI development branch
+        uses: actions/checkout@v4
+        with:
+          ref: 198aaa071b00abe3ae5adf71bcd68704deae2bb7
+          persist-credentials: false
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Install dependencies
+        working-directory: web
+        run: npm install --no-audit --no-fund
+      - name: Check Skill inputs
+        working-directory: web
+        run: npm run check:data
+      - name: Build Astro Pages site
+        working-directory: web
+        run: npm run build
+      - name: Verify generated routes
+        run: |
+          test -f web/dist/index.html
+          test -f web/dist/brand-mark.svg
+          grep -q 'brand-mark.svg' web/dist/index.html
+          test -f web/dist/docs/index.html
+          test -f web/dist/docs/getting-started/installation/index.html
+          test -f web/dist/docs/guides/using-skills/index.html
+          test -f web/dist/docs/concepts/architecture/index.html
+          test -f web/dist/docs/reference/skill-structure/index.html
+          test -f web/dist/docs/development/skill-readiness/index.html
+          test -f web/dist/blog/index.html
+          test -f web/dist/blog/hello-world/index.html
+          test -f web/dist/skills/idea-advisor/index.html
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+      - name: Upload site artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: web/dist
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
