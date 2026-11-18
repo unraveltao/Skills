@@ -5,9 +5,19 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base title="Docs — Unravel Skills">
   <div class="container docs-grid">
-    <aside class="docs-sidebar"><span class="eyebrow small">GETTING STARTED</span><a class="sidebar-current" href="#introduction">Introduction</a><a href="#installation">Installation</a><a href="#usage">Using Skills</a><a href="#agents">For Agents</a><a href="#faq">FAQ</a></aside>
+    <aside class="docs-sidebar" aria-label="Documentation navigation">
+      <span class="eyebrow small">DOCUMENTATION</span>
+      <a class="sidebar-current" href={`${base}/docs/`} aria-current="page">Getting Started</a>
+      <span class="eyebrow small">EXPLORE</span>
+      <a href={`${base}/#explore`}>All Skills ↗</a>
+      <a href="https://github.com/unraveltao/Skills" target="_blank" rel="noopener noreferrer">Source repository ↗</a>
+      <a href={`${base}/blog/`}>Blog ↗</a>
+    </aside>
     <article class="article-main">
       <div class="breadcrumb"><a href={`${base}/`}>Home</a> / Docs</div>
+      <details class="mobile-toc"><summary>On this page</summary><nav aria-label="Page sections">
+        <a href="#introduction">Introduction</a><a href="#installation">Installation</a><a href="#usage">Using Skills</a><a href="#agents">For Agents</a><a href="#faq">FAQ</a>
+      </nav></details>
       <h1>Getting Started</h1><p class="article-lead">A small collection of reusable Agent Skills, with practical usage guidance and clear boundaries.</p>
       <div class="prose">
         <h2 id="introduction">Introduction</h2><p>Unravel Skills publishes independently maintained Skills for learning, development, planning, and utilities. A Skill is an instruction package intended for compatible AI coding agents. Actual features and safety requirements vary by Skill.</p>
