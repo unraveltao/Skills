@@ -75,7 +75,7 @@ jobs:
           test -f LICENSE
           test -f index.html
       - name: Configure GitHub Pages
-        uses: actions/configure-pages@v5
+        uses: actions/configure-pages@v6
       - name: Upload site artifact
         uses: actions/upload-pages-artifact@v3
         with:
