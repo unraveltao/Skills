@@ -9,7 +9,7 @@
     "check:data": "node scripts/check-data.mjs"
   },
   "dependencies": {
-    "astro": "^5.13.0",
+    "astro": "^7.4.12",
     "marked": "^18.2.0",
     "sanitize-html": "^2.18.2"
   },
