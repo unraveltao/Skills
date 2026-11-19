@@ -1,8 +1,10 @@
-import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { join } from 'node:path';
+import { existsSync, readFileSync } from 'node:fs';
+import { join, resolve } from 'node:path';
 
-const root = fileURLToPath(new URL('../../../docs/', import.meta.url));
+const root = resolve(process.cwd(), '../docs');
+if (!existsSync(root)) {
+  throw new Error(`Docs directory not found at ${root}; run Astro from the web/ directory.`);
+}
 export interface DocPage { slug: string; title: string; file: string; }
 export interface DocSection { title: string; pages: DocPage[]; }
 export const sections: DocSection[] = [
