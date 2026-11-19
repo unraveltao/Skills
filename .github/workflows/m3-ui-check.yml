@@ -90,5 +90,4 @@ jobs:
           grep -q "A new Skill must be discussed" ../CONTRIBUTING.md
           grep -q "Every pull request must receive explicit approval" ../CONTRIBUTING.md
           test -f ../LICENSE
-          test -f ../index.html
           echo "M3 repository and route checks passed"

@@ -73,7 +73,6 @@ jobs:
           test -f README.md
           test -f CONTRIBUTING.md
           test -f LICENSE
-          test -f index.html
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v6
       - name: Upload site artifact

@@ -1,0 +1,4 @@
+interface:
+  display_name: "QD Meta Skill"
+  short_description: "Design new Codex Skills from reusable workflows"
+  default_prompt: "Use $qd-meta-skill to design a new Codex Skill from a reusable workflow."
