@@ -21,7 +21,8 @@ export const sections: DocSection[] = [
     {slug:'development/contributing',title:'Contributing',file:'development/contributing.md'},
     {slug:'development/documentation-standards',title:'Documentation Standards',file:'development/documentation-standards.md'},
     {slug:'development/skill-readiness',title:'Skill Readiness',file:'development/skill-readiness.md'},
-    {slug:'development/repo-structure-plan',title:'Repository Structure Plan',file:'development/repo-structure-plan.md'}
+    {slug:'development/repo-structure-plan',title:'Repository Structure Plan',file:'development/repo-structure-plan.md'},
+    {slug:'development/ai-assisted-contributions',title:'AI-Assisted Contributions',file:'development/ai-assisted-contributions.md'}
   ]}
 ];
 export const pages: DocPage[] = sections.flatMap(section => section.pages);
