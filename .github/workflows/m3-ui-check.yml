@@ -45,7 +45,9 @@ jobs:
           node-version: '22'
       - run: npm install --no-audit --no-fund
       - run: npm run check:data
+      - run: npm exec -- tsc --noEmit
       - run: npm run build
+      - run: node scripts/check-compat.mjs
       - name: Verify generated routes and repository policies
         run: |
           test -f dist/index.html
