@@ -1,8 +1,11 @@
 import { readdirSync, readFileSync, existsSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
-const root = fileURLToPath(new URL('../../../skills/', import.meta.url));
+// Astro commands run with web/ as the working directory; skills/ is its sibling.
+const root = resolve(process.cwd(), '../skills');
+if (!existsSync(root)) {
+  throw new Error(`Skills directory not found at ${root}; run Astro from the web/ directory.`);
+}
 export type Category = 'development' | 'learning' | 'planning' | 'utilities';
 export interface Skill {
   slug: string;
