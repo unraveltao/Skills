@@ -1,8 +1,10 @@
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 
-// Astro commands run with web/ as the working directory; docs/ is at repository root.
 const root = resolve(process.cwd(), '../docs');
+if (!existsSync(root)) {
+  throw new Error(`Docs directory not found at ${root}; run Astro from the web/ directory.`);
+}
 export interface DocPage { slug: string; title: string; file: string; }
 export interface DocSection { title: string; pages: DocPage[]; }
 export const sections: DocSection[] = [
