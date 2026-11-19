@@ -7,7 +7,7 @@ const base = import.meta.env.BASE_URL.replace(/\/$/,'');
 const source = readDoc(page);
 const rendered = renderMarkdown(source, undefined, page.file);
 const toc = headingsFromDoc(source);
-const sourceLink = `https://github.com/unraveltao/Skills/blob/chore/repo-structure-scaffold/docs/${page.file}`;
+const sourceLink = `https://github.com/unraveltao/Skills/blob/main/docs/${page.file}`;
 ---
 <Base title={`${page.title} — Unravel Skills Docs`}>
   <div class="container docs-grid">

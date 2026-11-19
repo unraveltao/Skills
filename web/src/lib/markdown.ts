@@ -11,7 +11,7 @@ export function renderMarkdown(source: string, skillSlug?: string, docFile?: str
     return `<h${level} id="${slug(plain)}">${inside}</h${level}>`;
   });
   const withLinks = withHeadings.replace(/(href|src)="(?!https?:|mailto:|#|\/)([^"]+)"/g, (_all, attr, path) => {
-    const base = docFile ? `https://github.com/unraveltao/Skills/blob/chore/repo-structure-scaffold/docs/` : `https://github.com/unraveltao/Skills/blob/main/skills/${encodeURIComponent(skillSlug ?? '')}/`;
+    const base = docFile ? `https://github.com/unraveltao/Skills/blob/main/docs/` : `https://github.com/unraveltao/Skills/blob/main/skills/${encodeURIComponent(skillSlug ?? '')}/`;
     return `${attr}="${base}${path}"`;
   });
   return sanitizeHtml(withLinks, {
