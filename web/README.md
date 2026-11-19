@@ -1,6 +1,6 @@
-# Unravel Skills website (M3.1 UI prototype)
+# Unravel Skills website
 
-An Astro static site under `web/`, developed separately from the existing root-level website. This is a review prototype, not a production deployment.
+The Astro site in `web/` is the published GitHub Pages source. The publishing workflow builds and deploys `web/dist/`.
 
 ## Run locally
 
@@ -13,7 +13,7 @@ npm run build
 npm run dev
 ```
 
-Astro's build outputs to `web/dist/`. The configured base path is `/Skills/`, matching a GitHub Pages project site. Do not deploy or replace the existing root site without a separate reviewed migration.
+Astro's build outputs to `web/dist/`. The configured base path is `/Skills/`, matching this GitHub Pages project site. Do not add a second website entry point at the repository root.
 
 ## Current scope
 
@@ -25,13 +25,13 @@ Astro's build outputs to `web/dist/`. The configured base path is `/Skills/`, ma
 
 ## Boundaries and deferred work
 
-This is **M3.1**, not the final Catalog Generator. Category and tag mapping is provisional UI adapter data. It must be replaced or validated against `manifest.yaml` in M3.2. Missing lifecycle statuses and versions are intentionally not invented. Missing READMEs are not generated silently.
+The deployed website uses the **M3.1** catalog adapter. Category and tag mapping is provisional UI data and must be replaced or validated against `manifest.yaml` in M3.2. Missing lifecycle statuses and versions are intentionally not invented. Missing READMEs are not generated silently.
 
 The Skills CLI commands are **unverified candidates** for this repository. Actual installation, agent discovery, package validation, and permissions require separate tests.
 
 M3.2 will create `catalog.json`, `llms.txt`, machine-readable Markdown exports, and data schema validation. No agent-discovery APIs or backend services have been implemented here.
 
-Existing root `index.html`, `script.js`, `style.css`, and every Skill remain untouched.
+The legacy root-level `index.html`, `script.js`, and `style.css` have been retired. `web/` is the single website source of truth.
 
 ## Docs content source
 

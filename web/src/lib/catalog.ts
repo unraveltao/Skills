@@ -18,7 +18,9 @@ export interface Skill {
 const categories: Record<string, Category> = {
   'git-workflow': 'development',
   'github-project-coach': 'development',
+  'qd-meta-skill': 'planning',
   'idea-advisor': 'planning',
+  'readme': 'development',
   'learning-coach': 'learning',
   'unravel': 'learning',
   'disk-governance': 'utilities',
@@ -27,7 +29,9 @@ const categories: Record<string, Category> = {
 const tags: Record<string, string[]> = {
   'git-workflow': ['git', 'version-control', 'automation'],
   'github-project-coach': ['github', 'repository', 'learning'],
+  'qd-meta-skill': ['skill-design', 'workflow', 'codex'],
   'idea-advisor': ['ideas', 'requirements', 'research'],
+  'readme': ['readme', 'documentation', 'technical-writing'],
   'learning-coach': ['teaching', 'learning', 'assessment'],
   'unravel': ['explanation', 'concepts', 'systems'],
   'disk-governance': ['filesystem', 'disk', 'audit'],
@@ -36,7 +40,9 @@ const tags: Record<string, string[]> = {
 const friendlyNames: Record<string, string> = {
   'git-workflow': 'Git Workflow',
   'github-project-coach': 'GitHub Project Coach',
+  'qd-meta-skill': 'QD Meta Skill',
   'idea-advisor': 'Idea Advisor',
+  'readme': 'README',
   'learning-coach': 'Learning Coach',
   'unravel': 'Unravel',
   'disk-governance': 'Disk Governance',
