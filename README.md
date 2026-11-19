@@ -1,6 +1,10 @@
-# Unravel Skills
+<div align="center">
 
-A curated collection of independently installable Agent Skills.
+<h1>Unravel Skills</h1>
+
+<p>A curated collection of independently installable Agent Skills.</p>
+
+</div>
 
 <p align="center">
   <img src="web/public/brand-mark.svg" alt="Unravel Skills" width="96">
@@ -12,7 +16,7 @@ A curated collection of independently installable Agent Skills.
   <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square" alt="MIT License"></a>
 </p>
 
-> Build once, reuse across compatible Agents.
+<p align="center"><em>Build once, reuse across compatible Agents.</em></p>
 
 Unravel Skills is a collection of self-contained Skill packages. Each Skill lives under `skills/<name>/` and contains its own instructions and, when needed, references, scripts, runtime code, UI, and tests.
 
