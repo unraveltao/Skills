@@ -1,8 +1,8 @@
 import { readFileSync } from 'node:fs';
-import { fileURLToPath } from 'node:url';
-import { join } from 'node:path';
+import { join, resolve } from 'node:path';
 
-const root = fileURLToPath(new URL('../../../docs/', import.meta.url));
+// Astro commands run with web/ as the working directory; docs/ is at repository root.
+const root = resolve(process.cwd(), '../docs');
 export interface DocPage { slug: string; title: string; file: string; }
 export interface DocSection { title: string; pages: DocPage[]; }
 export const sections: DocSection[] = [
