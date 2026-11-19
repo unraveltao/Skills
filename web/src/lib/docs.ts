@@ -3,7 +3,9 @@ import { fileURLToPath } from 'node:url';
 import { join } from 'node:path';
 
 const root = fileURLToPath(new URL('../../../docs/', import.meta.url));
-export const sections = [
+export interface DocPage { slug: string; title: string; file: string; }
+export interface DocSection { title: string; pages: DocPage[]; }
+export const sections: DocSection[] = [
   { title: 'Getting Started', pages: [
     {slug:'introduction',title:'Introduction',file:'introduction.md'},
     {slug:'getting-started/installation',title:'Installation',file:'getting-started/installation.md'},
@@ -21,9 +23,8 @@ export const sections = [
     {slug:'development/skill-readiness',title:'Skill Readiness',file:'development/skill-readiness.md'},
     {slug:'development/repo-structure-plan',title:'Repository Structure Plan',file:'development/repo-structure-plan.md'}
   ]}
-] as const;
-export const pages = sections.flatMap(section => section.pages);
-export type DocPage = (typeof pages)[number];
+];
+export const pages: DocPage[] = sections.flatMap(section => section.pages);
 export function readDoc(page:DocPage):string { return readFileSync(join(root,page.file),'utf8'); }
 export function getDoc(slug:string):DocPage|undefined {return pages.find(p=>p.slug===slug);}
 export function headingsFromDoc(markdown:string) {
