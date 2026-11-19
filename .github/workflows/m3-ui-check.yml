@@ -3,7 +3,7 @@ name: M3 UI and repository checks
 on:
   push:
     branches:
-      - chore/repo-structure-scaffold
+      - main
     paths:
       - 'web/**'
       - 'skills/**'
