@@ -48,4 +48,4 @@ Read [AGENTS.md](AGENTS.md) before changing the repository. Use the project Docs
 
 ## Contributing and license
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for repository and documentation standards. This repository is licensed under the [MIT License](LICENSE).
+Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for repository and documentation standards. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for contributor acknowledgments. This repository is licensed under the [MIT License](LICENSE).
