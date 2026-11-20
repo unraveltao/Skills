@@ -24,3 +24,17 @@
 .mobile-doc-nav nav a{font-size:13px;color:var(--muted)}
 .mobile-doc-nav nav a[aria-current="page"]{color:var(--accent);font-weight:700}
 @media(max-width:680px){.mobile-doc-nav{display:block}}
+
+
+/* Blog code panels contain nodes created after Astro renders the page. */
+.blog-main .prose .code-block{margin:1.5em 0;overflow:hidden;border:1px solid var(--border);border-radius:12px;background:var(--surface-2)}
+.blog-main .prose .code-toolbar{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:46px;padding:6px 12px;border-bottom:1px solid var(--border);background:var(--surface);color:var(--muted)}
+.blog-main .prose .code-language{color:var(--fg);font-family:inherit;font-size:13px;font-weight:550;letter-spacing:0}
+.blog-main .prose .code-copy{display:grid;place-items:center;width:32px;height:32px;padding:0;border:0;border-radius:6px;background:transparent;color:var(--muted);cursor:pointer}
+.blog-main .prose .code-copy:hover{background:var(--surface-2);color:var(--fg)}
+.blog-main .prose .code-copy svg{display:block;width:17px;height:17px;fill:none;stroke:currentColor;stroke-linecap:round;stroke-linejoin:round;stroke-width:1.8}
+.blog-main .prose .code-copy.is-copied{color:#39b980}
+.blog-main .prose .code-copy.is-error{color:#e36b75}
+.blog-main .prose .code-block pre{margin:0;padding:0;overflow:auto;border:0;border-radius:0 0 11px 11px;background:transparent;color:var(--fg);line-height:1.6;tab-size:2}
+.blog-main .prose .code-block pre>code{display:block;padding:14px 16px;background:transparent;color:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;white-space:pre}
+@media(max-width:680px){.blog-main .prose .code-block pre>code{padding:12px;font-size:12px}}
