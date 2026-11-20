@@ -125,30 +125,17 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
       </nav>
     </main>
     <aside class="article-toc" aria-label="Article contents">
-      <details class="toc-panel" open>
-        <summary class="toc-summary">
-          <span class="toc-heading">
-            <span class="toc-kicker">READING GUIDE</span>
-            <span class="toc-title">In this article</span>
-          </span>
-          <span class="toc-toggle" aria-hidden="true">
-            <span class="toc-toggle-open">Hide</span>
-            <span class="toc-toggle-closed">Show</span>
-            <span class="toc-chevron">⌄</span>
-          </span>
-        </summary>
-        <nav class="toc-links" aria-label="Article sections">
-          {tocItems.map((item) => (
-            <a
-              class:list={['toc-link', item.level === 3 && 'toc-link-nested']}
-              href={`#${item.id}`}
-            >
-              <span class="toc-link-marker" aria-hidden="true"></span>
-              <span>{item.title}</span>
-            </a>
-          ))}
-        </nav>
-      </details>
+      <span class="eyebrow small">ON THIS PAGE</span>
+      <nav class="toc-links" aria-label="Article sections">
+        {tocItems.map((item) => (
+          <a
+            class:list={['toc-link', item.level === 3 && 'toc-link-nested']}
+            href={`#${item.id}`}
+          >
+            {item.title}
+          </a>
+        ))}
+      </nav>
     </aside>
   </div>
   <dialog id="blog-search-dialog" class="docs-search-dialog" aria-labelledby="blog-search-title">
@@ -324,10 +311,44 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     position: sticky;
     top: calc(var(--nav-h) + 24px);
     align-self: start;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     max-height: calc(100vh - var(--nav-h) - 48px);
     overflow: auto;
     scrollbar-width: thin;
     scrollbar-color: var(--border) transparent;
+  }
+
+  .article-toc .toc-links {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 0;
+  }
+
+  .article-toc .toc-link {
+    display: block;
+    padding: 7px 9px;
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.5;
+    text-decoration: none;
+  }
+
+  .article-toc .toc-link:hover,
+  .article-toc .toc-link[aria-current="location"] {
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .article-toc .toc-link[aria-current="location"] {
+    font-weight: 650;
+  }
+
+  .article-toc .toc-link-nested {
+    padding-left: 22px;
   }
 
   .toc-panel {
