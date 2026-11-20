@@ -15,7 +15,7 @@ const current = Astro.url.pathname;
     <title>{title}</title>
     <script is:inline>
       try {
-        const mode = localStorage.getItem('unravel-mode');
+        const mode = localStorage.getItem('unravel-mode-v2');
         const accent = localStorage.getItem('unravel-accent');
         document.documentElement.dataset.theme = mode === 'dark' ? 'dark' : 'light';
         if (['blue','teal','green','orange','rose','indigo'].includes(accent)) document.documentElement.dataset.accent = accent;
@@ -70,7 +70,7 @@ const current = Astro.url.pathname;
       syncTheme();
       toggle?.addEventListener('click', () => {
         html.dataset.theme = html.dataset.theme === 'dark' ? 'light' : 'dark';
-        try { localStorage.setItem('unravel-mode', html.dataset.theme); } catch {}
+        try { localStorage.setItem('unravel-mode-v2', html.dataset.theme); } catch {}
         syncTheme();
       });
       document.querySelectorAll<HTMLButtonElement>('[data-set-accent]').forEach(button => {
