@@ -110,7 +110,6 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
             <strong>{previous.title}</strong>
           </a>
         ) : <span class="series-nav-spacer"></span>}
-        <a class="series-nav-index" href={`${base}/blog/`}>All articles</a>
         {next ? (
           <a class="series-nav-item next" href={`${base}/blog/${next.slug}/`}>
             <span class="eyebrow small">NEXT ARTICLE →</span>
@@ -780,7 +779,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
 
   .series-nav {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: stretch;
     gap: 12px;
     margin-top: 54px;
@@ -814,26 +813,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     line-height: 1.4;
   }
 
-  .series-nav-index {
-    align-self: center;
-    justify-self: center;
-    margin: 10px 6px;
-    padding: 9px 14px;
-    border: 1px solid var(--accent-border);
-    border-radius: 9px;
-    background: var(--accent-soft);
-    color: var(--accent);
-    font-size: 13px;
-    font-weight: 700;
-    text-decoration: none;
-    white-space: nowrap;
-    transition: background .18s ease, border-color .18s ease;
-  }
 
-  .series-nav-index:hover {
-    border-color: var(--accent);
-    background: var(--surface);
-  }
 
   .blog-search-trigger {
     display: flex;
@@ -1009,13 +989,6 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     }
 
-    .series-nav-index {
-      grid-column: 1 / -1;
-      grid-row: 1;
-      justify-self: center;
-      margin: 8px 0 14px;
-      padding: 8px 13px;
-    }
 
     .series-nav-item.next {
       text-align: left;
@@ -1245,9 +1218,6 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     font-weight: 650;
   }
 
-  .series-nav-index {
-    font-size: 13px;
-  }
 
   @media (max-width: 1180px) {
     .blog-layout.container {
@@ -1328,12 +1298,6 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       gap: 16px;
     }
 
-    .series-nav-index {
-      grid-column: 1 / -1;
-      grid-row: 1;
-      justify-self: center;
-      padding: 5px 0;
-    }
 
     .series-nav-item.next {
       text-align: left;
