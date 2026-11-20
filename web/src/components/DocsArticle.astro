@@ -2,30 +2,618 @@
 import Base from '../layouts/Base.astro';
 import { sections, readDoc, headingsFromDoc, type DocPage } from '../lib/docs';
 import { renderMarkdown } from '../lib/markdown';
-const { page } = Astro.props as { page:DocPage };
-const base = import.meta.env.BASE_URL.replace(/\/$/,'');
+import { getBlogPost, posts } from '../lib/blog';
+
+const { page } = Astro.props as { page: DocPage };
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const docsHref = (entry: DocPage) => entry.slug === 'introduction' ? base + '/docs/' : base + '/docs/' + entry.slug + '/';
 const source = readDoc(page);
 const rendered = renderMarkdown(source, undefined, page.file);
 const toc = headingsFromDoc(source);
-const sourceLink = `https://github.com/unraveltao/Skills/blob/main/docs/${page.file}`;
+const blogSearchEntries = posts.map((entry) => ({ ...entry, text: (getBlogPost(entry.slug)?.html ?? '').replace(/<[^>]+>/g, ' ') }));
+const sourceLink = 'https://github.com/unraveltao/Skills/blob/main/docs/' + page.file;
 ---
-<Base title={`${page.title} — Unravel Skills Docs`}>
+
+<Base title={page.title + ' — Unravel Skills Docs'}>
   <div class="container docs-grid">
     <aside class="docs-sidebar" aria-label="Documentation navigation">
-      {sections.map(section=><div class="doc-section"><span class="eyebrow small">{section.title}</span>
-        {section.pages.map(entry=><a href={entry.slug==='introduction' ? `${base}/docs/`:`${base}/docs/${entry.slug}/`} class:list={[{'sidebar-current':entry.slug===page.slug}]} aria-current={entry.slug===page.slug?'page':undefined}>{entry.title}</a>)}
-      </div>)}
+      <button class="docs-search-trigger" type="button" data-open-doc-search aria-haspopup="dialog" aria-controls="docs-search-dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+        <span>Search Docs</span>
+      </button>
+      {sections.map((section) => (
+        <details class="doc-section" open>
+          <summary class="doc-section-heading">
+            <svg class="doc-folder-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.2 7.4a1.8 1.8 0 0 1 1.8-1.8h5l2 2h7a1.8 1.8 0 0 1 1.8 1.8v8.2a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8z"></path>
+              <path d="M7 11.6h7M7 14.6h9"></path>
+            </svg>
+            <span>{section.title}</span>
+            <svg class="doc-section-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6"></path></svg>
+          </summary>
+          <nav class="doc-section-pages" aria-label={section.title}>
+            {section.pages.map((entry) => (
+              <a href={docsHref(entry)} class:list={['doc-link', entry.slug === page.slug && 'sidebar-current']} aria-current={entry.slug === page.slug ? 'page' : undefined}>{entry.title}</a>
+            ))}
+          </nav>
+        </details>
+      ))}
     </aside>
+
     <article class="article-main">
-      <div class="breadcrumb"><a href={`${base}/`}>Home</a> / <a href={`${base}/docs/`}>Docs</a> / {page.title}</div>
-      <details class="mobile-toc mobile-doc-nav"><summary>Browse documentation</summary>
+      <div class="breadcrumb"><a href={base + '/'}>Home</a> / <a href={base + '/docs/'}>Docs</a> / {page.title}</div>
+      <details class="mobile-toc mobile-doc-nav">
+        <summary>Browse documentation</summary>
+        <div class="mobile-doc-nav-actions">
+          <button class="docs-search-trigger" type="button" data-open-doc-search aria-haspopup="dialog" aria-controls="docs-search-dialog">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+            <span>Search Docs</span>
+          </button>
+        </div>
         <nav aria-label="Mobile documentation navigation">
-        {sections.map(section=><div><strong>{section.title}</strong>{section.pages.map(entry=><a aria-current={entry.slug===page.slug?'page':undefined} href={entry.slug==='introduction' ? `${base}/docs/`:`${base}/docs/${entry.slug}/`}>{entry.title}</a>)}</div>)}
+          {sections.map((section) => (
+            <div class="mobile-doc-section">
+              <strong>{section.title}</strong>
+              {section.pages.map((entry) => (
+                <a aria-current={entry.slug === page.slug ? 'page' : undefined} href={docsHref(entry)}>{entry.title}</a>
+              ))}
+            </div>
+          ))}
         </nav>
+      </details>
+      <details class="docs-mobile-toc">
+        <summary>On this page</summary>
+        <nav aria-label="Article contents">{toc.map((item) => <a href={'#' + item.id}>{item.title}</a>)}</nav>
       </details>
       <div class="prose" set:html={rendered}/>
       <div class="source-footer"><a href={sourceLink} target="_blank" rel="noopener noreferrer">Read Markdown source ↗</a></div>
     </article>
-    <aside class="toc-sidebar" aria-label="Table of contents"><span class="eyebrow small">ON THIS PAGE</span><nav>{toc.map(item=><a href={`#${item.id}`}>{item.title}</a>)}</nav></aside>
+
+    <aside class="toc-sidebar" aria-label="Table of contents">
+      <span class="eyebrow small">ON THIS PAGE</span>
+      <nav>{toc.map((item) => <a href={'#' + item.id}>{item.title}</a>)}</nav>
+    </aside>
   </div>
+
+  <dialog id="docs-search-dialog" class="docs-search-dialog" aria-labelledby="docs-search-title">
+    <div class="docs-search-heading">
+      <h2 id="docs-search-title">Search Docs</h2>
+      <button class="docs-search-close" type="button" data-close-doc-search aria-label="Close search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+    <label class="docs-search-input-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+      <input id="docs-search-input" type="search" placeholder="What are you searching for?" autocomplete="off" />
+    </label>
+    <div class="docs-search-results">
+      <p class="docs-search-results-label" id="docs-search-results-label">Suggestions</p>
+      <nav aria-label="Documentation search results" id="docs-search-results">
+        {sections.flatMap((section) => section.pages.map((entry) => (
+          <a class="docs-search-result" data-doc-search-result data-search={section.title + ' ' + entry.title + ' ' + readDoc(entry)} href={docsHref(entry)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8h8l4 4v12.4H6z"></path><path d="M14 3.8v4h4M9 12h6M9 15.5h6"></path></svg>
+            <span><small class="docs-search-type">DOCS</small><strong>{entry.title}</strong><small>{section.title}</small></span>
+          </a>
+        )))}
+        {blogSearchEntries.map((entry) => (
+          <a class="docs-search-result" data-doc-search-result data-search={entry.title + ' ' + entry.summary + ' ' + entry.text} href={base + '/blog/' + entry.slug + '/'}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8h8l4 4v12.4H6z"></path><path d="M14 3.8v4h4M9 12h6M9 15.5h6"></path></svg>
+            <span><small class="docs-search-type">BLOG</small><strong>{entry.title}</strong><small>Skill Authoring Series · Part {entry.order}</small></span>
+          </a>
+        ))}
+      </nav>
+      <p class="docs-search-empty" id="docs-search-empty" hidden>No matching docs or articles. Try another search.</p>
+    </div>
+  </dialog>
 </Base>
+
+<script>
+  const searchDialog = document.querySelector<HTMLDialogElement>('#docs-search-dialog');
+  const searchInput = document.querySelector<HTMLInputElement>('#docs-search-input');
+  const searchItems = [...document.querySelectorAll<HTMLAnchorElement>('[data-doc-search-result]')];
+  const searchLabel = document.querySelector<HTMLElement>('#docs-search-results-label');
+  const emptyMessage = document.querySelector<HTMLElement>('#docs-search-empty');
+
+  const filterDocs = () => {
+    const query = searchInput?.value.trim().toLocaleLowerCase() ?? '';
+    let visibleCount = 0;
+    searchItems.forEach((item) => {
+      const matches = !query || (item.dataset.search ?? item.textContent ?? '').toLocaleLowerCase().includes(query);
+      item.hidden = !matches;
+      if (matches) visibleCount += 1;
+    });
+    if (searchLabel) searchLabel.textContent = query ? 'Results' : 'Suggestions';
+    if (emptyMessage) emptyMessage.hidden = visibleCount > 0;
+  };
+
+  const openSearch = () => {
+    if (!searchDialog || !searchInput) return;
+    searchInput.value = '';
+    filterDocs();
+    searchDialog.showModal();
+    searchInput.focus();
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('[data-open-doc-search]').forEach((button) => {
+    button.addEventListener('click', openSearch);
+  });
+  document.querySelector<HTMLButtonElement>('[data-close-doc-search]')?.addEventListener('click', () => searchDialog?.close());
+  searchInput?.addEventListener('input', filterDocs);
+  searchDialog?.addEventListener('click', (event) => {
+    if (event.target === searchDialog) searchDialog.close();
+  });
+</script>
+
+<style>
+  .container.docs-grid {
+    width: min(1600px, calc(100% - 72px));
+    grid-template-columns: minmax(220px, 260px) minmax(0, 1fr) minmax(190px, 230px);
+    justify-content: space-between;
+    gap: clamp(24px, 3vw, 48px);
+    padding-top: 38px;
+  }
+
+  .docs-sidebar {
+    max-height: calc(100dvh - var(--nav-h) - 40px);
+    overflow: auto;
+    gap: 8px;
+    padding-right: 5px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+    font-size: 14px;
+  }
+
+  .docs-search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    min-height: 48px;
+    margin-bottom: 8px;
+    padding: 0 14px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--muted);
+    text-align: left;
+    font-size: 14px;
+    transition: border-color .18s ease, color .18s ease, background .18s ease;
+  }
+
+  .docs-search-trigger:hover {
+    border-color: var(--accent-border);
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+
+  .docs-search-trigger svg,
+  .docs-search-input-wrap svg {
+    flex: 0 0 19px;
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .doc-section {
+    border-bottom: 1px solid var(--border);
+    padding: 8px 0 10px;
+  }
+
+  .doc-section-heading {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-height: 38px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .doc-section-heading::-webkit-details-marker {
+    display: none;
+  }
+
+  .doc-folder-icon {
+    flex: 0 0 19px;
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: var(--dim);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.45;
+    transition: stroke .18s ease;
+  }
+
+  .doc-section[open] .doc-folder-icon {
+    stroke: var(--accent);
+  }
+
+  .doc-section-chevron {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    margin-left: auto;
+    fill: none;
+    stroke: var(--dim);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+    transition: transform .18s ease;
+  }
+
+  .doc-section:not([open]) .doc-section-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .doc-section-pages {
+    display: grid;
+    gap: 3px;
+    padding: 4px 0 2px 28px;
+  }
+
+  .docs-sidebar .doc-link {
+    display: block;
+    padding: 8px 10px;
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.45;
+  }
+
+  .docs-sidebar .doc-link:hover {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .docs-sidebar .doc-link.sidebar-current {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .docs-grid .article-main {
+    width: 100%;
+    max-width: 860px;
+    justify-self: center;
+  }
+
+  .docs-grid .article-main h1 {
+    font-size: clamp(40px, 4vw, 58px);
+  }
+
+  .docs-grid .prose {
+    max-width: 78ch;
+    font-size: 16.5px;
+    line-height: 1.82;
+  }
+
+  .docs-grid .prose h2 {
+    margin-top: 2.35em;
+    font-size: 26px;
+  }
+
+  .docs-grid .prose h3 {
+    font-size: 20px;
+  }
+
+  .toc-sidebar {
+    max-height: calc(100dvh - var(--nav-h) - 40px);
+    overflow: auto;
+    font-size: 14px;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .toc-sidebar nav {
+    gap: 5px;
+  }
+
+  .docs-grid .toc-sidebar a {
+    padding: 7px 9px;
+    border-radius: 7px;
+    font-size: 13px;
+    transition: color .16s ease, background .16s ease;
+  }
+
+  .docs-grid .toc-sidebar a[aria-current="location"] {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 650;
+  }
+
+  .mobile-doc-nav,
+  .docs-mobile-toc {
+    display: none;
+  }
+
+  .docs-search-dialog {
+    width: min(680px, calc(100% - 32px));
+    max-height: min(76dvh, 700px);
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--fg);
+    box-shadow: var(--shadow);
+  }
+
+  .docs-search-dialog::backdrop {
+    background: rgba(6, 12, 24, .48);
+    backdrop-filter: blur(3px);
+  }
+
+  .docs-search-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 17px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .docs-search-heading h2 {
+    margin: 0;
+    font-size: 18px;
+    letter-spacing: -.02em;
+  }
+
+  .docs-search-close {
+    display: grid;
+    place-items: center;
+    width: 34px;
+    height: 34px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    background: transparent;
+    color: var(--muted);
+  }
+
+  .docs-search-close:hover {
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .docs-search-close svg {
+    width: 17px;
+    height: 17px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.8;
+  }
+
+  .docs-search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 18px 8px;
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--muted);
+  }
+
+  .docs-search-input-wrap:focus-within {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+  }
+
+  .docs-search-input-wrap input {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: var(--fg);
+    font-size: 17px;
+  }
+
+  .docs-search-input-wrap input::placeholder {
+    color: var(--dim);
+  }
+
+  .docs-search-results {
+    max-height: min(55dvh, 530px);
+    overflow: auto;
+    padding: 8px 12px 14px;
+  }
+
+  .docs-search-results-label {
+    margin: 0;
+    padding: 9px 10px;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 650;
+  }
+
+  .docs-search-results nav {
+    display: grid;
+    gap: 2px;
+  }
+
+  .docs-search-result {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 11px;
+    border-radius: 8px;
+    color: var(--fg);
+    text-decoration: none;
+  }
+
+  .docs-search-result:hover,
+  .docs-search-result:focus-visible {
+    background: var(--accent-soft);
+    color: var(--fg);
+  }
+
+  .docs-search-result[hidden] {
+    display: none;
+  }
+
+  .docs-search-result > svg {
+    flex: 0 0 19px;
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: var(--dim);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.55;
+  }
+
+  .docs-search-result span {
+    display: grid;
+    gap: 2px;
+  }
+
+  .docs-search-result .docs-search-type {
+    width: max-content;
+    margin-bottom: 1px;
+    padding: 2px 5px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    color: var(--accent);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .08em;
+  }
+
+  .docs-search-result strong {
+    font-size: 14px;
+    font-weight: 550;
+  }
+
+  .docs-search-result small {
+    color: var(--dim);
+    font-size: 11px;
+  }
+
+  .docs-search-empty {
+    margin: 0;
+    padding: 15px 10px 22px;
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  @media (max-width: 1180px) {
+    .container.docs-grid {
+      width: min(1600px, calc(100% - 48px));
+      grid-template-columns: 220px minmax(0, 1fr) 190px;
+      gap: 22px;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .container.docs-grid {
+      grid-template-columns: 220px minmax(0, 1fr);
+      gap: 24px;
+    }
+
+    .toc-sidebar {
+      display: none;
+    }
+
+    .docs-mobile-toc {
+      display: block;
+      margin: 8px 0 26px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+      color: var(--fg);
+    }
+
+    .docs-mobile-toc summary {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .docs-mobile-toc nav {
+      display: grid;
+      gap: 7px;
+      margin-top: 12px;
+    }
+
+    .docs-mobile-toc a {
+      color: var(--muted);
+      font-size: 13px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .container.docs-grid {
+      width: calc(100% - 32px);
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      padding-top: 24px;
+    }
+
+    .docs-sidebar {
+      display: none;
+    }
+
+    .mobile-doc-nav {
+      display: block;
+      margin: 0 0 18px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+      color: var(--fg);
+    }
+
+    .mobile-doc-nav > summary {
+      cursor: pointer;
+      padding: 12px 14px;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .mobile-doc-nav-actions {
+      padding: 0 12px 8px;
+    }
+
+    .mobile-doc-nav .docs-search-trigger {
+      margin: 0;
+    }
+
+    .mobile-doc-nav nav {
+      display: grid;
+      gap: 16px;
+      padding: 10px 14px 16px;
+    }
+
+    .mobile-doc-section {
+      display: grid;
+      gap: 6px;
+    }
+
+    .mobile-doc-section strong {
+      font-size: 12px;
+      color: var(--fg);
+    }
+
+    .mobile-doc-section a {
+      padding-left: 8px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .doc-folder-icon,
+    .doc-section-chevron,
+    .docs-search-trigger {
+      transition: none;
+    }
+  }
+</style>
