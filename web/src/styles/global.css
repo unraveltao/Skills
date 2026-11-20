@@ -38,3 +38,6 @@
 .blog-main .prose .code-block pre{margin:0;padding:0;overflow:auto;border:0;border-radius:0 0 11px 11px;background:transparent;color:var(--fg);line-height:1.6;tab-size:2}
 .blog-main .prose .code-block pre>code{display:block;padding:14px 16px;background:transparent;color:inherit;font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:.88em;white-space:pre}
 @media(max-width:680px){.blog-main .prose .code-block pre>code{padding:12px;font-size:12px}}
+
+.nav-actions .icon-button svg{display:block;flex:none;width:20px;height:20px;fill:currentColor}
+.nav-actions .desktop-github svg{width:21px;height:21px}
