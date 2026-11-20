@@ -23,27 +23,28 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
 
 <Base title={`${post.title} — Unravel Skills`}>
   <div class="blog-layout container">
-    <aside class="article-toc" aria-label="Article contents">
-      <details class="toc-panel" open>
-        <summary class="toc-summary">
-          <span class="toc-heading">
-            <span class="toc-kicker">READING GUIDE</span>
-            <span class="toc-title">In this article</span>
-          </span>
-          <span class="toc-toggle" aria-hidden="true">
-            <span class="toc-toggle-open">Hide</span>
-            <span class="toc-toggle-closed">Show</span>
-            <span class="toc-chevron">⌄</span>
-          </span>
+    <aside class="series-sidebar" aria-label="Skill Authoring series navigation">
+      <details class="series-group" open>
+        <summary class="series-summary">
+          <svg class="series-folder-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3.2 7.4a1.8 1.8 0 0 1 1.8-1.8h5l2 2h7a1.8 1.8 0 0 1 1.8 1.8v8.2a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8z"></path>
+            <path d="M7 11.6h7M7 14.6h9"></path>
+          </svg>
+          <span class="series-summary-title">Skill Authoring Series</span>
+          <span class="series-summary-count">{String(posts.length).padStart(2, '0')}</span>
+          <svg class="series-folder-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6"></path></svg>
         </summary>
-        <nav class="toc-links" aria-label="Article sections">
-          {tocItems.map((item) => (
+        <p class="series-sidebar-description">From first idea to a maintained Skill.</p>
+        <nav class="series-article-list" aria-label="Skill Authoring articles">
+          {posts.map((step) => (
             <a
-              class:list={['toc-link', item.level === 3 && 'toc-link-nested']}
-              href={`#${item.id}`}
+              class:list={['series-article-link', step.order < post.order && 'is-complete', step.order === post.order && 'is-current']}
+              href={base + '/blog/' + step.slug + '/'}
+              aria-current={step.order === post.order ? 'page' : undefined}
+              aria-label={'Part ' + step.order + ' of ' + posts.length + ': ' + step.title + (step.order < post.order ? ' (completed)' : step.order === post.order ? ' (current article)' : '')}
             >
-              <span class="toc-link-marker" aria-hidden="true"></span>
-              <span>{item.title}</span>
+              <span class="series-article-index" aria-hidden="true">{step.order < post.order ? '✓' : String(step.order).padStart(2, '0')}</span>
+              <span class="series-article-title">{step.title}</span>
             </a>
           ))}
         </nav>
@@ -55,6 +56,17 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       <span class="eyebrow small">FROM THE WORKBENCH · SKILL AUTHORING</span>
       <h1>{post.title}</h1>
       <p class="article-lead">{post.summary}</p>
+      <details class="mobile-article-toc">
+        <summary>In this article</summary>
+        <nav class="toc-links" aria-label="Article sections">
+          {tocItems.map((item) => (
+            <a class:list={['toc-link', item.level === 3 && 'toc-link-nested']} href={'#' + item.id}>
+              <span class="toc-link-marker" aria-hidden="true"></span>
+              <span>{item.title}</span>
+            </a>
+          ))}
+        </nav>
+      </details>
 
       <section class="series-progress" aria-label={`Part ${post.order} of ${posts.length} in the Skill authoring series`}>
         <div class="series-progress-heading">
@@ -100,6 +112,32 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
         ) : <span class="series-nav-spacer"></span>}
       </nav>
     </main>
+    <aside class="article-toc" aria-label="Article contents">
+      <details class="toc-panel" open>
+        <summary class="toc-summary">
+          <span class="toc-heading">
+            <span class="toc-kicker">READING GUIDE</span>
+            <span class="toc-title">In this article</span>
+          </span>
+          <span class="toc-toggle" aria-hidden="true">
+            <span class="toc-toggle-open">Hide</span>
+            <span class="toc-toggle-closed">Show</span>
+            <span class="toc-chevron">⌄</span>
+          </span>
+        </summary>
+        <nav class="toc-links" aria-label="Article sections">
+          {tocItems.map((item) => (
+            <a
+              class:list={['toc-link', item.level === 3 && 'toc-link-nested']}
+              href={`#${item.id}`}
+            >
+              <span class="toc-link-marker" aria-hidden="true"></span>
+              <span>{item.title}</span>
+            </a>
+          ))}
+        </nav>
+      </details>
+    </aside>
   </div>
 </Base>
 
@@ -816,4 +854,321 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       transition: none;
     }
   }
+
+  .blog-layout.container {
+    width: min(1600px, calc(100% - 72px));
+    grid-template-columns: minmax(220px, 250px) minmax(0, 1fr) minmax(190px, 230px);
+    grid-template-areas: "series main toc";
+    justify-content: space-between;
+    gap: clamp(24px, 3vw, 48px);
+  }
+
+  .series-sidebar {
+    grid-area: series;
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    align-self: start;
+    max-height: calc(100dvh - var(--nav-h) - 48px);
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .blog-main {
+    grid-area: main;
+    width: 100%;
+    max-width: 900px;
+    justify-self: center;
+  }
+
+  .article-toc {
+    grid-area: toc;
+    min-width: 0;
+  }
+
+  .series-summary {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 42px;
+    padding: 4px 2px;
+    cursor: pointer;
+    list-style: none;
+    color: var(--fg);
+  }
+
+  .series-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .series-folder-icon {
+    flex: 0 0 20px;
+    width: 20px;
+    height: 20px;
+    fill: none;
+    stroke: var(--dim);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+    transition: stroke .18s ease;
+  }
+
+  .series-group[open] .series-folder-icon {
+    stroke: var(--accent);
+  }
+
+  .series-summary-title {
+    flex: 1;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .series-summary-count {
+    color: var(--dim);
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .series-folder-chevron {
+    flex: 0 0 14px;
+    width: 14px;
+    height: 14px;
+    fill: none;
+    stroke: var(--dim);
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+    transition: transform .18s ease;
+  }
+
+  .series-group:not([open]) .series-folder-chevron {
+    transform: rotate(-90deg);
+  }
+
+  .series-sidebar-description {
+    margin: 0 0 10px 29px;
+    color: var(--dim);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .series-article-list {
+    display: grid;
+    gap: 3px;
+    padding-left: 8px;
+  }
+
+  .series-sidebar .series-article-link {
+    display: grid;
+    grid-template-columns: 24px minmax(0, 1fr);
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    padding: 6px 8px;
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .series-sidebar .series-article-link:hover {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+
+  .series-article-index {
+    display: grid;
+    place-items: center;
+    width: 23px;
+    height: 23px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    color: var(--dim);
+    font-size: 10px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .series-article-title {
+    min-width: 0;
+  }
+
+  .series-sidebar .series-article-link.is-complete .series-article-index {
+    border-color: var(--accent-border);
+    background: var(--accent-soft);
+    color: var(--accent);
+  }
+
+  .series-sidebar .series-article-link.is-current {
+    background: var(--accent-soft);
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .series-sidebar .series-article-link.is-current .series-article-index {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .blog-main h1 {
+    font-size: clamp(40px, 4.2vw, 58px);
+  }
+
+  .blog-main .article-lead {
+    font-size: 18px;
+  }
+
+  .blog-main .prose {
+    max-width: 78ch;
+    font-size: 17px;
+    line-height: 1.82;
+  }
+
+  .blog-main .prose h2 {
+    font-size: 27px;
+  }
+
+  .blog-main .prose h3 {
+    font-size: 20px;
+  }
+
+  .article-toc .toc-link {
+    font-size: 14px;
+    line-height: 1.5;
+    padding: 9px 10px;
+  }
+
+  .mobile-article-toc {
+    display: none;
+  }
+
+  .series-nav-item {
+    display: grid;
+    align-content: start;
+    gap: 6px;
+    padding: 8px 0;
+    border: 0;
+    border-radius: 0;
+    background: transparent;
+    color: var(--fg);
+    text-decoration: none;
+    transition: color .18s ease;
+  }
+
+  .series-nav-item:hover {
+    border-color: transparent;
+    background: transparent;
+    color: var(--accent);
+  }
+
+  .series-nav-item strong {
+    font-size: 15px;
+    font-weight: 650;
+  }
+
+  .series-nav-index {
+    font-size: 13px;
+  }
+
+  @media (max-width: 1180px) {
+    .blog-layout.container {
+      width: min(1600px, calc(100% - 48px));
+      grid-template-columns: 210px minmax(0, 1fr) 185px;
+      gap: 20px;
+    }
+  }
+
+  @media (max-width: 920px) {
+    .blog-layout.container {
+      grid-template-columns: 205px minmax(0, 1fr);
+      grid-template-areas: "series main";
+      gap: 22px;
+    }
+
+    .article-toc {
+      display: none;
+    }
+
+    .mobile-article-toc {
+      display: block;
+      margin: 20px 0 28px;
+      padding: 12px 14px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+      color: var(--fg);
+    }
+
+    .mobile-article-toc summary {
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 650;
+    }
+
+    .mobile-article-toc .toc-links {
+      max-height: 35vh;
+      overflow: auto;
+      margin-top: 8px;
+    }
+  }
+
+  @media (max-width: 700px) {
+    .blog-layout.container {
+      width: calc(100% - 32px);
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: "series" "main";
+      gap: 18px;
+      padding-top: 24px;
+      padding-bottom: 56px;
+    }
+
+    .series-sidebar {
+      position: static;
+      max-height: none;
+      overflow: visible;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 9px;
+      background: var(--surface);
+    }
+
+    .series-sidebar .series-article-link {
+      min-height: 38px;
+    }
+
+    .blog-main h1 {
+      font-size: clamp(34px, 9vw, 48px);
+    }
+
+    .blog-main .prose {
+      font-size: 16px;
+    }
+
+    .series-nav {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .series-nav-index {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      justify-self: center;
+      padding: 5px 0;
+    }
+
+    .series-nav-item.next {
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .series-folder-icon,
+    .series-folder-chevron {
+      transition: none;
+    }
+  }
+
 </style>
