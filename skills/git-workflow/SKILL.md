@@ -22,7 +22,7 @@ Use these examples to apply the authorization and risk rules consistently:
 - **“Check whether my working tree is clean.”** Inspect the repository and report its state. Do not stage, stash, or otherwise change files.
 - **“Stage and commit only `src/parser.ts` and `tests/parser.test.ts`.”** Inspect existing changes first. Stage only those paths, review the staged diff and run relevant checks, then commit because the request explicitly includes a commit. Verify the commit and report any remaining changes.
 - **“Sync my branch with the remote.”** Inspect the branch, remote, and divergence first. If repository policy does not make merge versus rebase clear, ask which one to use. Do not push unless the user also asks for it.
-- **“Get rid of my local changes” or an unauthorised force-push request.** Do not run `reset --hard`, `clean`, or a force push. Explain what would be affected, offer a safe inspection or recovery path, and wait for clear authorization naming the target and operation.
+- **“Get rid of my local changes” or “force-push this” without a clearly authorized target.** Do not run `reset --hard`, `clean`, or a force push. Explain what would be affected, offer a safe inspection or recovery path, and wait for clear authorization naming the target and operation.
 - **A Git command fails.** Record the command, exit status, and relevant error. Re-check repository status and operation markers before deciding whether a retry is safe; do not repeat a failed write blindly.
 
 ## Start with repository context
