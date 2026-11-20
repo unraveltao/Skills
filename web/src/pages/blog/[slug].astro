@@ -255,30 +255,43 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
   });
 
   const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc-link[href^="#"]')];
-  const headings = tocLinks
+  const headings = [...new Map(tocLinks
     .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
-    .filter((heading): heading is HTMLElement => heading instanceof HTMLElement);
+    .filter((heading): heading is HTMLElement => heading instanceof HTMLElement)
+    .map((heading) => [heading.id, heading])).values()];
 
-  if ('IntersectionObserver' in window && headings.length) {
-    const observer = new IntersectionObserver((entries) => {
-      const visible = entries
-        .filter((entry) => entry.isIntersecting)
-        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+  const setActiveHeading = () => {
+    if (!headings.length) return;
 
-      if (!visible) return;
-      const activeId = visible.target.id;
+    const atPageBottom = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+    const readingLine = window.innerHeight * 0.36;
+    const currentHeading = atPageBottom
+      ? headings[headings.length - 1]
+      : [...headings].reverse().find((heading) => heading.getBoundingClientRect().top <= readingLine) ?? headings[0];
 
-      tocLinks.forEach((link) => {
-        if (link.hash === `#${activeId}`) {
-          link.setAttribute('aria-current', 'location');
-        } else {
-          link.removeAttribute('aria-current');
-        }
-      });
-    }, { rootMargin: '-18% 0px -68% 0px', threshold: 0 });
+    tocLinks.forEach((link) => {
+      if (link.hash === `#${currentHeading.id}`) {
+        link.setAttribute('aria-current', 'location');
+      } else {
+        link.removeAttribute('aria-current');
+      }
+    });
+  };
 
-    headings.forEach((heading) => observer.observe(heading));
-  }
+  let tocUpdateScheduled = false;
+  const scheduleTocUpdate = () => {
+    if (tocUpdateScheduled) return;
+    tocUpdateScheduled = true;
+    window.requestAnimationFrame(() => {
+      tocUpdateScheduled = false;
+      setActiveHeading();
+    });
+  };
+
+  window.addEventListener('scroll', scheduleTocUpdate, { passive: true });
+  window.addEventListener('resize', scheduleTocUpdate);
+  window.addEventListener('hashchange', scheduleTocUpdate);
+  setActiveHeading();
 </script>
 
 <style>
