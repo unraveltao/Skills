@@ -1,0 +1,22 @@
+---
+import Base from '../../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<Base title="Curated Skills — Unravel Skills" description="External Agent Skills reviewed and recommended by Unravel Skills.">
+  <section class="catalog container curated-directory">
+    <div class="breadcrumb"><a href={`${base}/`}>Home</a> / <a href={`${base}/#explore`}>Skills</a> / Curated Skills</div>
+    <span class="eyebrow small">EXTERNAL PICKS</span>
+    <h1>Curated Skills<span class="accent-dot">.</span></h1>
+    <p class="directory-lead">Useful Agent Skills created outside Unravel, selected to help you discover work worth exploring.</p>
+    <div class="curated-note">
+      <span class="collection-option-icon" aria-hidden="true">↗</span>
+      <div><h2>Maintained by their original authors</h2><p>Each listing will identify its author, explain why we recommend it, and link directly to the original project. We’ll distinguish Skills we have tried from those assessed through their published materials.</p></div>
+    </div>
+    <div class="curated-empty">
+      <span class="eyebrow small">THE COLLECTION IS TAKING SHAPE</span>
+      <h2>No curated Skills yet.</h2>
+      <p>We’ll add external projects after reviewing their source, documentation, and maintenance status. Until then, browse the Skills made by Unravel.</p>
+      <a class="button secondary" href={`${base}/skills/`}>Browse Unravel Skills ↗</a>
+    </div>
+  </section>
+</Base>
