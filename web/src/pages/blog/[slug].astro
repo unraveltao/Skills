@@ -1,0 +1,37 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getBlogPost, posts } from '../../lib/blog';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post: getBlogPost(post.slug)! },
+  }));
+}
+
+const { post } = Astro.props;
+const previous = posts[post.order - 2];
+const next = posts[post.order];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+
+<Base title={`${post.title} — Unravel Skills`}>
+  <article class="blog-article container">
+    <div class="breadcrumb"><a href={`${base}/blog/`}>Blog</a> / Skill creation guide</div>
+    <span class="eyebrow small">SKILL AUTHORING · PART {post.order} OF {posts.length}</span>
+    <h1>{post.title}</h1>
+    <p class="article-lead">{post.summary}</p>
+    <div class="prose" set:html={post.html} />
+    <nav class="series-nav" aria-label="Skill creation guide navigation">
+      {previous && <a class="series-nav-item" href={`${base}/blog/${previous.slug}/`}>
+        <span class="eyebrow small">← PREVIOUS</span>
+        <strong>{previous.title}</strong>
+      </a>}
+      <a class="series-nav-index" href={`${base}/blog/`}>All articles</a>
+      {next && <a class="series-nav-item next" href={`${base}/blog/${next.slug}/`}>
+        <span class="eyebrow small">NEXT →</span>
+        <strong>{next.title}</strong>
+      </a>}
+    </nav>
+  </article>
+</Base>
