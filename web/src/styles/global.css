@@ -71,3 +71,18 @@
 .curated-empty p{max-width:650px;color:var(--muted)}
 .curated-empty .button{margin-top:8px}
 @media(max-width:680px){.hero{min-height:calc(100svh - var(--nav-h) + 100px)}.collection-hub{padding:52px 0 24px}.collection-options{grid-template-columns:1fr;gap:15px}.collection-option{min-height:235px;padding:23px}.collection-option h3{font-size:21px}.collection-option-footer{font-size:12px}.skill-directory,.curated-directory{padding-top:34px}.skill-directory .breadcrumb,.curated-directory .breadcrumb{margin-bottom:25px}.directory-lead{font-size:16px}.curated-note{gap:13px;padding:17px}.curated-empty{margin-top:36px;padding:23px}}
+
+/* Curated directory cards distinguish project ownership and test status. */
+.curated-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;margin-top:24px}
+.curated-card{display:flex;flex-direction:column;align-items:flex-start;min-height:270px;padding:22px;border:1px solid var(--border);border-radius:14px;background:var(--surface);color:var(--fg);transition:border-color .18s,transform .18s,box-shadow .18s}
+.curated-card:hover{border-color:var(--accent-border);box-shadow:var(--shadow);transform:translateY(-2px)}
+.curated-type{display:inline-flex;align-items:center;min-height:27px;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);font-size:11px;font-weight:650}
+.curated-card h2{margin:13px 0 8px;font-size:20px;line-height:1.25;letter-spacing:-.025em}
+.curated-card-description{margin:0 0 14px;color:var(--muted);font-size:14px;line-height:1.65}
+.curated-caution{margin:0 0 12px;padding:8px 10px;border-radius:8px;background:var(--surface-2);color:var(--muted);font-size:11px;line-height:1.5}
+.curated-card-bottom{display:flex;flex-direction:column;gap:11px;width:100%;margin-top:auto;padding-top:14px;border-top:1px solid var(--border)}
+.curated-review{color:var(--dim);font-size:11px;line-height:1.45}
+.curated-link{color:var(--accent);font-size:13px;font-weight:650}
+.curated-link:hover{color:var(--fg)}
+@media(max-width:1080px){.curated-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:680px){.curated-grid{grid-template-columns:1fr;gap:14px}.curated-card{min-height:235px;padding:20px}.curated-card h2{font-size:19px}}
