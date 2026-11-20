@@ -104,6 +104,44 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
 </Base>
 
 <script>
+  document.querySelectorAll<HTMLElement>('.prose pre').forEach((pre) => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+
+    const language = [...code.classList]
+      .find((className) => className.startsWith('language-'))
+      ?.replace('language-', '')
+      .toUpperCase() ?? 'CODE';
+
+    const toolbar = document.createElement('div');
+    toolbar.className = 'code-toolbar';
+
+    const label = document.createElement('span');
+    label.textContent = language;
+    label.className = 'code-language';
+
+    const copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'code-copy';
+    copy.textContent = 'Copy';
+    copy.setAttribute('aria-label', 'Copy code sample');
+
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        copy.textContent = 'Copied';
+      } catch {
+        copy.textContent = 'Copy manually';
+      }
+      window.setTimeout(() => {
+        copy.textContent = 'Copy';
+      }, 1600);
+    });
+
+    toolbar.append(label, copy);
+    pre.prepend(toolbar);
+  });
+
   const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc-link[href^="#"]')];
   const headings = tocLinks
     .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
@@ -353,23 +391,19 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     list-style: none;
   }
 
-  .series-steps::before,
-  .series-steps::after {
+  .series-step:not(:last-child)::after {
     position: absolute;
+    z-index: 0;
     top: 14px;
-    left: 22px;
+    left: 50%;
+    width: 100%;
     height: 2px;
+    background: var(--border);
     content: '';
     pointer-events: none;
   }
 
-  .series-steps::before {
-    right: 22px;
-    background: var(--border);
-  }
-
-  .series-steps::after {
-    width: calc((100% - 44px) * var(--series-progress) / 100);
+  .series-step.is-complete::after {
     background: var(--accent);
     box-shadow: 0 0 10px var(--accent-border);
   }
@@ -382,6 +416,8 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
   }
 
   .series-step-link {
+    position: relative;
+    z-index: 1;
     display: inline-grid;
     justify-items: center;
     gap: 6px;
@@ -491,7 +527,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
   .prose pre {
     position: relative;
     margin: 1.6em 0;
-    padding: 20px;
+    padding: 0;
     overflow: auto;
     border: 1px solid var(--border);
     border-radius: 10px;
@@ -499,6 +535,39 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     color: var(--fg);
     line-height: 1.65;
     tab-size: 2;
+  }
+
+  .code-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    color: var(--muted);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+
+  .code-copy {
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--muted);
+    font: inherit;
+    letter-spacing: normal;
+  }
+
+  .code-copy:hover {
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  .prose pre > code {
+    display: block;
+    padding: 16px;
   }
 
   .prose pre code {
@@ -680,20 +749,6 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       padding: 0 2px;
     }
 
-    .series-steps::before,
-    .series-steps::after {
-      left: 18px;
-      top: 13px;
-    }
-
-    .series-steps::before {
-      right: 18px;
-    }
-
-    .series-steps::after {
-      width: calc((100% - 36px) * var(--series-progress) / 100);
-    }
-
     .series-node {
       width: 26px;
       height: 26px;
@@ -718,8 +773,11 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     }
 
     .prose pre {
-      padding: 15px;
       font-size: 12px;
+    }
+
+    .prose pre > code {
+      padding: 13px;
     }
 
     .series-nav {
