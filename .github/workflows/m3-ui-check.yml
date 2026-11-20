@@ -63,6 +63,7 @@ jobs:
             github-project-coach \
             idea-advisor \
             learning-coach \
+            milestones \
             unravel
           do
             test -f "dist/skills/$skill/index.html"
