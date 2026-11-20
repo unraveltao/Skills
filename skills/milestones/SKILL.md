@@ -171,4 +171,5 @@ Read only the references needed for the current task:
 - [Management Policy](references/management-policy.md) — scope control, P0–P3, resources, dependencies, parallel work, and WIP.
 - [Review and Recovery](references/review-and-recovery.md) — review cadence, Project Health, verification, recovery, and replanning.
 - [Roadmap Templates](templates/) — single-document and long-project structures.
+- [Professional Templates](references/professional-templates.md) — adapt outcome and acceptance guidance to Software, Learning, Research, and Content projects.
 - [Scenario Tests](tests/README.md) — manual validation protocol and scenarios.
