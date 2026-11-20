@@ -47,10 +47,14 @@ Not every preference needs to block progress. Decide which missing details requi
 
 A behavior specification becomes easier to review when its decisions are visible at a glance.
 
-<figure>
-  <img src="/@blog-assets/series-01/s1-02-behavior-spec.svg" alt="Behavior specification map connecting activation, inputs, workflow, branches, expected output, and boundaries.">
-  <figcaption>Figure 1. A behavior specification connects what should trigger a Skill, what it needs, what it does, and how a good result is bounded.</figcaption>
-</figure>
+```text
+Activation  — When should the Skill start?
+Inputs      — What information does it need?
+Workflow    — What actions should it take?
+Branches    — What changes when conditions differ?
+Output      — What does a good result look like?
+Boundaries  — What should the Skill avoid?
+```
 
 
 
