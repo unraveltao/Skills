@@ -139,7 +139,10 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     });
 
     toolbar.append(label, copy);
-    pre.prepend(toolbar);
+    const frame = document.createElement('div');
+    frame.className = 'code-block';
+    pre.before(frame);
+    frame.append(toolbar, pre);
   });
 
   const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc-link[href^="#"]')];
@@ -524,14 +527,22 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     text-underline-offset: 3px;
   }
 
-  .prose pre {
-    position: relative;
+  .code-block {
     margin: 1.6em 0;
-    padding: 0;
-    overflow: auto;
+    overflow: hidden;
     border: 1px solid var(--border);
     border-radius: 10px;
     background: var(--surface-2);
+  }
+
+  .prose pre {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    border: 0;
+    border-radius: 0 0 9px 9px;
+    background: transparent;
     color: var(--fg);
     line-height: 1.65;
     tab-size: 2;
@@ -544,6 +555,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     gap: 12px;
     padding: 8px 14px;
     border-bottom: 1px solid var(--border);
+    background: var(--surface);
     color: var(--muted);
     font-family: ui-sans-serif, system-ui, sans-serif;
     font-size: 10px;
