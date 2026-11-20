@@ -62,10 +62,7 @@ Not every unusual event needs its own elaborate route. Add a branch when differe
 
 A useful test is: **if the condition changes but the next action stays the same, it may not need to be a separate branch.** Keep the workflow focused on decisions that change the route.
 
-<figure>
-  <img src="/@blog-assets/series-02/s2-02-workflow-branches.svg" alt="Issue-to-PR workflow showing the main route and branches for clarification, an already-fixed issue, uncertain root cause, failed verification, and user handoff.">
-  <figcaption>Figure 1. A workflow makes the normal route and its decision branches visible.</figcaption>
-</figure>
+
 
 ## Design stop and handoff routes
 
