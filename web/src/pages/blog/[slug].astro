@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { getBlogPost, posts } from '../../lib/blog';
+import { sections, readDoc } from '../../lib/docs';
 
 export function getStaticPaths() {
   return posts.map((post) => ({
@@ -13,6 +14,8 @@ const { post } = Astro.props;
 const previous = posts[post.order - 2];
 const next = posts[post.order];
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const docsHref = (entry: { slug: string }) => entry.slug === 'introduction' ? base + '/docs/' : base + '/docs/' + entry.slug + '/';
+const blogSearchEntries = posts.map((entry) => ({ ...entry, text: (getBlogPost(entry.slug)?.html ?? '').replace(/<[^>]+>/g, ' ') }));
 const tocItems = [...post.html.matchAll(/<h([2-3]) id="([^"]+)">([\s\S]*?)<\/h\1>/g)].map((match) => ({
   level: Number(match[1]),
   id: match[2],
@@ -24,6 +27,10 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
 <Base title={`${post.title} — Unravel Skills`}>
   <div class="blog-layout container">
     <aside class="series-sidebar" aria-label="Skill Authoring series navigation">
+      <button class="docs-search-trigger blog-search-trigger" type="button" data-open-doc-search aria-haspopup="dialog" aria-controls="blog-search-dialog">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+        <span>Search Docs</span>
+      </button>
       <details class="series-group" open>
         <summary class="series-summary">
           <svg class="series-folder-icon" viewBox="0 0 24 24" aria-hidden="true">
@@ -139,7 +146,72 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       </details>
     </aside>
   </div>
+  <dialog id="blog-search-dialog" class="docs-search-dialog" aria-labelledby="blog-search-title">
+    <div class="docs-search-heading">
+      <h2 id="blog-search-title">Search Docs and Blog</h2>
+      <button class="docs-search-close" type="button" data-close-doc-search aria-label="Close search">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+      </button>
+    </div>
+    <label class="docs-search-input-wrap">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
+      <input id="blog-search-input" type="search" placeholder="What are you searching for?" autocomplete="off" />
+    </label>
+    <div class="docs-search-results">
+      <p class="docs-search-results-label" id="blog-search-results-label">Suggestions</p>
+      <nav aria-label="Docs and Blog search results" id="blog-search-results">
+        {sections.flatMap((section) => section.pages.map((entry) => (
+          <a class="docs-search-result" data-blog-search-result data-search={section.title + ' ' + entry.title + ' ' + readDoc(entry)} href={docsHref(entry)}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8h8l4 4v12.4H6z"></path><path d="M14 3.8v4h4M9 12h6M9 15.5h6"></path></svg>
+            <span><small class="docs-search-type">DOCS</small><strong>{entry.title}</strong><small>{section.title}</small></span>
+          </a>
+        )))}
+        {blogSearchEntries.map((entry) => (
+          <a class="docs-search-result" data-blog-search-result data-search={entry.title + ' ' + entry.summary + ' ' + entry.text} href={base + '/blog/' + entry.slug + '/'}>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8h8l4 4v12.4H6z"></path><path d="M14 3.8v4h4M9 12h6M9 15.5h6"></path></svg>
+            <span><small class="docs-search-type">BLOG</small><strong>{entry.title}</strong><small>Skill Authoring Series · Part {entry.order}</small></span>
+          </a>
+        ))}
+      </nav>
+      <p class="docs-search-empty" id="blog-search-empty" hidden>No matching docs or articles. Try another search.</p>
+    </div>
+  </dialog>
 </Base>
+
+<script>
+  const blogSearchDialog = document.querySelector<HTMLDialogElement>('#blog-search-dialog');
+  const blogSearchInput = document.querySelector<HTMLInputElement>('#blog-search-input');
+  const blogSearchItems = [...document.querySelectorAll<HTMLAnchorElement>('[data-blog-search-result]')];
+  const blogSearchLabel = document.querySelector<HTMLElement>('#blog-search-results-label');
+  const blogSearchEmpty = document.querySelector<HTMLElement>('#blog-search-empty');
+
+  const filterBlogSearch = () => {
+    const query = blogSearchInput?.value.trim().toLocaleLowerCase() ?? '';
+    let visibleCount = 0;
+    blogSearchItems.forEach((item) => {
+      const matches = !query || (item.dataset.search ?? item.textContent ?? '').toLocaleLowerCase().includes(query);
+      item.hidden = !matches;
+      if (matches) visibleCount += 1;
+    });
+    if (blogSearchLabel) blogSearchLabel.textContent = query ? 'Results' : 'Suggestions';
+    if (blogSearchEmpty) blogSearchEmpty.hidden = visibleCount > 0;
+  };
+
+  const openBlogSearch = () => {
+    if (!blogSearchDialog || !blogSearchInput) return;
+    blogSearchInput.value = '';
+    filterBlogSearch();
+    blogSearchDialog.showModal();
+    blogSearchInput.focus();
+  };
+
+  document.querySelectorAll<HTMLButtonElement>('[data-open-doc-search]').forEach((button) => button.addEventListener('click', openBlogSearch));
+  document.querySelector<HTMLButtonElement>('[data-close-doc-search]')?.addEventListener('click', () => blogSearchDialog?.close());
+  blogSearchInput?.addEventListener('input', filterBlogSearch);
+  blogSearchDialog?.addEventListener('click', (event) => {
+    if (event.target === blogSearchDialog) blogSearchDialog.close();
+  });
+</script>
 
 <script>
   document.querySelectorAll<HTMLElement>('.prose pre').forEach((pre) => {
@@ -744,12 +816,115 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
 
   .series-nav-index {
     align-self: center;
+    justify-self: center;
+    margin: 10px 6px;
+    padding: 9px 14px;
+    border: 1px solid var(--accent-border);
+    border-radius: 9px;
+    background: var(--accent-soft);
     color: var(--accent);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
     text-decoration: none;
     white-space: nowrap;
+    transition: background .18s ease, border-color .18s ease;
   }
+
+  .series-nav-index:hover {
+    border-color: var(--accent);
+    background: var(--surface);
+  }
+
+  .blog-search-trigger {
+    display: flex;
+    align-items: center;
+    gap: 11px;
+    width: 100%;
+    min-height: 44px;
+    margin: 0 0 18px;
+    padding: 0 12px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: var(--surface);
+    color: var(--muted);
+    text-align: left;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .blog-search-trigger:hover {
+    border-color: var(--accent-border);
+    color: var(--fg);
+    background: var(--surface-2);
+  }
+
+  .blog-search-trigger svg,
+  .docs-search-input-wrap svg {
+    flex: 0 0 19px;
+    width: 19px;
+    height: 19px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .docs-search-dialog {
+    width: min(680px, calc(100% - 32px));
+    max-height: min(76dvh, 700px);
+    padding: 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    background: var(--surface);
+    color: var(--fg);
+    box-shadow: var(--shadow);
+  }
+
+  .docs-search-dialog::backdrop {
+    background: rgba(6, 12, 24, .48);
+    backdrop-filter: blur(3px);
+  }
+
+  .docs-search-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 17px 20px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .docs-search-heading h2 { margin: 0; font-size: 18px; }
+  .docs-search-close { display: grid; place-items: center; width: 34px; height: 34px; border: 1px solid var(--border); border-radius: 7px; background: transparent; color: var(--muted); cursor: pointer; }
+  .docs-search-close svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-linecap: round; stroke-width: 1.8; }
+
+  .docs-search-input-wrap {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 16px 18px 8px;
+    padding: 12px 13px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    color: var(--muted);
+  }
+
+  .docs-search-input-wrap:focus-within { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  .docs-search-input-wrap input { width: 100%; min-width: 0; border: 0; outline: 0; background: transparent; color: var(--fg); font-size: 17px; }
+  .docs-search-results { max-height: min(55dvh, 530px); overflow: auto; padding: 8px 12px 14px; }
+  .docs-search-results-label { margin: 0; padding: 9px 10px; color: var(--muted); font-size: 12px; font-weight: 650; }
+  .docs-search-results nav { display: grid; gap: 2px; }
+  .docs-search-result { display: flex; align-items: center; gap: 12px; padding: 10px 11px; border-radius: 8px; color: var(--fg); text-decoration: none; }
+  .docs-search-result:hover, .docs-search-result:focus-visible { background: var(--accent-soft); color: var(--fg); }
+  .docs-search-result[hidden] { display: none; }
+  .docs-search-result > svg { flex: 0 0 19px; width: 19px; height: 19px; fill: none; stroke: var(--dim); stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.55; }
+  .docs-search-result span { display: grid; gap: 2px; }
+  .docs-search-type { width: max-content; margin-bottom: 1px; padding: 2px 5px; border: 1px solid var(--border); border-radius: 4px; color: var(--accent); font-size: 9px; font-weight: 750; letter-spacing: .08em; }
+  .docs-search-result strong { font-size: 14px; font-weight: 550; }
+  .docs-search-result small:not(.docs-search-type) { color: var(--dim); font-size: 11px; }
+  .docs-search-empty { margin: 0; padding: 15px 10px 22px; color: var(--muted); font-size: 14px; }
 
   @media (max-width: 1020px) {
     .blog-layout {
@@ -838,7 +1013,8 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
       grid-column: 1 / -1;
       grid-row: 1;
       justify-self: center;
-      padding: 5px 0;
+      margin: 8px 0 14px;
+      padding: 8px 13px;
     }
 
     .series-nav-item.next {
