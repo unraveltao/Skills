@@ -35,6 +35,7 @@ The AI leads analysis, planning, review, and recommendations. The user retains f
 - `references/roadmap-model.md` — data model, states, evidence, and Roadmap organization.
 - `references/management-policy.md` — scope, priority, resources, dependencies, and parallelism.
 - `references/review-and-recovery.md` — reviews, Project Health, verification, and recovery.
+- `references/professional-templates.md` — domain-specific outcome and acceptance guidance.
 - `templates/` — reusable Roadmap templates.
 - `tests/README.md` and `tests/SCENARIOS.md` — manual behavior test plan.
 
