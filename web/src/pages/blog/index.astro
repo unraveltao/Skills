@@ -42,7 +42,9 @@ const articles = blogSeries.flatMap((series) =>
 
 <style>
   .blog-page {
+    width: min(1320px, calc(100% - 48px));
     max-width: 1320px;
+    margin-inline: auto;
     padding-top: 76px;
     padding-bottom: 76px;
   }
@@ -79,7 +81,7 @@ const articles = blogSeries.flatMap((series) =>
 
   .blog-welcome {
     max-width: 820px;
-    margin-top: 72px;
+    margin: 72px auto 0;
     padding-top: 32px;
     border-top: 1px solid var(--border);
   }
@@ -133,6 +135,7 @@ const articles = blogSeries.flatMap((series) =>
 
   @media (max-width: 760px) {
     .blog-page {
+      width: calc(100% - 32px);
       padding-top: 48px;
     }
 
