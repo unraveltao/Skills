@@ -349,6 +349,16 @@ All cases below begin with status **Not Run**. Run them in a fresh Agent session
 - records the reason, impact, AI recommendation, and user decision;
 - does not overwrite history silently.
 
+### T28 — Adapt professional templates
+
+**Prompt:** "Help me plan a six-month Python learning project and a research project comparing two database approaches. How should their Milestones differ?"
+
+**Expected:**
+- for learning, defines demonstrated capability and practical application rather than lessons or hours completed;
+- for research, defines a clear question, evidence quality, method, counter-evidence, and limitations;
+- reuses the shared Roadmap and Milestone model;
+- adds only domain-specific criteria that improve verification.
+
 ## Stress tests
 
 ### ST01 — User repeatedly changes direction
