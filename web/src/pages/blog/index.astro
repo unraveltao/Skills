@@ -27,3 +27,15 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     </div>
   </section>
 </Base>
+
+<style>
+  .blog-series-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 35px;
+  }
+
+  .blog-series-list :global(.blog-card) {
+    margin: 0;
+  }
+</style>
