@@ -1,27 +1,44 @@
-# Learning Coach V0.1
+# Learning Coach
 
-An Agent Skill for learning across many fields: plan courses when useful, teach interactively, assign practice, review results, address gaps, and reassess. It can organize different kinds of learning notes when the user asks. Its guidance is written in Markdown and requires no external service or runtime program.
+Learning Coach is an instruction-based Agent Skill for learning across technical and other subjects. It can help plan a course, teach concepts interactively, guide practice, assess understanding, organize notes when requested, and resume from a learner-provided progress record.
 
-## Install and use
+## When to use it
 
-Copy the entire `learning-coach` directory into Codex's user Skills directory. PowerShell example (run from the repository root):
+Use this Skill to plan or continue a learning path, understand a concept, practice through an exercise or learner-owned project, check understanding, create a knowledge note, or save and resume progress using a record you control. A single request may use only one activity; a longer journey can combine several.
 
-```powershell
-Copy-Item -Recurse -LiteralPath .\skills\learning-coach -Destination "$env:USERPROFILE\.codex\skills\learning-coach"
-```
+## How the learning workflow works
 
-If the destination already exists, inspect and resolve conflicts first to avoid overwriting it. Start a new Codex session after installation so it can discover the Skill again. Enter `$learning-coach` and describe a task, or describe a learning need directly and let Codex choose it. Actual discoverability depends on the target client's configuration and must be checked after installation. Other clients that support the open Agent Skills format should place the full directory in the location they specify; follow their documentation for discovery.
+For a course, the Skill can agree on a revisable outline, teach concepts, offer practice, and assess evidence. When a gap appears, it can focus on that concept rather than restarting the course. Practice should have observable criteria, and assessments should use evidence from your answers or inspected work.
 
-Examples: `$learning-coach Teach me instance attributes and class attributes`; `$learning-coach Create a Git learning path`; `$learning-coach Test my understanding of attribute lookup`.
+You control the pace, topic, and amount of interaction. A learning project is an exercise; the Skill does not take over delivery of a real product or project.
 
-## Progress and privacy
+## Notes, progress, and privacy
 
-Progress is saved in a private Markdown file chosen by the user, outside the Skill installation directory. To resume, provide its path or contents; if no record is available, provide the record or a brief recap. There is no database, cloud synchronization, or automatic long-term memory. The user chooses where to store notes.
+- The Skill saves a formal note only when you ask or agree.
+- A progress record is a private, user-controlled Markdown file outside the Skill installation directory and any public repository.
+- To resume, provide the record or a brief recap; automatic cross-session memory is not assumed.
+- The Skill does not provide a database or cloud sync for personal learning records.
+- States such as Verified, Unverified, and Needs reinforcement should be tied to evidence. Missing evidence is not proof of inability.
 
-## Development and verification
+## Implementation boundary
 
-The entry point is `SKILL.md`; mode details are in `references/`. When editing, keep relative links and independent distribution intact, and do not commit personal learning data. Practice records and Verified / Unverified / Needs reinforcement statuses must be tied to actual evidence. Codex skill-creator's `quick_validate.py` can check structure; it cannot prove teaching behavior.
+The Skill consists of Markdown instructions and references; no external service or runtime program is declared. Available Agent tools affect whether research, hands-on exercises, and code verification can be performed. Unrun work should be reported as unverified.
 
-Manual checks in a new session: request a Python object-oriented course plan; learn instance and class attributes and check that the Skill waits after asking a question; organize learned material into a separate note; assess attribute lookup with a new question and identify gaps based on the answer; try resuming with both an existing progress file and a missing record. Use a non-Python topic to check range, and verify that a request for one task does not force the full workflow. Record actual results; do not treat structural checks as multi-turn behavior validation.
+## Supporting files
 
-MIT licensed; see [LICENSE](LICENSE).
+- [Skill instructions](SKILL.md)
+- [Curriculum planning](references/curriculum.md)
+- [Teaching](references/teaching.md)
+- [Practice](references/practice.md)
+- [Assessment](references/assessment.md)
+- [Notes](references/notes.md)
+- [Learning workflow and progress](references/learning-workflow.md)
+- [Teaching-method improvements](references/evolution.md)
+
+## Validation status
+
+These are suggested manual scenarios, not recorded test results. They were not run for this README update: request a course outline; learn a concept and check for a useful understanding check; organize material into a note; assess with a fresh task; resume with and without a progress record; and try a non-technical topic and a one-off request.
+
+Record the client, date, scenario, and evidence for any real-client validation. Do not treat this list as proof that the Skill passed those checks.
+
+See the repository [Installation guide](../../docs/getting-started/installation.md); paths and discovery vary by client. MIT licensed; see the package [LICENSE](LICENSE).
