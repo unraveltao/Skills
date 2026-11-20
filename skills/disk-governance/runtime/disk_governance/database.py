@@ -159,7 +159,7 @@ class Store:
         if not read_only:
             paths.prepare()
         if read_only:
-            uri = "file:" + path.as_posix() + "?mode=ro"
+            uri = path.as_uri() + "?mode=ro"
             conn = sqlite3.connect(uri, uri=True, timeout=5.0)
         else:
             conn = sqlite3.connect(path, timeout=5.0, isolation_level=None)
