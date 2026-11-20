@@ -6,27 +6,33 @@ import { sections, readDoc } from '../../lib/docs';
 export function getStaticPaths() {
   return posts.map((post) => ({
     params: { slug: post.slug },
-    props: { post: getBlogPost(post.slug)! },
+    props: { slug: post.slug },
   }));
 }
 
-const { post } = Astro.props;
-const previous = posts[post.order - 2];
-const next = posts[post.order];
+const { slug } = Astro.props as { slug: string };
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const post = getBlogPost(slug, base)!;
+const seriesPosts = posts.filter((entry) => entry.seriesId === post.seriesId).sort((a, b) => a.order - b.order);
+const previous = seriesPosts.find((entry) => entry.order === post.order - 1);
+const next = seriesPosts.find((entry) => entry.order === post.order + 1);
 const docsHref = (entry: { slug: string }) => entry.slug === 'introduction' ? base + '/docs/' : base + '/docs/' + entry.slug + '/';
-const blogSearchEntries = posts.map((entry) => ({ ...entry, text: (getBlogPost(entry.slug)?.html ?? '').replace(/<[^>]+>/g, ' ') }));
+const blogSearchEntries = posts.map((entry) => ({
+  ...entry,
+  seriesCount: posts.filter((candidate) => candidate.seriesId === entry.seriesId).length,
+  text: (getBlogPost(entry.slug, base)?.html ?? '').replace(/<[^>]+>/g, ' '),
+}));
 const tocItems = [...post.html.matchAll(/<h([2-3]) id="([^"]+)">([\s\S]*?)<\/h\1>/g)].map((match) => ({
   level: Number(match[1]),
   id: match[2],
   title: match[3].replace(/<[^>]+>/g, '').trim(),
 }));
-const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length - 1)) * 100 : 0;
+const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPosts.length - 1)) * 100 : 0;
 ---
 
 <Base title={`${post.title} — Unravel Skills`}>
   <div class="blog-layout container">
-    <aside class="series-sidebar" aria-label="Skill Authoring series navigation">
+    <aside class="series-sidebar" aria-label={post.seriesTitle + ' navigation'}>
       <button class="docs-search-trigger blog-search-trigger" type="button" data-open-doc-search aria-haspopup="dialog" aria-controls="blog-search-dialog">
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
         <span>Search Docs</span>
@@ -37,18 +43,18 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
             <path d="M3.2 7.4a1.8 1.8 0 0 1 1.8-1.8h5l2 2h7a1.8 1.8 0 0 1 1.8 1.8v8.2a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8z"></path>
             <path d="M7 11.6h7M7 14.6h9"></path>
           </svg>
-          <span class="series-summary-title">Skill Authoring Series</span>
-          <span class="series-summary-count">{String(posts.length).padStart(2, '0')}</span>
+          <span class="series-summary-title">{post.seriesTitle}</span>
+          <span class="series-summary-count">{String(seriesPosts.length).padStart(2, '0')}</span>
           <svg class="series-folder-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6"></path></svg>
         </summary>
-        <p class="series-sidebar-description">From first idea to a maintained Skill.</p>
-        <nav class="series-article-list" aria-label="Skill Authoring articles">
-          {posts.map((step) => (
+        <p class="series-sidebar-description">{post.seriesDescription}</p>
+        <nav class="series-article-list" aria-label={post.seriesTitle + ' articles'}>
+          {seriesPosts.map((step) => (
             <a
               class:list={['series-article-link', step.order < post.order && 'is-complete', step.order === post.order && 'is-current']}
               href={base + '/blog/' + step.slug + '/'}
               aria-current={step.order === post.order ? 'page' : undefined}
-              aria-label={'Part ' + step.order + ' of ' + posts.length + ': ' + step.title + (step.order < post.order ? ' (completed)' : step.order === post.order ? ' (current article)' : '')}
+              aria-label={'Part ' + step.order + ' of ' + seriesPosts.length + ': ' + step.title + (step.order < post.order ? ' (completed)' : step.order === post.order ? ' (current article)' : '')}
             >
               <span class="series-article-index" aria-hidden="true">{step.order < post.order ? '✓' : String(step.order).padStart(2, '0')}</span>
               <span class="series-article-title">{step.title}</span>
@@ -59,8 +65,8 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
     </aside>
 
     <main class="blog-main">
-      <div class="breadcrumb"><a href={`${base}/blog/`}>Blog</a><span aria-hidden="true">/</span><span>Skill authoring series</span></div>
-      <span class="eyebrow small">FROM THE WORKBENCH · SKILL AUTHORING</span>
+      <div class="breadcrumb"><a href={`${base}/blog/`}>Blog</a><span aria-hidden="true">/</span><span>{post.seriesTitle}</span></div>
+      <span class="eyebrow small">FROM THE WORKBENCH · {post.seriesTitle}</span>
       <h1>{post.title}</h1>
       <p class="article-lead">{post.summary}</p>
       <details class="mobile-article-toc">
@@ -75,22 +81,22 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
         </nav>
       </details>
 
-      <section class="series-progress" aria-label={`Part ${post.order} of ${posts.length} in the Skill authoring series`}>
+      <section class="series-progress" aria-label={`Part ${post.order} of ${seriesPosts.length} in the ${post.seriesTitle}`}>
         <div class="series-progress-heading">
           <div>
-            <span class="eyebrow small">THE SKILL AUTHORING SERIES</span>
-            <p>Follow the process from first idea to a maintained Skill.</p>
+            <span class="eyebrow small">{post.seriesTitle.toUpperCase()}</span>
+            <p>{post.seriesDescription}</p>
           </div>
-          <span class="series-count"><strong>{String(post.order).padStart(2, '0')}</strong><span>/ {String(posts.length).padStart(2, '0')}</span></span>
+          <span class="series-count"><strong>{String(post.order).padStart(2, '0')}</strong><span>/ {String(seriesPosts.length).padStart(2, '0')}</span></span>
         </div>
-        <ol class="series-steps" style={`--series-progress: ${completedProgress}%`}>
-          {posts.map((step) => (
+        <ol class="series-steps" style={`--series-progress: ${completedProgress}%; --series-count: ${seriesPosts.length}`}>
+          {seriesPosts.map((step) => (
             <li class:list={['series-step', step.order < post.order && 'is-complete', step.order === post.order && 'is-current']}>
               <a
                 class="series-step-link"
                 href={`${base}/blog/${step.slug}/`}
                 aria-current={step.order === post.order ? 'step' : undefined}
-                aria-label={`Part ${step.order} of ${posts.length}: ${step.title}${step.order === post.order ? ' (current article)' : ''}`}
+                aria-label={`Part ${step.order} of ${seriesPosts.length}: ${step.title}${step.order === post.order ? ' (current article)' : ''}`}
                 title={step.title}
               >
                 <span class="series-node" aria-hidden="true">{step.order < post.order ? '✓' : String(step.order).padStart(2, '0')}</span>
@@ -103,7 +109,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
 
       <article class="prose" set:html={post.html} />
 
-      <nav class="series-nav" aria-label="Skill authoring guide navigation">
+      <nav class="series-nav" aria-label={post.seriesTitle + ' article navigation'}>
         {previous ? (
           <a class="series-nav-item previous" href={`${base}/blog/${previous.slug}/`}>
             <span class="eyebrow small">← PREVIOUS ARTICLE</span>
@@ -510,7 +516,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
   .series-steps {
     position: relative;
     display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
+    grid-template-columns: repeat(var(--series-count, 6), minmax(0, 1fr));
     margin: 16px 0 0;
     padding: 0 8px;
     list-style: none;
