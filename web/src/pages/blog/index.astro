@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { posts } from '../../lib/blog';
+import { blogSeries } from '../../lib/blog';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base title="Blog — Unravel Skills">
@@ -9,33 +9,93 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <h1>Blog<span class="accent-dot">.</span></h1>
     <p class="article-lead">Notes, experiments and updates from Unravel Skills.</p>
 
-    <div class="blog-series-list">
-      {posts.map((post) => (
-        <a class="blog-card" href={`${base}/blog/${post.slug}/`}>
-          <span class="eyebrow small">SKILL AUTHORING · PART {post.order} OF {posts.length}</span>
-          <h2>{post.title}</h2>
-          <p>{post.summary}</p>
-          <span class="read-more">Read article →</span>
-        </a>
-      ))}
+    {blogSeries.map((series) => (
+      <section class="blog-series-section" aria-labelledby={'series-' + series.id}>
+        <header class="blog-series-heading">
+          <span class="eyebrow small">SERIES {String(series.number).padStart(2, '0')}</span>
+          <h2 id={'series-' + series.id}>{series.title}</h2>
+          <p>{series.description}</p>
+        </header>
+        <div class="blog-series-list">
+          {series.posts.map((post) => (
+            <a class="blog-card" href={`${base}/blog/${post.slug}/`}>
+              <span class="eyebrow small">SERIES {String(post.seriesNumber).padStart(2, '0')} · PART {String(post.order).padStart(2, '0')} OF {String(series.posts.length).padStart(2, '0')}</span>
+              <h3>{post.title}</h3>
+              <p>{post.summary}</p>
+              <span class="read-more">Read article →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
+
+    <section class="blog-welcome">
       <a class="blog-card" href={`${base}/blog/hello-world/`}>
         <span class="eyebrow small">WELCOME · FIRST POST</span>
         <h2>Hello World 👋</h2>
         <p>Introducing Unravel Skills: a home for reusable Skills, engineering experiments and ideas about AI-assisted development.</p>
         <span class="read-more">Read article →</span>
       </a>
-    </div>
+    </section>
   </section>
 </Base>
 
 <style>
+  .blog-page {
+    max-width: 1120px;
+    padding-top: 76px;
+    padding-bottom: 76px;
+  }
+
+  .blog-series-section {
+    margin-top: 52px;
+  }
+
+  .blog-series-heading {
+    margin-bottom: 20px;
+  }
+
+  .blog-series-heading h2 {
+    margin: 9px 0 6px;
+    font-size: clamp(24px, 2.8vw, 32px);
+    letter-spacing: -.03em;
+  }
+
+  .blog-series-heading p {
+    margin: 0;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
   .blog-series-list {
     display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 16px;
-    margin-top: 35px;
   }
 
   .blog-series-list :global(.blog-card) {
     margin: 0;
+  }
+
+  .blog-card h3 {
+    margin: 12px 0;
+    color: var(--fg);
+    font-size: 22px;
+    line-height: 1.3;
+  }
+
+  .blog-welcome {
+    max-width: 560px;
+    margin-top: 54px;
+  }
+
+  @media (max-width: 700px) {
+    .blog-page {
+      padding-top: 48px;
+    }
+
+    .blog-series-list {
+      grid-template-columns: 1fr;
+    }
   }
 </style>
