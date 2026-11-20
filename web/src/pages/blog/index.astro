@@ -9,36 +9,25 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <h1>Blog<span class="accent-dot">.</span></h1>
     <p class="article-lead">Notes, experiments and updates from Unravel Skills.</p>
 
-    <nav class="blog-series-folders" aria-label="Blog article series">
-      {blogSeries.map((series) => (
-        <details class="blog-series-folder">
-          <summary class="blog-series-summary">
-            <svg class="blog-series-folder-icon" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M3.2 7.4a1.8 1.8 0 0 1 1.8-1.8h5l2 2h7a1.8 1.8 0 0 1 1.8 1.8v8.2a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8z"></path>
-              <path d="M7 11.6h7M7 14.6h9"></path>
-            </svg>
-            <span class="blog-series-folder-title">{series.title}</span>
-            <span class="blog-series-folder-count">{String(series.posts.length).padStart(2, '0')}</span>
-            <svg class="blog-series-folder-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6"></path></svg>
-          </summary>
-          <div class="blog-series-folder-content">
-            <p>{series.description}</p>
-            <div class="blog-series-article-list">
-              {series.posts.map((post) => (
-                <a class="blog-series-article" href={base + '/blog/' + post.slug + '/'}>
-                  <span class="blog-series-part">{String(post.order).padStart(2, '0')}</span>
-                  <span class="blog-series-article-copy">
-                    <strong>{post.title}</strong>
-                    <small>{post.summary}</small>
-                  </span>
-                  <span class="blog-series-article-arrow" aria-hidden="true">→</span>
-                </a>
-              ))}
-            </div>
-          </div>
-        </details>
-      ))}
-    </nav>
+    {blogSeries.map((series) => (
+      <section class="blog-series-section" aria-labelledby={'series-' + series.id}>
+        <header class="blog-series-heading">
+          <span class="eyebrow small">SERIES {String(series.number).padStart(2, '0')}</span>
+          <h2 id={'series-' + series.id}>{series.title}</h2>
+          <p>{series.description}</p>
+        </header>
+        <div class="blog-series-list">
+          {series.posts.map((post) => (
+            <a class="blog-card" href={base + '/blog/' + post.slug + '/'}>
+              <span class="eyebrow small">SERIES {String(post.seriesNumber).padStart(2, '0')} · PART {String(post.order).padStart(2, '0')} OF {String(series.posts.length).padStart(2, '0')}</span>
+              <h3>{post.title}</h3>
+              <p>{post.summary}</p>
+              <span class="read-more">Read article →</span>
+            </a>
+          ))}
+        </div>
+      </section>
+    ))}
 
     <section class="blog-welcome">
       <a class="blog-card" href={`${base}/blog/hello-world/`}>
@@ -58,139 +47,41 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     padding-bottom: 76px;
   }
 
-  .blog-series-folders {
-    display: grid;
-    gap: 0;
-    margin-top: 42px;
-    border-top: 1px solid var(--border);
+  .blog-series-section {
+    margin-top: 52px;
   }
 
-  .blog-series-folder {
-    border-bottom: 1px solid var(--border);
+  .blog-series-heading {
+    margin-bottom: 20px;
   }
 
-  .blog-series-summary {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    min-height: 62px;
-    cursor: pointer;
-    list-style: none;
-    color: var(--fg);
+  .blog-series-heading h2 {
+    margin: 9px 0 6px;
+    font-size: clamp(24px, 2.8vw, 32px);
+    letter-spacing: -.03em;
   }
 
-  .blog-series-summary::-webkit-details-marker {
-    display: none;
-  }
-
-  .blog-series-folder-icon {
-    flex: 0 0 21px;
-    width: 21px;
-    height: 21px;
-    fill: none;
-    stroke: var(--dim);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.5;
-    transition: stroke .18s ease;
-  }
-
-  .blog-series-folder[open] .blog-series-folder-icon {
-    stroke: var(--accent);
-  }
-
-  .blog-series-folder-title {
-    flex: 1;
+  .blog-series-heading p {
+    margin: 0;
+    color: var(--muted);
     font-size: 16px;
-    font-weight: 700;
   }
 
-  .blog-series-folder-count {
-    color: var(--dim);
-    font-size: 12px;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .blog-series-folder-chevron {
-    flex: 0 0 16px;
-    width: 16px;
-    height: 16px;
-    fill: none;
-    stroke: var(--dim);
-    stroke-linecap: round;
-    stroke-linejoin: round;
-    stroke-width: 1.7;
-    transition: transform .18s ease;
-  }
-
-  .blog-series-folder[open] .blog-series-folder-chevron {
-    transform: rotate(180deg);
-  }
-
-  .blog-series-folder-content {
-    padding: 0 0 18px 33px;
-  }
-
-  .blog-series-folder-content > p {
-    margin: 0 0 12px;
-    color: var(--muted);
-    font-size: 14px;
-  }
-
-  .blog-series-article-list {
+  .blog-series-list {
     display: grid;
-    gap: 4px;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
   }
 
-  .blog-series-article {
-    display: grid;
-    grid-template-columns: 28px minmax(0, 1fr) 18px;
-    align-items: start;
-    gap: 11px;
-    padding: 11px 12px;
-    border-radius: 8px;
-    color: var(--muted);
-    transition: background .16s ease, color .16s ease;
+  .blog-series-list :global(.blog-card) {
+    margin: 0;
   }
 
-  .blog-series-article:hover {
-    background: var(--accent-soft);
+  .blog-card h3 {
+    margin: 12px 0;
     color: var(--fg);
-  }
-
-  .blog-series-part {
-    display: grid;
-    place-items: center;
-    width: 25px;
-    height: 25px;
-    border: 1px solid var(--border);
-    border-radius: 50%;
-    color: var(--dim);
-    font-size: 10px;
-    font-weight: 700;
-    font-variant-numeric: tabular-nums;
-  }
-
-  .blog-series-article-copy {
-    display: grid;
-    gap: 4px;
-  }
-
-  .blog-series-article-copy strong {
-    color: var(--fg);
-    font-size: 15px;
-    line-height: 1.4;
-  }
-
-  .blog-series-article-copy small {
-    color: var(--muted);
-    font-size: 12px;
-    line-height: 1.5;
-  }
-
-  .blog-series-article-arrow {
-    padding-top: 2px;
-    color: var(--dim);
+    font-size: 22px;
+    line-height: 1.3;
   }
 
   .blog-welcome {
@@ -203,14 +94,8 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       padding-top: 48px;
     }
 
-    .blog-series-folder-content {
-      padding-left: 0;
-    }
-
-    .blog-series-article {
-      grid-template-columns: 26px minmax(0, 1fr) 16px;
-      gap: 8px;
-      padding-inline: 8px;
+    .blog-series-list {
+      grid-template-columns: 1fr;
     }
   }
 </style>
