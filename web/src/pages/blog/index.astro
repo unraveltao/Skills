@@ -1,5 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
+import { posts } from '../../lib/blog';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
 <Base title="Blog — Unravel Skills">
@@ -7,6 +8,34 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
     <span class="eyebrow small">FROM THE WORKBENCH</span>
     <h1>Blog<span class="accent-dot">.</span></h1>
     <p class="article-lead">Notes, experiments and updates from Unravel Skills.</p>
-    <a class="blog-card" href={`${base}/blog/hello-world/`}><span class="eyebrow small">WELCOME · FIRST POST</span><h2>Hello World 👋</h2><p>Introducing Unravel Skills: a home for reusable Skills, engineering experiments and ideas about AI-assisted development.</p><span class="read-more">Read article →</span></a>
+
+    <div class="blog-series-list">
+      {posts.map((post) => (
+        <a class="blog-card" href={`${base}/blog/${post.slug}/`}>
+          <span class="eyebrow small">SKILL AUTHORING · PART {post.order} OF {posts.length}</span>
+          <h2>{post.title}</h2>
+          <p>{post.summary}</p>
+          <span class="read-more">Read article →</span>
+        </a>
+      ))}
+      <a class="blog-card" href={`${base}/blog/hello-world/`}>
+        <span class="eyebrow small">WELCOME · FIRST POST</span>
+        <h2>Hello World 👋</h2>
+        <p>Introducing Unravel Skills: a home for reusable Skills, engineering experiments and ideas about AI-assisted development.</p>
+        <span class="read-more">Read article →</span>
+      </a>
+    </div>
   </section>
 </Base>
+
+<style>
+  .blog-series-list {
+    display: grid;
+    gap: 16px;
+    margin-top: 35px;
+  }
+
+  .blog-series-list :global(.blog-card) {
+    margin: 0;
+  }
+</style>

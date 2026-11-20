@@ -1,0 +1,819 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getBlogPost, posts } from '../../lib/blog';
+
+export function getStaticPaths() {
+  return posts.map((post) => ({
+    params: { slug: post.slug },
+    props: { post: getBlogPost(post.slug)! },
+  }));
+}
+
+const { post } = Astro.props;
+const previous = posts[post.order - 2];
+const next = posts[post.order];
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tocItems = [...post.html.matchAll(/<h([2-3]) id="([^"]+)">([\s\S]*?)<\/h\1>/g)].map((match) => ({
+  level: Number(match[1]),
+  id: match[2],
+  title: match[3].replace(/<[^>]+>/g, '').trim(),
+}));
+const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length - 1)) * 100 : 0;
+---
+
+<Base title={`${post.title} — Unravel Skills`}>
+  <div class="blog-layout container">
+    <aside class="article-toc" aria-label="Article contents">
+      <details class="toc-panel" open>
+        <summary class="toc-summary">
+          <span class="toc-heading">
+            <span class="toc-kicker">READING GUIDE</span>
+            <span class="toc-title">In this article</span>
+          </span>
+          <span class="toc-toggle" aria-hidden="true">
+            <span class="toc-toggle-open">Hide</span>
+            <span class="toc-toggle-closed">Show</span>
+            <span class="toc-chevron">⌄</span>
+          </span>
+        </summary>
+        <nav class="toc-links" aria-label="Article sections">
+          {tocItems.map((item) => (
+            <a
+              class:list={['toc-link', item.level === 3 && 'toc-link-nested']}
+              href={`#${item.id}`}
+            >
+              <span class="toc-link-marker" aria-hidden="true"></span>
+              <span>{item.title}</span>
+            </a>
+          ))}
+        </nav>
+      </details>
+    </aside>
+
+    <main class="blog-main">
+      <div class="breadcrumb"><a href={`${base}/blog/`}>Blog</a><span aria-hidden="true">/</span><span>Skill authoring series</span></div>
+      <span class="eyebrow small">FROM THE WORKBENCH · SKILL AUTHORING</span>
+      <h1>{post.title}</h1>
+      <p class="article-lead">{post.summary}</p>
+
+      <section class="series-progress" aria-label={`Part ${post.order} of ${posts.length} in the Skill authoring series`}>
+        <div class="series-progress-heading">
+          <div>
+            <span class="eyebrow small">THE SKILL AUTHORING SERIES</span>
+            <p>Follow the process from first idea to a maintained Skill.</p>
+          </div>
+          <span class="series-count"><strong>{String(post.order).padStart(2, '0')}</strong><span>/ {String(posts.length).padStart(2, '0')}</span></span>
+        </div>
+        <ol class="series-steps" style={`--series-progress: ${completedProgress}%`}>
+          {posts.map((step) => (
+            <li class:list={['series-step', step.order < post.order && 'is-complete', step.order === post.order && 'is-current']}>
+              <a
+                class="series-step-link"
+                href={`${base}/blog/${step.slug}/`}
+                aria-current={step.order === post.order ? 'step' : undefined}
+                aria-label={`Part ${step.order} of ${posts.length}: ${step.title}${step.order === post.order ? ' (current article)' : ''}`}
+                title={step.title}
+              >
+                <span class="series-node" aria-hidden="true">{step.order < post.order ? '✓' : String(step.order).padStart(2, '0')}</span>
+                <span class="series-step-label">Part {step.order}</span>
+              </a>
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <article class="prose" set:html={post.html} />
+
+      <nav class="series-nav" aria-label="Skill authoring guide navigation">
+        {previous ? (
+          <a class="series-nav-item previous" href={`${base}/blog/${previous.slug}/`}>
+            <span class="eyebrow small">← PREVIOUS ARTICLE</span>
+            <strong>{previous.title}</strong>
+          </a>
+        ) : <span class="series-nav-spacer"></span>}
+        <a class="series-nav-index" href={`${base}/blog/`}>All articles</a>
+        {next ? (
+          <a class="series-nav-item next" href={`${base}/blog/${next.slug}/`}>
+            <span class="eyebrow small">NEXT ARTICLE →</span>
+            <strong>{next.title}</strong>
+          </a>
+        ) : <span class="series-nav-spacer"></span>}
+      </nav>
+    </main>
+  </div>
+</Base>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.prose pre').forEach((pre) => {
+    const code = pre.querySelector('code');
+    if (!code) return;
+
+    const language = [...code.classList]
+      .find((className) => className.startsWith('language-'))
+      ?.replace('language-', '')
+      .toUpperCase() ?? 'CODE';
+
+    const toolbar = document.createElement('div');
+    toolbar.className = 'code-toolbar';
+
+    const label = document.createElement('span');
+    label.textContent = language;
+    label.className = 'code-language';
+
+    const copy = document.createElement('button');
+    copy.type = 'button';
+    copy.className = 'code-copy';
+    copy.textContent = 'Copy';
+    copy.setAttribute('aria-label', 'Copy code sample');
+
+    copy.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(code.innerText);
+        copy.textContent = 'Copied';
+      } catch {
+        copy.textContent = 'Copy manually';
+      }
+      window.setTimeout(() => {
+        copy.textContent = 'Copy';
+      }, 1600);
+    });
+
+    toolbar.append(label, copy);
+    const frame = document.createElement('div');
+    frame.className = 'code-block';
+    pre.before(frame);
+    frame.append(toolbar, pre);
+  });
+
+  const tocLinks = [...document.querySelectorAll<HTMLAnchorElement>('.toc-link[href^="#"]')];
+  const headings = tocLinks
+    .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
+    .filter((heading): heading is HTMLElement => heading instanceof HTMLElement);
+
+  if ('IntersectionObserver' in window && headings.length) {
+    const observer = new IntersectionObserver((entries) => {
+      const visible = entries
+        .filter((entry) => entry.isIntersecting)
+        .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top)[0];
+
+      if (!visible) return;
+      const activeId = visible.target.id;
+
+      tocLinks.forEach((link) => {
+        if (link.hash === `#${activeId}`) {
+          link.setAttribute('aria-current', 'location');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
+    }, { rootMargin: '-18% 0px -68% 0px', threshold: 0 });
+
+    headings.forEach((heading) => observer.observe(heading));
+  }
+</script>
+
+<style>
+  .blog-layout {
+    display: grid;
+    grid-template-columns: 220px minmax(0, 780px);
+    justify-content: center;
+    align-items: start;
+    gap: 48px;
+    padding-top: 48px;
+    padding-bottom: 80px;
+  }
+
+  .article-toc {
+    position: sticky;
+    top: calc(var(--nav-h) + 24px);
+    align-self: start;
+    max-height: calc(100vh - var(--nav-h) - 48px);
+    overflow: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+
+  .toc-panel {
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: var(--surface);
+    overflow: hidden;
+  }
+
+  .toc-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 16px;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .toc-summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .toc-heading {
+    display: grid;
+    gap: 5px;
+  }
+
+  .toc-kicker {
+    color: var(--dim);
+    font-size: 9px;
+    font-weight: 750;
+    letter-spacing: .13em;
+  }
+
+  .toc-title {
+    color: var(--fg);
+    font-size: 14px;
+    font-weight: 700;
+  }
+
+  .toc-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    color: var(--muted);
+    font-size: 11px;
+  }
+
+  .toc-toggle-closed,
+  .toc-panel:not([open]) .toc-toggle-open {
+    display: none;
+  }
+
+  .toc-panel:not([open]) .toc-toggle-closed {
+    display: inline;
+  }
+
+  .toc-chevron {
+    display: grid;
+    place-items: center;
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--border);
+    border-radius: 7px;
+    color: var(--fg);
+    font-size: 16px;
+    line-height: 1;
+    transform: rotate(180deg);
+    transition: transform .18s ease;
+  }
+
+  .toc-panel:not([open]) .toc-chevron {
+    transform: rotate(0);
+  }
+
+  .toc-links {
+    display: grid;
+    gap: 4px;
+    padding: 0 10px 12px;
+  }
+
+  .toc-link {
+    display: flex;
+    align-items: baseline;
+    gap: 9px;
+    padding: 8px 9px;
+    border-radius: 7px;
+    color: var(--muted);
+    font-size: 12px;
+    line-height: 1.45;
+    text-decoration: none;
+    transition: background .15s ease, color .15s ease;
+  }
+
+  .toc-link:hover,
+  .toc-link[aria-current="location"] {
+    color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .toc-link[aria-current="location"] {
+    font-weight: 650;
+  }
+
+  .toc-link-marker {
+    flex: 0 0 5px;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--dim);
+  }
+
+  .toc-link[aria-current="location"] .toc-link-marker {
+    background: var(--accent);
+    box-shadow: 0 0 9px var(--accent);
+  }
+
+  .toc-link-nested {
+    padding-left: 23px;
+    font-size: 11px;
+  }
+
+  .blog-main {
+    min-width: 0;
+  }
+
+  .blog-main > .eyebrow {
+    margin-top: 10px;
+  }
+
+  .blog-main h1 {
+    margin: 14px 0 14px;
+    color: var(--fg);
+    font-size: clamp(36px, 4vw, 54px);
+    letter-spacing: -.045em;
+    line-height: 1.1;
+  }
+
+  .breadcrumb {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    margin-bottom: 26px;
+  }
+
+  .article-lead {
+    max-width: 68ch;
+    margin-bottom: 26px;
+    font-size: 17px;
+    line-height: 1.7;
+  }
+
+  .series-progress {
+    margin: 30px 0 38px;
+    padding: 18px 20px 14px;
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    background: linear-gradient(115deg, var(--surface), var(--surface-2));
+  }
+
+  .series-progress-heading {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+  }
+
+  .series-progress-heading p {
+    margin: 5px 0 0;
+    color: var(--muted);
+    font-size: 12px;
+  }
+
+  .series-count {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 4px;
+    color: var(--dim);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }
+
+  .series-count strong {
+    color: var(--fg);
+    font-size: 23px;
+    letter-spacing: -.04em;
+  }
+
+  .series-count span {
+    font-size: 11px;
+  }
+
+  .series-steps {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    margin: 16px 0 0;
+    padding: 0 8px;
+    list-style: none;
+  }
+
+  .series-step:not(:last-child)::after {
+    position: absolute;
+    z-index: 0;
+    top: 14px;
+    left: 50%;
+    width: 100%;
+    height: 2px;
+    background: var(--border);
+    content: '';
+    pointer-events: none;
+  }
+
+  .series-step.is-complete::after {
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent-border);
+  }
+
+  .series-step {
+    position: relative;
+    z-index: 1;
+    min-width: 0;
+    text-align: center;
+  }
+
+  .series-step-link {
+    position: relative;
+    z-index: 1;
+    display: inline-grid;
+    justify-items: center;
+    gap: 6px;
+    min-width: 44px;
+    color: var(--dim);
+    text-decoration: none;
+  }
+
+  .series-node {
+    display: grid;
+    place-items: center;
+    width: 28px;
+    height: 28px;
+    border: 1px solid var(--dim);
+    border-radius: 50%;
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 750;
+    font-variant-numeric: tabular-nums;
+    transition: border-color .18s ease, background .18s ease, color .18s ease, box-shadow .18s ease;
+  }
+
+  .series-step.is-complete .series-node {
+    border-color: var(--accent);
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .series-step.is-current .series-node {
+    border: 2px solid var(--accent);
+    background: var(--surface);
+    color: var(--fg);
+    box-shadow: 0 0 0 4px var(--accent-soft), 0 0 17px var(--accent);
+  }
+
+  .series-step-link:hover .series-node {
+    border-color: var(--accent);
+  }
+
+  .series-step-label {
+    color: var(--dim);
+    font-size: 9px;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  .series-step.is-current .series-step-label {
+    color: var(--accent);
+    font-weight: 750;
+  }
+
+  .prose {
+    max-width: 72ch;
+    color: var(--fg);
+    font-size: 16px;
+    line-height: 1.85;
+    overflow-wrap: anywhere;
+  }
+
+  .prose h1,
+  .prose h2,
+  .prose h3 {
+    color: var(--fg);
+    scroll-margin-top: calc(var(--nav-h) + 24px);
+  }
+
+  .prose h2 {
+    margin-top: 2.5em;
+    margin-bottom: .65em;
+    font-size: 25px;
+    line-height: 1.28;
+    letter-spacing: -.03em;
+  }
+
+  .prose h3 {
+    margin-top: 1.9em;
+    margin-bottom: .5em;
+    font-size: 19px;
+    line-height: 1.35;
+    letter-spacing: -.02em;
+  }
+
+  .prose p,
+  .prose ul,
+  .prose ol {
+    color: var(--muted);
+    margin-bottom: 1.1em;
+  }
+
+  .prose li {
+    padding: .2em 0;
+  }
+
+  .prose strong {
+    color: var(--fg);
+    font-weight: 680;
+  }
+
+  .prose a {
+    color: var(--accent);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-underline-offset: 3px;
+  }
+
+  .code-block {
+    margin: 1.6em 0;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface-2);
+  }
+
+  .prose pre {
+    position: relative;
+    margin: 0;
+    padding: 0;
+    overflow: auto;
+    border: 0;
+    border-radius: 0 0 9px 9px;
+    background: transparent;
+    color: var(--fg);
+    line-height: 1.65;
+    tab-size: 2;
+  }
+
+  .code-toolbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 8px 14px;
+    border-bottom: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-family: ui-sans-serif, system-ui, sans-serif;
+    font-size: 10px;
+    letter-spacing: .08em;
+  }
+
+  .code-copy {
+    padding: 4px 9px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--muted);
+    font: inherit;
+    letter-spacing: normal;
+  }
+
+  .code-copy:hover {
+    border-color: var(--accent-border);
+    color: var(--accent);
+  }
+
+  .prose pre > code {
+    display: block;
+    padding: 16px;
+  }
+
+  .prose pre code {
+    padding: 0;
+    background: transparent;
+    color: inherit;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: .88em;
+  }
+
+  .prose :not(pre) > code {
+    padding: .14em .4em;
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    background: var(--surface-2);
+    color: var(--fg);
+    font-size: .88em;
+    white-space: break-spaces;
+  }
+
+  .prose blockquote {
+    position: relative;
+    margin: 1.6em 0;
+    padding: 16px 18px 16px 48px;
+    border: 1px solid var(--accent-border);
+    border-left: 3px solid var(--accent);
+    border-radius: 9px;
+    background: var(--accent-soft);
+    color: var(--muted);
+  }
+
+  .prose blockquote::before {
+    position: absolute;
+    top: 17px;
+    left: 17px;
+    display: grid;
+    place-items: center;
+    width: 19px;
+    height: 19px;
+    border: 1px solid var(--accent-border);
+    border-radius: 50%;
+    color: var(--accent);
+    content: 'i';
+    font-size: 12px;
+    font-weight: 750;
+    line-height: 1;
+  }
+
+  .prose blockquote p:last-child {
+    margin-bottom: 0;
+  }
+
+  .prose hr {
+    margin: 2.5em 0;
+    border: 0;
+    border-top: 1px solid var(--border);
+  }
+
+  .prose table {
+    display: block;
+    width: 100%;
+    margin: 1.5em 0;
+    overflow-x: auto;
+    border-collapse: collapse;
+    font-size: 14px;
+  }
+
+  .prose th,
+  .prose td {
+    min-width: 130px;
+    padding: 10px 12px;
+    border: 1px solid var(--border);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  .prose th {
+    background: var(--surface-2);
+    color: var(--fg);
+    font-weight: 700;
+  }
+
+  .prose img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  .series-nav {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr);
+    align-items: stretch;
+    gap: 12px;
+    margin-top: 54px;
+    padding-top: 24px;
+    border-top: 1px solid var(--border);
+  }
+
+  .series-nav-item {
+    display: grid;
+    align-content: start;
+    gap: 8px;
+    padding: 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--surface);
+    color: var(--fg);
+    text-decoration: none;
+    transition: border-color .18s ease, background .18s ease;
+  }
+
+  .series-nav-item:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-soft);
+  }
+
+  .series-nav-item.next {
+    text-align: right;
+  }
+
+  .series-nav-item strong {
+    line-height: 1.4;
+  }
+
+  .series-nav-index {
+    align-self: center;
+    color: var(--accent);
+    font-size: 12px;
+    font-weight: 700;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  @media (max-width: 1020px) {
+    .blog-layout {
+      grid-template-columns: 190px minmax(0, 1fr);
+      gap: 28px;
+    }
+  }
+
+  @media (max-width: 760px) {
+    .blog-layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 18px;
+      padding-top: 24px;
+      padding-bottom: 56px;
+    }
+
+    .article-toc {
+      top: calc(var(--nav-h) + 8px);
+      z-index: 20;
+      max-height: min(38vh, 300px);
+      overflow: auto;
+    }
+
+    .toc-summary {
+      padding: 12px 14px;
+    }
+
+    .toc-links {
+      max-height: 230px;
+      overflow: auto;
+    }
+
+    .blog-main h1 {
+      font-size: clamp(34px, 9vw, 46px);
+    }
+
+    .series-progress {
+      padding: 15px 12px 12px;
+    }
+
+    .series-progress-heading p {
+      max-width: 26ch;
+      line-height: 1.4;
+    }
+
+    .series-steps {
+      padding: 0 2px;
+    }
+
+    .series-node {
+      width: 26px;
+      height: 26px;
+      font-size: 8px;
+    }
+
+    .series-step-label {
+      font-size: 8px;
+    }
+
+    .prose {
+      font-size: 15.5px;
+      line-height: 1.82;
+    }
+
+    .prose h2 {
+      font-size: 22px;
+    }
+
+    .prose h3 {
+      font-size: 18px;
+    }
+
+    .prose pre {
+      font-size: 12px;
+    }
+
+    .prose pre > code {
+      padding: 13px;
+    }
+
+    .series-nav {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    }
+
+    .series-nav-index {
+      grid-column: 1 / -1;
+      grid-row: 1;
+      justify-self: center;
+      padding: 5px 0;
+    }
+
+    .series-nav-item.next {
+      text-align: left;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .toc-chevron,
+    .toc-link,
+    .series-node,
+    .series-nav-item {
+      transition: none;
+    }
+  }
+</style>
