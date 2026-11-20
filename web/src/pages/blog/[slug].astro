@@ -1,6 +1,6 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { getBlogPost, posts } from '../../lib/blog';
+import { blogSeries, getBlogPost, posts } from '../../lib/blog';
 import { sections, readDoc } from '../../lib/docs';
 
 export function getStaticPaths() {
@@ -37,31 +37,38 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
         <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 5 5"></path></svg>
         <span>Search Docs</span>
       </button>
-      <details class="series-group" open>
-        <summary class="series-summary">
-          <svg class="series-folder-icon" viewBox="0 0 24 24" aria-hidden="true">
-            <path d="M3.2 7.4a1.8 1.8 0 0 1 1.8-1.8h5l2 2h7a1.8 1.8 0 0 1 1.8 1.8v8.2a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8z"></path>
-            <path d="M7 11.6h7M7 14.6h9"></path>
-          </svg>
-          <span class="series-summary-title">{post.seriesTitle}</span>
-          <span class="series-summary-count">{String(seriesPosts.length).padStart(2, '0')}</span>
-          <svg class="series-folder-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6"></path></svg>
-        </summary>
-        <p class="series-sidebar-description">{post.seriesDescription}</p>
-        <nav class="series-article-list" aria-label={post.seriesTitle + ' articles'}>
-          {seriesPosts.map((step) => (
-            <a
-              class:list={['series-article-link', step.order < post.order && 'is-complete', step.order === post.order && 'is-current']}
-              href={base + '/blog/' + step.slug + '/'}
-              aria-current={step.order === post.order ? 'page' : undefined}
-              aria-label={'Part ' + step.order + ' of ' + seriesPosts.length + ': ' + step.title + (step.order < post.order ? ' (completed)' : step.order === post.order ? ' (current article)' : '')}
-            >
-              <span class="series-article-index" aria-hidden="true">{step.order < post.order ? '✓' : String(step.order).padStart(2, '0')}</span>
-              <span class="series-article-title">{step.title}</span>
-            </a>
-          ))}
-        </nav>
-      </details>
+      {blogSeries.map((series) => (
+        <details class="series-group" open>
+          <summary class="series-summary">
+            <svg class="series-folder-icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M3.2 7.4a1.8 1.8 0 0 1 1.8-1.8h5l2 2h7a1.8 1.8 0 0 1 1.8 1.8v8.2a1.8 1.8 0 0 1-1.8 1.8H5a1.8 1.8 0 0 1-1.8-1.8z"></path>
+              <path d="M7 11.6h7M7 14.6h9"></path>
+            </svg>
+            <span class="series-summary-title">{series.title}</span>
+            <span class="series-summary-count">{String(series.posts.length).padStart(2, '0')}</span>
+            <svg class="series-folder-chevron" viewBox="0 0 16 16" aria-hidden="true"><path d="m3.5 6 4.5 4.5L12.5 6"></path></svg>
+          </summary>
+          <p class="series-sidebar-description">{series.description}</p>
+          <nav class="series-article-list" aria-label={series.title + ' articles'}>
+            {series.posts.map((step) => {
+              const isCurrentSeries = series.id === post.seriesId;
+              const isCurrentArticle = isCurrentSeries && step.order === post.order;
+              const isComplete = isCurrentSeries && step.order < post.order;
+              return (
+                <a
+                  class:list={['series-article-link', isComplete && 'is-complete', isCurrentArticle && 'is-current']}
+                  href={base + '/blog/' + step.slug + '/'}
+                  aria-current={isCurrentArticle ? 'page' : undefined}
+                  aria-label={'Part ' + step.order + ' of ' + series.posts.length + ': ' + step.title + (isComplete ? ' (completed)' : isCurrentArticle ? ' (current article)' : '')}
+                >
+                  <span class="series-article-index" aria-hidden="true">{isComplete ? '✓' : String(step.order).padStart(2, '0')}</span>
+                  <span class="series-article-title">{step.title}</span>
+                </a>
+              );
+            })}
+          </nav>
+        </details>
+      ))}
     </aside>
 
     <main class="blog-main">
@@ -1037,6 +1044,12 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
   .article-toc {
     grid-area: toc;
     min-width: 0;
+  }
+
+  .series-sidebar .series-group {
+    margin-bottom: 12px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--border);
   }
 
   .series-summary {
