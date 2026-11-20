@@ -1,9 +1,9 @@
 ---
 name: git-workflow
-description: Use only when the user asks to inspect or change Git repository state, stage or commit changes, manage branches or worktrees, synchronize remotes, merge, rebase, cherry-pick, resolve conflicts, recover Git state, prepare tags/releases, or manage GitHub pull requests. Do not activate for ordinary code reading, coding, or technical discussion that does not require Git operations.
+description: Use when a request involves inspecting or changing Git repository state, managing branches or worktrees, synchronizing or rewriting history, recovering Git state, preparing releases, or handling pull requests. Do not activate for ordinary coding or Git concept questions that do not require repository operations.
 ---
 
-# Git Workflow v0.2
+# Git Workflow v0.3
 
 Use the smallest workflow that safely completes the requested Git task. Priorities are data preservation, correctness, verifiability, then speed. This Skill is agent guidance, **not a security sandbox**: commands, hooks, tools, or other agents can still cause harm. Inspect every proposed write and stop when repository state or intent is unclear.
 
@@ -14,6 +14,16 @@ Use the smallest workflow that safely completes the requested Git task. Prioriti
 - **L3 High risk:** For history rewriting, complex conflicts, remote synchronization, publishing/releases, or multi-agent integration, inspect additional refs/state, explain the impact, verify the target and authorization, make a recovery plan, and pause before any destructive or externally visible action without explicit task-specific authorization.
 
 An authorization covers only the stated operation, target, and scope. It does not authorize future pushes, force pushes, merges, cleanup, or unrelated changes.
+
+## Common requests and stopping points
+
+Use these examples to apply the authorization and risk rules consistently:
+
+- **“Check whether my working tree is clean.”** Inspect the repository and report its state. Do not stage, stash, or otherwise change files.
+- **“Stage and commit only `src/parser.ts` and `tests/parser.test.ts`.”** Inspect existing changes first. Stage only those paths, review the staged diff and run relevant checks, then commit because the request explicitly includes a commit. Verify the commit and report any remaining changes.
+- **“Sync my branch with the remote.”** Inspect the branch, remote, and divergence first. If repository policy does not make merge versus rebase clear, ask which one to use. Do not push unless the user also asks for it.
+- **“Get rid of my local changes” or an unauthorised force-push request.** Do not run `reset --hard`, `clean`, or a force push. Explain what would be affected, offer a safe inspection or recovery path, and wait for clear authorization naming the target and operation.
+- **A Git command fails.** Record the command, exit status, and relevant error. Re-check repository status and operation markers before deciding whether a retry is safe; do not repeat a failed write blindly.
 
 ## Start with repository context
 
@@ -27,7 +37,7 @@ git branch --show-current
 
 For history, remotes, or special states, add only what is needed, such as `git log -5 --oneline`, `git remote -v`, `git worktree list`, or checks for `MERGE_HEAD`, `CHERRY_PICK_HEAD`, and `REBASE_HEAD`. Determine the actual default/base branch from repository configuration or remote refs; never assume `main` or `master`. In a subdirectory, identify and target the correct repository root.
 
-Treat pre-existing staged, unstaged, and untracked files as user or collaborator work. Record their paths and status before acting. Do not overwrite, reset, stash, stage, commit, or otherwise absorb them unless specifically authorized. In shared or multi-agent work, identify ownership and coordinate scope; if ownership cannot be determined, stop before touching those paths.
+Treat pre-existing staged, unstaged, and untracked files as potentially valuable. Record their paths and status before acting. Do not overwrite, reset, stash, stage, or otherwise absorb them unless specifically authorized. In shared or multi-agent work, identify ownership and coordinate scope; if ownership cannot be determined, stop before touching those paths.
 
 Check for detached HEAD, an in-progress merge/rebase/cherry-pick, Git LFS, submodules, sparse checkout, and multiple worktrees when relevant. Do not assume ordinary file operations or a single worktree model applies to these states.
 
@@ -41,21 +51,21 @@ Before commit:
 2. Review `git diff --cached` and `git diff --cached --check`.
 3. Check for obvious secrets and sensitive files (private keys, tokens, credentials, `.env`, personal data). Filename and keyword searches are only heuristics, not proof of absence. If a suspicious value appears, do not print it; unstage the file only when it is safe and within scope, then report the path and stop for remediation.
 4. Run relevant project checks when requested or needed; report failures honestly.
-5. Commit only with user authorization or clear task-specific authorization. Use the repository's commit convention; otherwise use a concise, accurate message.
+5. Commit only when the user authorized a commit for this task. Use the repository's commit convention; otherwise use a concise, accurate message.
 
 After committing, inspect `git show --stat --oneline HEAD` and `git status --short` to confirm what changed and whether unrelated work remains.
 
 ## Branches and worktrees
 
-Inspect current branch, working tree, and existing branch names before creating or switching. Do not switch away from a dirty tree if Git may overwrite files. Do not create branches without a task need. For parallel work, prefer an explicitly scoped worktree and confirm its path/branch with collaborators. Before removing a worktree, verify its exact path, branch, and clean state; never use force removal to bypass changes.
+Inspect the current branch, working tree, and existing branch names before creating or switching. Do not switch away from a dirty tree if Git may overwrite files. Do not create branches without a task need. For parallel work, prefer an explicitly scoped worktree and confirm its path and branch with collaborators. Before removing a worktree, verify its exact path, branch, and clean state; never use force removal to bypass changes.
 
 `git checkout` can replace paths as well as switch branches. Prefer `git switch` for branch changes and `git restore -- <path>` only for explicitly authorized paths after reviewing the exact diff. Never use checkout/restore to discard unknown or user-owned modifications.
 
 ## Fetch, pull, push, and GitHub
 
-Before network operations, verify the intended remote URL, branch, and credentials/permissions without exposing secrets. Fetch is generally observational but can update remote-tracking refs; use it only when relevant. Before pull/merge/rebase, inspect local and remote divergence and the working tree. Do not silently choose merge vs rebase when repository policy or user intent is unclear.
+Before network operations, verify the intended remote URL, branch, and credentials/permissions without exposing secrets. Fetch is generally observational but can update remote-tracking refs; use it only when relevant. Before pull/merge/rebase, inspect local and remote divergence and the working tree. Do not silently choose merge versus rebase when repository policy or user intent is unclear.
 
-Push only when the user explicitly requested it or task-specific instructions authorize it. Confirm the destination remote and branch. Use ordinary push. Never force push by default; `--force-with-lease` is still history replacement and requires explicit authorization for that exact branch and operation. Never bypass branch protection or hooks. Do not create a repository, publish a release, or merge a PR unless specifically authorized.
+Push only when the user explicitly requested it or task-specific instructions authorize it. Confirm the destination remote and branch. Use ordinary push. Never force-push by default; `--force-with-lease` is still history replacement and requires explicit authorization for that exact branch and operation. Never bypass branch protection or hooks. Do not create a repository, publish a release, or merge a PR unless specifically authorized.
 
 ## Merge, rebase, cherry-pick, and conflicts
 
