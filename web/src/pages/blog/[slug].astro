@@ -238,18 +238,27 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     const copy = document.createElement('button');
     copy.type = 'button';
     copy.className = 'code-copy';
-    copy.textContent = 'Copy';
+    copy.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg>';
     copy.setAttribute('aria-label', 'Copy code sample');
+    copy.title = 'Copy code';
 
     copy.addEventListener('click', async () => {
       try {
         await navigator.clipboard.writeText(code.innerText);
-        copy.textContent = 'Copied';
+        copy.classList.add('is-copied');
+        copy.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="m5 12 4 4L19 6"></path></svg>';
+        copy.setAttribute('aria-label', 'Code copied');
+        copy.title = 'Copied';
       } catch {
-        copy.textContent = 'Copy manually';
+        copy.classList.add('is-error');
+        copy.setAttribute('aria-label', 'Copy failed. Select the code and copy it manually.');
+        copy.title = 'Copy failed';
       }
       window.setTimeout(() => {
-        copy.textContent = 'Copy';
+        copy.classList.remove('is-copied', 'is-error');
+        copy.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="8" y="8" width="12" height="12" rx="2"></rect><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"></path></svg>';
+        copy.setAttribute('aria-label', 'Copy code sample');
+        copy.title = 'Copy code';
       }, 1600);
     });
 
@@ -655,7 +664,7 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     text-underline-offset: 3px;
   }
 
-  .code-block {
+  .prose .code-block {
     margin: 1.6em 0;
     overflow: hidden;
     border: 1px solid var(--border);
@@ -676,7 +685,7 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     tab-size: 2;
   }
 
-  .code-toolbar {
+  .prose .code-toolbar {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -690,7 +699,7 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     letter-spacing: .08em;
   }
 
-  .code-copy {
+  .prose .code-copy {
     padding: 4px 9px;
     border: 1px solid var(--border);
     border-radius: 6px;
@@ -700,9 +709,28 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     letter-spacing: normal;
   }
 
-  .code-copy:hover {
+  .prose .code-copy:hover {
     border-color: var(--accent-border);
     color: var(--accent);
+  }
+
+  .prose .code-copy svg {
+    display: block;
+    width: 16px;
+    height: 16px;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
+  .prose .code-copy.is-copied {
+    color: #39b980;
+  }
+
+  .prose .code-copy.is-error {
+    color: #e36b75;
   }
 
   .prose pre > code {
