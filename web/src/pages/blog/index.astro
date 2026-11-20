@@ -29,13 +29,17 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
       </section>
     ))}
 
-    <section class="blog-welcome">
-      <a class="blog-card" href={`${base}/blog/hello-world/`}>
-        <span class="eyebrow small">WELCOME · FIRST POST</span>
-        <h2>Hello World 👋</h2>
-        <p>Introducing Unravel Skills: a home for reusable Skills, engineering experiments and ideas about AI-assisted development.</p>
-        <span class="read-more">Read article →</span>
-      </a>
+    <section class="blog-welcome" aria-labelledby="blog-welcome-title">
+      <span class="eyebrow small">START HERE · ABOUT THIS BLOG</span>
+      <h2 id="blog-welcome-title"><a href={base + '/blog/hello-world/'}>Hello Unravel Skills</a></h2>
+      <p class="article-lead">Learn to design, test, and improve Agent Skills through a practical, step-by-step course.</p>
+      <div class="blog-welcome-content">
+        <p>An Agent Skill is a reusable set of instructions that helps an AI agent handle a recurring task. This blog teaches you how to turn a real workflow into a reliable Skill instead of starting with a prompt or template.</p>
+        <p>The Skill Authoring Series follows the full lifecycle: choose a task, specify the behavior, write <code>SKILL.md</code>, design tests, learn from failures, and release and maintain the result. Advanced Skill Design explores harder workflows with multiple stages, branches, recovery paths, and explicit stop conditions.</p>
+        <p>Each article explains the reasoning behind a design choice and uses practical examples you can inspect and adapt. Read the series in order for a guided course, or open any article when you need a specific technique.</p>
+        <p>The goal is to understand why a Skill works, recognize where it can fail, and apply the method to your own tasks.</p>
+      </div>
+      <a class="blog-welcome-link" href={base + '/blog/hello-world/'}>Read the welcome article →</a>
     </section>
   </section>
 </Base>
@@ -85,8 +89,57 @@ const base = import.meta.env.BASE_URL.replace(/\/$/, '');
   }
 
   .blog-welcome {
-    max-width: 560px;
-    margin-top: 54px;
+    max-width: 760px;
+    margin-top: 58px;
+    padding-top: 30px;
+    border-top: 1px solid var(--border);
+  }
+
+  .blog-welcome h2 {
+    margin: 10px 0 8px;
+    font-size: clamp(25px, 3vw, 34px);
+    letter-spacing: -.03em;
+  }
+
+  .blog-welcome h2 a {
+    color: var(--fg);
+  }
+
+  .blog-welcome h2 a:hover {
+    color: var(--accent);
+  }
+
+  .blog-welcome .article-lead {
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .blog-welcome-content {
+    max-width: 72ch;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .blog-welcome-content p {
+    margin-bottom: 12px;
+  }
+
+  .blog-welcome-content code {
+    padding: 2px 5px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    color: var(--fg);
+    font-size: .9em;
+  }
+
+  .blog-welcome-link {
+    display: inline-block;
+    margin-top: 5px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 650;
   }
 
   @media (max-width: 700px) {
