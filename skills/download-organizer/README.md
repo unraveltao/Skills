@@ -58,4 +58,4 @@ The documented test command is:
 
     powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\test-organizer.ps1
 
-Not run for this README change. The presence of a test script is not evidence that tests passed. See the repository [Installation guide](../../docs/getting-started/installation.md); installation and discovery vary by client.
+Validation on 2026-11-20: Windows PowerShell 5.1.26100.9818; 19 passed, 0 failed, 0 skipped. The suite used isolated temporary fixtures and covered envelopes/JSON roundtrips, classification and partial-download exclusion, plan-only behavior, authorization, same-volume apply, repeat-apply safety, locate/report, outside-root rejection, and read-only Known Folder lookup. Cross-volume runtime and real-client Skill activation were not tested. See the repository [Installation guide](../../docs/getting-started/installation.md); installation and discovery vary by client.
