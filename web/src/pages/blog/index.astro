@@ -80,10 +80,11 @@ const articles = blogSeries.flatMap((series) =>
   }
 
   .blog-welcome {
-    max-width: 820px;
+    max-width: 100%;
     margin: 72px auto 0;
     padding-top: 32px;
     border-top: 1px solid var(--border);
+    text-align: center;
   }
 
   .blog-welcome h2 {
@@ -101,13 +102,15 @@ const articles = blogSeries.flatMap((series) =>
   }
 
   .blog-welcome .article-lead {
+    max-width: none;
     margin: 0 0 18px;
     color: var(--muted);
     font-size: 16px;
   }
 
   .blog-welcome-content {
-    max-width: 72ch;
+    max-width: 960px;
+    margin-inline: auto;
     color: var(--muted);
     font-size: 14px;
     line-height: 1.75;
