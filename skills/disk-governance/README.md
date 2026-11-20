@@ -1,52 +1,54 @@
 # Disk Governance
 
-Disk Governance is a **read-only Windows disk auditing Skill**. It scans user-selected directories, records metadata in local SQLite, and presents results through a local workbench or self-contained offline HTML reports.
+Disk Governance is a read-only Windows Skill for auditing directories. It records file metadata in a local SQLite database and presents results in a local workbench or a self-contained offline HTML report.
 
-## What it is for
+## When to use it
 
-Use it when you want to:
+Use this Skill to understand space usage, find large files and directories, review file-type distributions, or inspect scan batches and audit candidates. It is not a cleanup tool: it cannot delete, move, clean up, or migrate files.
 
-- understand disk or directory space usage;
-- find large files or directories;
-- inspect file-type distributions;
-- review audit candidates and historical review records.
+## What it does
 
-It does **not** delete, move, clean up, or migrate files.
+A scan reads metadata from a directory the user explicitly selected. It does not follow symbolic links, Windows reparse points, or directory junctions. Results are stored as scan batches in a separate local data directory.
 
-## Architecture
+- report writes a self-contained HTML report that works offline.
+- serve starts a local workbench bound to 127.0.0.1.
 
-The Skill is self-contained under this directory. Its main data flow is:
+The database, reports, and logs can contain local file paths. Keep them on your machine.
 
-`user-selected directory → metadata-only scan → local SQLite batches → workbench or offline report`
+## Quick start
 
-Important implementation boundaries:
+These illustrative PowerShell commands should be run from the repository root, using a directory you explicitly chose:
 
-- The scanner does not follow links.
-- Scan targets and the local data directory are kept separate; overlapping data directories are excluded from scans.
-- SQLite is the local source of truth.
-- Candidate records are bound to a scan batch and rule version.
-- Risk, category, confidence, and human review state are separate concepts.
-- Reports may contain local paths and are intended to remain on the user's machine.
-- The local workbench binds to `127.0.0.1` and uses session/origin checks.
-- The current runtime does not hash file contents, so same-size files are **not** confirmed duplicates.
+    python .\skills\disk-governance\scripts\main.py doctor
+    python .\skills\disk-governance\scripts\main.py scan --path "$env:USERPROFILE\Downloads" --data-dir "$env:LOCALAPPDATA\DiskGovernors"
+    python .\skills\disk-governance\scripts\main.py status --data-dir "$env:LOCALAPPDATA\DiskGovernors"
+    python .\skills\disk-governance\scripts\main.py report --data-dir "$env:LOCALAPPDATA\DiskGovernors"
 
-For the detailed implementation and safety model, read [Architecture](references/architecture.md).
+Check doctor before scanning. Always pass --data-dir to scan and report; omitting it can route those commands to the legacy scanner and a different data location. report uses the most recent batch unless you provide --batch <id>.
 
-## Version boundary
+For the full command list and workbench lifecycle, see [SKILL.md](SKILL.md) and the [Audit Workflow](references/audit-workflow.md).
 
-**v0.2** provides read-only scanning, SQLite storage, candidate review records, a local workbench, and offline reports.
+## How to read results
 
-Cleanup, Planning, and Migration are not implemented. The [roadmap](references/roadmap.md) records these only as future boundaries; it does not grant executable capability.
+- Scanned logical size sums st_size for files that were read; it is not allocated disk space or reclaimable space.
+- Volume usage comes from the operating system and may include data the scan could not read.
+- Candidate size is an estimate for review, not reclaimable space.
+- Scan errors mean the report covers only the successfully read portion.
+- Same-size files are not confirmed duplicates. This version does not hash file contents.
+- Risk, classification confidence, and human review are separate fields; none authorizes file changes.
 
-## Usage
+## Safety and validation
 
-Read [SKILL.md](SKILL.md) for triggers, workflow, commands, data semantics, and safety rules.
+Version 0.2 provides read-only scanning, local SQLite storage, candidate review records, a local workbench, and offline reports. Cleanup, Planning, and Migration are not implemented. See the [Safety Policy](references/safety-policy.md) and [Roadmap](references/roadmap.md).
 
-Supporting references:
+This README was checked against the Skill instructions and references. Runtime tests and real-client behavior were not run for this documentation change. Any tests should use isolated temporary directories, never a real user directory.
 
-- [Audit Workflow](references/audit-workflow.md)
-- [Safety Policy](references/safety-policy.md)
+## References
+
+- [Skill instructions and command reference](SKILL.md)
+- [Audit workflow](references/audit-workflow.md)
+- [Safety policy](references/safety-policy.md)
 - [Architecture](references/architecture.md)
-- [Roadmap](references/roadmap.md)
+- [Unimplemented features](references/roadmap.md)
 
-This README is the human-facing entry point for this Skill. The root repository architecture documentation describes the **Skills repository as a whole** and intentionally does not duplicate Skill-specific architecture.
+MIT licensed; see the repository [LICENSE](../../LICENSE).
