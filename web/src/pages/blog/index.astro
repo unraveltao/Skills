@@ -1,7 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { blogSeries } from '../../lib/blog';
-const base = import.meta.env.BASE_URL.replace(/\\/$/, '');
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const articles = blogSeries.flatMap((series) =>
   series.posts.map((post) => ({ ...post, seriesTitle: series.title, seriesPostCount: series.posts.length }))
 );
