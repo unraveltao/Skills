@@ -45,6 +45,15 @@ Not every preference needs to block progress. Decide which missing details requi
 
 ## Turn the workflow into steps
 
+A behavior specification becomes easier to review when its decisions are visible at a glance.
+
+<figure>
+  <img src="/@blog-assets/series-01/s1-02-behavior-spec.svg" alt="Behavior specification map connecting activation, inputs, workflow, branches, expected output, and boundaries.">
+  <figcaption>Figure 1. A behavior specification connects what should trigger a Skill, what it needs, what it does, and how a good result is bounded.</figcaption>
+</figure>
+
+
+
 A first version might be:
 
 1. Identify whether the request is for an outline, draft, or source review.
