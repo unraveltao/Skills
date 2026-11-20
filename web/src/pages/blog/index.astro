@@ -1,41 +1,162 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { posts } from '../../lib/blog';
+import { blogSeries } from '../../lib/blog';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const articles = blogSeries.flatMap((series) =>
+  series.posts.map((post) => ({ ...post, seriesTitle: series.title, seriesPostCount: series.posts.length }))
+);
 ---
 <Base title="Blog — Unravel Skills">
   <section class="container blog-page">
-    <span class="eyebrow small">FROM THE WORKBENCH</span>
-    <h1>Blog<span class="accent-dot">.</span></h1>
-    <p class="article-lead">Notes, experiments and updates from Unravel Skills.</p>
+    <header class="blog-header">
+      <span class="eyebrow small">FROM THE WORKBENCH</span>
+      <h1>Blog<span class="accent-dot">.</span></h1>
+      <p class="article-lead">Notes, experiments and practical lessons for designing better Agent Skills.</p>
+    </header>
 
-    <div class="blog-series-list">
-      {posts.map((post) => (
-        <a class="blog-card" href={`${base}/blog/${post.slug}/`}>
-          <span class="eyebrow small">SKILL AUTHORING · PART {post.order} OF {posts.length}</span>
+    <section class="blog-grid" aria-label="All blog articles">
+      {articles.map((post) => (
+        <a class="blog-card" href={base + '/blog/' + post.slug + '/'}>
+          <span class="eyebrow small">{post.seriesTitle} · PART {String(post.order).padStart(2, '0')} OF {String(post.seriesPostCount).padStart(2, '0')}</span>
           <h2>{post.title}</h2>
           <p>{post.summary}</p>
           <span class="read-more">Read article →</span>
         </a>
       ))}
-      <a class="blog-card" href={`${base}/blog/hello-world/`}>
-        <span class="eyebrow small">WELCOME · FIRST POST</span>
-        <h2>Hello World 👋</h2>
-        <p>Introducing Unravel Skills: a home for reusable Skills, engineering experiments and ideas about AI-assisted development.</p>
-        <span class="read-more">Read article →</span>
-      </a>
-    </div>
+    </section>
+
+    <section class="blog-welcome" aria-labelledby="blog-welcome-title">
+      <span class="eyebrow small">START HERE · ABOUT THIS BLOG</span>
+      <h2 id="blog-welcome-title"><a href={base + '/blog/hello-world/'}>Hello Unravel Skills</a></h2>
+      <p class="article-lead">A practical guide to designing, testing, and improving Agent Skills.</p>
+      <div class="blog-welcome-content">
+        <p>An Agent Skill is a reusable set of instructions that helps an AI agent handle a recurring task. This blog teaches you how to turn a real workflow into a reliable Skill by making its behavior clear, testable, and maintainable.</p>
+        <p>The Skill Authoring Series follows the full lifecycle: choose a task, specify the behavior, write <code>SKILL.md</code>, design tests, learn from failures, and release and maintain the result. Advanced Skill Design takes on more demanding workflows with multiple stages, branches, recovery paths, and explicit stop conditions.</p>
+        <p>Each article explains the reasoning behind a design choice and uses practical examples you can inspect and adapt. Read a series in order for a guided course, or open an article when you need a specific technique.</p>
+        <p>The goal is to help you understand why a Skill works, recognize where it can fail, and apply the method to your own tasks.</p>
+      </div>
+      <a class="blog-welcome-link" href={base + '/blog/hello-world/'}>Read the welcome article →</a>
+    </section>
   </section>
 </Base>
 
 <style>
-  .blog-series-list {
-    display: grid;
-    gap: 16px;
-    margin-top: 35px;
+  .blog-page {
+    width: min(1320px, calc(100% - 48px));
+    max-width: 1320px;
+    margin-inline: auto;
+    padding-top: 76px;
+    padding-bottom: 76px;
   }
 
-  .blog-series-list :global(.blog-card) {
+  .blog-header {
+    margin-bottom: 54px;
+  }
+
+  .blog-header .article-lead {
+    max-width: 760px;
+  }
+
+  .blog-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .blog-grid :global(.blog-card) {
+    min-height: 230px;
     margin: 0;
+  }
+
+  .blog-card h2 {
+    margin: 12px 0;
+    color: var(--fg);
+    font-size: clamp(21px, 2vw, 26px);
+    line-height: 1.3;
+  }
+
+  .blog-card p {
+    max-width: 68ch;
+  }
+
+  .blog-welcome {
+    max-width: 100%;
+    margin: 72px auto 0;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+  }
+
+  .blog-welcome h2 {
+    margin: 10px 0 8px;
+    font-size: clamp(25px, 3vw, 34px);
+    letter-spacing: -.03em;
+  }
+
+  .blog-welcome h2 a {
+    color: var(--fg);
+  }
+
+  .blog-welcome h2 a:hover {
+    color: var(--accent);
+  }
+
+  .blog-welcome .article-lead {
+    max-width: none;
+    margin: 0 0 18px;
+    color: var(--muted);
+    font-size: 16px;
+  }
+
+  .blog-welcome-content {
+    max-width: 960px;
+    margin-inline: auto;
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.75;
+  }
+
+  .blog-welcome-content p {
+    margin-bottom: 12px;
+  }
+
+  .blog-welcome-content code {
+    padding: 2px 5px;
+    border-radius: 4px;
+    background: var(--surface-2);
+    color: var(--fg);
+    font-size: .9em;
+  }
+
+  .blog-welcome-link {
+    display: inline-block;
+    margin-top: 5px;
+    color: var(--accent);
+    font-size: 13px;
+    font-weight: 650;
+  }
+
+  @media (max-width: 760px) {
+    .blog-page {
+      width: calc(100% - 32px);
+      padding-top: 48px;
+    }
+
+    .blog-header {
+      margin-bottom: 36px;
+    }
+
+    .blog-grid {
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+
+    .blog-grid :global(.blog-card) {
+      min-height: 0;
+    }
+
+    .blog-welcome {
+      margin-top: 52px;
+    }
   }
 </style>

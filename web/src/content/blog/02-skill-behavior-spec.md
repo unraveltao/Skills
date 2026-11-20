@@ -45,6 +45,19 @@ Not every preference needs to block progress. Decide which missing details requi
 
 ## Turn the workflow into steps
 
+A behavior specification becomes easier to review when its decisions are visible at a glance.
+
+```text
+Activation  — When should the Skill start?
+Inputs      — What information does it need?
+Workflow    — What actions should it take?
+Branches    — What changes when conditions differ?
+Output      — What does a good result look like?
+Boundaries  — What should the Skill avoid?
+```
+
+
+
 A first version might be:
 
 1. Identify whether the request is for an outline, draft, or source review.
@@ -87,30 +100,13 @@ The specification is the design blueprint, not the final Skill file.
 Before writing `SKILL.md`, summarize the decisions:
 
 ```text
-Goal:
-Turn user-provided research materials into an article outline or draft.
-
-Trigger:
-The user asks to organize sources, plan an article, draft from research,
-or review factual support.
-
-Inputs:
-A topic or question and, when available, supporting notes or sources.
-Audience and format are optional preferences.
-
-Workflow:
-Classify the request → check inputs → organize evidence → plan structure →
-draft only to the requested level → check sources and uncertainty → deliver.
-
-Ask when:
-The topic or goal is unclear and a reasonable default would change the result.
-
-Output:
-An outline or draft with traceable sources and unresolved questions.
-
-Boundaries:
-Do not invent evidence or personal experiences. Do not publish the work
-without an explicit request and an available publishing path.
+Goal: Turn user-provided research into an article outline or draft.
+Trigger: Organize sources, plan or draft an article, or review factual support.
+Inputs: A topic or question and available notes or sources; audience and format are optional.
+Workflow: Classify → check inputs → organize evidence → plan → draft → verify → deliver.
+Ask when: Missing topic or goal would change the result.
+Output: The requested outline or draft, with traceable sources and open questions.
+Boundaries: Do not invent evidence or publish without explicit permission.
 ```
 
 ## Next

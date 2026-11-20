@@ -2,17 +2,23 @@
 import Base from '../../layouts/Base.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 ---
-<Base title="Hello World — Unravel Skills">
+<Base title="Hello Unravel Skills — Unravel Skills">
   <article class="blog-article container">
-    <div class="breadcrumb"><a href={`${base}/blog/`}>Blog</a> / Hello World</div>
-    <span class="eyebrow small">WELCOME</span>
-    <h1>Hello World 👋</h1>
-    <p class="article-lead">Welcome to Unravel Skills.</p>
+    <div class="breadcrumb"><a href={base + '/blog/'}>Blog</a> / Hello Unravel Skills</div>
+    <span class="eyebrow small">START HERE · ABOUT THIS BLOG</span>
+    <h1>Hello Unravel Skills</h1>
+    <p class="article-lead">Learn to design, test, and improve Agent Skills through a practical, step-by-step course.</p>
     <div class="prose">
-      <p>This is a home for reusable Agent Skills, experiments, and ideas about building better AI-assisted workflows.</p>
-      <p>We will share improvements, lessons and project notes here as the collection evolves.</p>
-      <p>For now, explore the Skills catalog or read the getting-started guide.</p>
+      <p>An Agent Skill is a reusable set of instructions that helps an AI agent handle a recurring task. This blog teaches you how to turn a real workflow into a reliable Skill instead of starting with a prompt or template.</p>
+
+      <h2>What you will learn</h2>
+      <p>The Skill Authoring Series follows the full lifecycle: choose a task, specify the behavior, write <code>SKILL.md</code>, design tests, learn from failures, and release and maintain the result.</p>
+      <p>Advanced Skill Design builds on that foundation. It explores harder workflows with multiple stages, branches, recovery paths, and explicit stop conditions.</p>
+
+      <h2>How to use this blog</h2>
+      <p>Each article explains the reasoning behind a design choice and uses practical examples you can inspect and adapt. Read the series in order for a guided course, or open any article when you need a specific technique.</p>
+      <p>The goal is not just to copy a finished Skill. It is to understand why it works, recognize where it can fail, and apply the same method to your own tasks.</p>
     </div>
-    <div class="hero-actions"><a class="button primary" href={`${base}/#explore`}>Explore Skills</a><a class="button secondary" href={`${base}/docs/`}>Read Docs</a></div>
+    <p class="welcome-series-link"><a href={base + '/blog/skill-candidate/'}>Start with the Skill Authoring Series →</a></p>
   </article>
 </Base>

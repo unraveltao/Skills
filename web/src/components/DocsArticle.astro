@@ -10,7 +10,11 @@ const docsHref = (entry: DocPage) => entry.slug === 'introduction' ? base + '/do
 const source = readDoc(page);
 const rendered = renderMarkdown(source, undefined, page.file);
 const toc = headingsFromDoc(source);
-const blogSearchEntries = posts.map((entry) => ({ ...entry, text: (getBlogPost(entry.slug)?.html ?? '').replace(/<[^>]+>/g, ' ') }));
+const blogSearchEntries = posts.map((entry) => ({
+  ...entry,
+  seriesCount: posts.filter((candidate) => candidate.seriesId === entry.seriesId).length,
+  text: (getBlogPost(entry.slug, base)?.html ?? '').replace(/<[^>]+>/g, ' '),
+}));
 const sourceLink = 'https://github.com/unraveltao/Skills/blob/main/docs/' + page.file;
 ---
 
@@ -98,7 +102,7 @@ const sourceLink = 'https://github.com/unraveltao/Skills/blob/main/docs/' + page
         {blogSearchEntries.map((entry) => (
           <a class="docs-search-result" data-doc-search-result data-search={entry.title + ' ' + entry.summary + ' ' + entry.text} href={base + '/blog/' + entry.slug + '/'}>
             <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 3.8h8l4 4v12.4H6z"></path><path d="M14 3.8v4h4M9 12h6M9 15.5h6"></path></svg>
-            <span><small class="docs-search-type">BLOG</small><strong>{entry.title}</strong><small>Skill Authoring Series · Part {entry.order}</small></span>
+            <span><small class="docs-search-type">BLOG</small><strong>{entry.title}</strong><small>{entry.seriesTitle} · Part {String(entry.order).padStart(2, '0')} of {String(entry.seriesCount).padStart(2, '0')}</small></span>
           </a>
         ))}
       </nav>
