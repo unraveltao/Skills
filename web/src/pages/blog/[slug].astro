@@ -258,7 +258,7 @@ const completedProgress = posts.length > 1 ? ((post.order - 1) / (posts.length -
   const headings = [...new Map(tocLinks
     .map((link) => document.getElementById(decodeURIComponent(link.hash.slice(1))))
     .filter((heading): heading is HTMLElement => heading instanceof HTMLElement)
-    .map((heading) => [heading.id, heading])).values()];
+    .map((heading) => [heading.id, heading] as const)).values()];
 
   const setActiveHeading = () => {
     if (!headings.length) return;
