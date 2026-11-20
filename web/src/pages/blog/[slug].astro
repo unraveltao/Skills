@@ -210,10 +210,28 @@ const completedProgress = seriesPosts.length > 1 ? ((post.order - 1) / (seriesPo
     const code = pre.querySelector('code');
     if (!code) return;
 
-    const language = [...code.classList]
+    const languageToken = [...code.classList]
       .find((className) => className.startsWith('language-'))
       ?.replace('language-', '')
-      .toUpperCase() ?? 'CODE';
+      .toLowerCase() ?? 'text';
+    const languageNames: Record<string, string> = {
+      bash: 'Shell',
+      css: 'CSS',
+      html: 'HTML',
+      js: 'JavaScript',
+      json: 'JSON',
+      md: 'Markdown',
+      py: 'Python',
+      python: 'Python',
+      sh: 'Shell',
+      text: 'Text',
+      ts: 'TypeScript',
+      tsx: 'TSX',
+      jsx: 'JSX',
+      yaml: 'YAML',
+      yml: 'YAML',
+    };
+    const language = languageNames[languageToken] ?? languageToken.charAt(0).toUpperCase() + languageToken.slice(1);
 
     const toolbar = document.createElement('div');
     toolbar.className = 'code-toolbar';
