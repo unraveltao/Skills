@@ -14,6 +14,13 @@ This Skill supports five routes:
 
 If file changes are not authorized, it can return a draft or review report.
 
+## Example requests
+
+- **Review only** — “Review the root README for first-time users. List any unsupported claims and missing setup steps. Leave the files unchanged.”
+- **Targeted edit** — “Update only the installation paragraph using the current setup instructions. Preserve the examples and the rest of the README.”
+
+These prompts illustrate two supported routes. See [Validation status](#validation-status) for what has been verified.
+
 ## How it works
 
 It identifies the repository root and relevant project type, inspects files needed for consequential claims, and distinguishes repository evidence from user-provided information, inference, unknowns, and conflicts.
