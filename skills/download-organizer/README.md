@@ -59,3 +59,5 @@ The documented test command is:
     powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\test-organizer.ps1
 
 Validation on 2026-11-20: Windows PowerShell 5.1.26100.9818; 19 passed, 0 failed, 0 skipped. The suite used isolated temporary fixtures and covered envelopes/JSON roundtrips, classification and partial-download exclusion, plan-only behavior, authorization, same-volume apply, repeat-apply safety, locate/report, outside-root rejection, and read-only Known Folder lookup. Cross-volume runtime and real-client Skill activation were not tested. See the repository [Installation guide](../../docs/getting-started/installation.md); installation and discovery vary by client.
+
+The package contract suite was rerun on Windows PowerShell 5.1.26100.9818 with isolated fixtures. All 19 checks passed. The cross-volume copy and source-retention path was inspected in the runtime, but was not exercised across volumes. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

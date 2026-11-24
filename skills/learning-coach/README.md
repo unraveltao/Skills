@@ -42,3 +42,5 @@ These are suggested manual scenarios, not recorded test results. They were not r
 Record the client, date, scenario, and evidence for any real-client validation. Do not treat this list as proof that the Skill passed those checks.
 
 See the repository [Installation guide](../../docs/getting-started/installation.md); paths and discovery vary by client. MIT licensed; see the package [LICENSE](LICENSE).
+
+The README's example scenarios remain a manual validation plan. No executable package suite or independently loaded behavior run was recorded in this pass. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

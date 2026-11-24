@@ -1,19 +1,24 @@
 # Skill validation matrix
 
-This matrix records package evidence and keeps interactive Skill behavior distinct from command or static checks. “Not run” is not a failure; it means there is no evidence for that validation type in this pass.
+This pass tracks the evidence required by [Issue #71](https://github.com/unraveltao/Skills/issues/71). It keeps executable checks, source inspection, historical results, and live Agent behavior distinct. **Not run** means there is no execution result for this pass.
 
-| Skill | Package / command evidence | Interactive behavior |
-| --- | --- | --- |
-| Disk Governance | 2026-11-20: doctor passed; isolated two-file scan, status, and offline report passed; source fixture unchanged; path containing `#` passed after SQLite URI fix; nine Python files compiled in memory. No package test suite. | Not run: no verified real-client Skill activation. |
-| Download Organizer | 2026-11-20: PowerShell 5.1.26100.9818; 19 passed, 0 failed, 0 skipped with isolated fixtures. | Not run; cross-volume runtime also not tested. |
-| Git Workflow | Prior validation recorded in merged PR #56; not rerun in this pass. No package test suite found. | Not rerun; live routing telemetry unavailable. |
-| GitHub Project Coach | No package test suite. | Manual scenarios not run. |
-| Idea Advisor | Manual scenarios T1–T8 documented; not run. | Not run in an independent loaded-Skill session. |
-| Learning Coach | No test record or package suite. | Suggested manual scenarios not run. |
-| QD Meta-Skill | Manual scenarios T1–T13 documented; a results record is provided in `skills/qd-meta-skill/tests/REPORT.md`. | Not run in an independent loaded-Skill session. |
-| README Skill | Manual scenarios T01–T14 documented; not run. | Not run in an independent loaded-Skill session. |
-| Unravel | Existing record dated 2026-11-15 says real behavior was not verified; not rerun. | Not verified; no independent loaded-Skill session in this pass. |
+| Skill | Check type and setup | Expected observable result | Actual and evidence |
+| --- | --- | --- | --- |
+| [Disk Governance](../../skills/disk-governance/README.md) | SQLite regression in disposable directories with `#`, `%`, and a space. Python 3.13.17, SQLite 3.50.4. | Open the intended database read-only, read a seeded row, deny writes, and leave the file unchanged. | Passed for all three paths. Previous isolated scan, status, and offline report evidence is recorded in [PR #72](https://github.com/unraveltao/Skills/pull/72). Live activation not run. |
+| [Download Organizer](../../skills/download-organizer/README.md) | Contract suite using temporary fixtures on Windows PowerShell 5.1.26100.9818. Static inspection of the cross-volume branch. | Preserve command envelopes, perform the authorized fixture move, reject unapproved and outside-root operations. Cross-volume handling should hash-check the copy, keep the source, and report `Copied`. | 19 passed, 0 failed, 0 skipped. Runtime and safety documentation agree on cross-volume handling. Actual transfer across volumes and live activation not run. See the [test script](../../skills/download-organizer/tests/test-organizer.ps1). |
+| [Git Workflow](../../skills/git-workflow/README.md) | Historical guide validation in [PR #56](https://github.com/unraveltao/Skills/pull/56). Live routing would require an isolated repository and a separately loaded Skill. | Select the appropriate read-only or explicitly authorized Git workflow for the request. | Historical evidence identified. Commands and live routing not rerun during this pass. |
+| [GitHub Project Coach](../../skills/github-project-coach/README.md) | Manual behavior check in a separately loaded Skill session with a fixed public repository or Gist. | Ground the explanation in accessible source and give a usable first step. | No package suite found. Manual behavior not run. |
+| [Idea Advisor](../../skills/idea-advisor/README.md) | Manual cases T1–T8 in a separately loaded Skill session. | Clarify meaningful uncertainty and present grounded options and a recommendation. | [Scenario definitions](../../skills/idea-advisor/tests/README.md) inspected. Behavior not run. |
+| [Learning Coach](../../skills/learning-coach/README.md) | README scenarios in a separately loaded Skill session with a disposable progress record. | Teach, assess observable evidence, and distinguish resuming with a record from starting fresh. | Suggested scenarios identified. No package suite or current behavior result found. |
+| [QD Meta-Skill](../../skills/qd-meta-skill/README.md) | Manual cases T1–T13, including trigger and scope cases. | Recognize eligible Skill design requests and produce a bounded design with a validation plan. | [Scenario definitions](../../skills/qd-meta-skill/tests/README.md) and [status record](../../skills/qd-meta-skill/tests/REPORT.md) inspected. Independent behavior not run. |
+| [README Skill](../../skills/readme/README.md) | Manual cases T01–T14 against controlled fixture repositories. | Base README recommendations and edits on repository evidence, with verification gaps stated. | [Scenario definitions](../../skills/readme/tests/scenarios.md) inspected. Behavior not run. |
+| [Unravel](../../skills/unravel/README.md) | Manual checks using the package's examples and historical validation record. | Explain a system with an appropriate level of depth and state what the evidence supports. | [Historical notes](../../skills/unravel/tests/README.md) identified. Live behavior not rerun. |
 
-## Limits
+## Reproduction
 
-Package commands and static inspection cannot establish client routing, automatic activation, or interactive behavior. A future behavior pass should use an independent client session, capture evidence that each Skill was loaded, and record criterion-level outcomes. Download Organizer's cross-volume behavior needs a dedicated isolated runtime fixture.
+- **Disk Governance:** Use `DataPaths` and `Store` from the runtime at [the tested revision](https://github.com/unraveltao/Skills/commit/379f51f1e7bea1a5dbebdb17e2bdafa3b77b931c). For each test path, create a fresh database using `Store.open(paths, migrate=True)`, create a marker table, and insert one row. Close it, save its bytes, and reopen with `Store.open(paths, read_only=True)`. Verify the row can be read, a write raises `sqlite3.OperationalError` for a read-only database, and the file has identical bytes after closing.
+- **Download Organizer:** From the package directory run `powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\test-organizer.ps1`. The rerun used the runtime from the same tested revision. A temporary copy of the test script added a path check before fixture cleanup without changing test cases or assertions.
+
+## Remaining validation
+
+For live behavior, capture the client version, evidence that the Skill loaded, the prompt and fixture, and the observed result for each case. Validate the cross-volume path separately with disposable fixtures on two writable volumes.

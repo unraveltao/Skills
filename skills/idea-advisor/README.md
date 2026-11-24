@@ -46,3 +46,5 @@ It reuses context and asks questions only when an answer could materially change
 The repository includes [manual scenario evaluations](tests/README.md). These are behavioral evaluation scenarios, not executable unit tests. They were not run for this README update; their presence does not show that the Skill passed real-Agent testing. Record the client, session, scenario, and evidence that the Skill was loaded when reporting behavior results.
 
 See the repository [Installation guide](../../docs/getting-started/installation.md); installation and discovery vary by client. MIT licensed; see [LICENSE](../../LICENSE).
+
+The T1–T8 scenario specifications were identified. They were not run in an independently loaded Skill session. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.
