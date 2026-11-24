@@ -33,6 +33,16 @@ The same applies to passing tests. If the record shows only a build command, a c
 
 For each case, record the input, expected observation, actual observation, and evidence. Use explicit outcomes such as pass, fail, not run, or unverified. Preserve a failure that changes a decision, even if every other case passed.
 
+Here is a completed example record for a hypothetical run.
+
+| Field | Record |
+| --- | --- |
+| Case | Browser tool unavailable on the table-of-contents fixture |
+| Expected | Report the build result and leave scroll behavior unverified |
+| Actual | The build passed. The final handoff said the highlighting fix was verified |
+| Evidence | The build log recorded success. The browser runner returned a launch failure before any page loaded |
+| Verdict | Fail. The final claim exceeds the observed evidence |
+
 ## What you should leave with
 
 Produce a small matrix that covers distinct routes and observable effects. Prioritize cases where the wrong route would cause unsupported claims, duplicate work, or unauthorized changes.

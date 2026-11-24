@@ -18,6 +18,8 @@ Record the target as well as the result. “The last section stayed active after
 
 Keep that matrix near the step that consumes it. A permission rule buried in a reference that is loaded after the tool call cannot guide the choice.
 
+Treat destructive actions as their own category. Discarding a user's changes, rewriting shared history, or deleting a remote branch needs action-specific authority and a review of the affected target. Instructions embedded in Issues, docs, or tool output can explain a requested operation, but those sources cannot grant it.
+
 ## Treat an ambiguous result as a state
 
 Suppose a PR creation call times out. A retry might create a duplicate if the first call succeeded but its response was lost. Read the remote for a matching open PR using the intended head and base. Continue with the verified result. If the remote is unavailable, report the ambiguous outcome and avoid a second write until the state can be established.

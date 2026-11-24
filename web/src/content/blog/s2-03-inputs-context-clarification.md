@@ -20,6 +20,17 @@ An input can be required for one stage and optional for another. A stable reposi
 
 Record the source alongside the value. “Default branch, confirmed from the repository,” gives a reviewer a reason to trust the choice. “Desktop viewport, assumed for first reproduction,” tells them what the result covers.
 
+Keep a short intake record with explicit evidence status.
+
+| Status | Example |
+| --- | --- |
+| Confirmed | The workspace remote matches the Issue repository |
+| Reported | The user says highlighting stops on a long article |
+| Inferred | The observer may have no active intersection at the bottom |
+| Unknown | The minimum viewport height that reproduces the issue |
+
+Promote a reported or inferred item to confirmed when a relevant check supports it. Keep the revision and evidence with that update.
+
 ## Decide what to trust for which purpose
 
 The Issue records what was reported. Current code and reproduction describe what can be observed now. The user and applicable repository rules define authority to act. These sources answer different questions.

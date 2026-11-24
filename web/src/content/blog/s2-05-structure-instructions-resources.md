@@ -25,6 +25,8 @@ For a client that follows the Agent Skills format, use the `SKILL.md` entry poin
 
 Start with the files your design needs. A small Skill can keep its contract in the entry point. Extract a reference when usage, ownership, or length makes it easier to maintain independently. Create a script when the work benefits from a consistent invocation and output that can be tested.
 
+This is progressive disclosure. Keep the core workflow available up front. Load detailed context when a decision calls for it so the agent can spend its attention on the current stage. Keep a short, frequently used rule in the entry point when moving it to a reference would create an extra lookup on every run.
+
 ## Make the reading instruction actionable
 
 “See references if needed” leaves timing unspecified. “When reproduction is unclear, read `references/intake.md` and use its missing-input table before asking the user” connects a file to a decision.

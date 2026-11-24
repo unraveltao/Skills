@@ -29,6 +29,14 @@ Suppose a new client version stops exposing a routing signal. The Skill may stil
 
 Use a change log that records behavior differences, migrations or configuration changes, and the test evidence for published claims. Keep the last known usable revision identifiable so a maintainer can evaluate restoring it if a release causes a regression.
 
+Record three separate decisions for the same version.
+
+| Decision | Example |
+| --- | --- |
+| Release gate | Ship once representative local workflows and permission stop cases pass on the candidate revision |
+| Maintenance trigger | Recheck routing and compatibility when a supported client changes its loading behavior |
+| Rollback condition | If the release can create a PR outside the authorized flow, pause use and restore the last version with verified permission handling |
+
 ## Close the loop from Issue to release
 
 The first part of this series mapped decisions hidden inside a checklist. Our Issue-to-PR example now has an input contract, a permissions matrix, a package map, an evaluation matrix, and a regression process. The release checklist ties each supported promise back to one of those artifacts.

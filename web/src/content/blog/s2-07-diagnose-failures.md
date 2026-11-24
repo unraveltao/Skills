@@ -41,6 +41,8 @@ The patch should reach the faulty layer. Adding two paragraphs to the prompt lea
 
 Review the first case that failed, an adjacent case, and the normal path. This catches a correction that unconditionally reports “unverified” or makes every task depend on a browser.
 
+Overfitting means shaping the correction around incidental details of the failing example. Hold back a few cases when designing the fix. For example, after correcting a browser launch failure, try a runner that opens the page but times out before the assertion. In a fresh, different fixture, try a successful browser run with a skipped related test. The Skill should report the evidence its claim actually requires without relying on the original error message or fixture name.
+
 ## What you should leave with
 
 Write a failure record with the first divergent decision, its evidence, the smallest correction, and a regression set that shows when the corrected rule applies.
