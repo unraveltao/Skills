@@ -18,12 +18,13 @@
 | Build a learning plan and pick up where I left off | [Learning Coach](https://unraveltao.github.io/Skills/skills/learning-coach/) | `Learning` |
 | Turn a rough idea into a plan I can review | [Idea Advisor](https://unraveltao.github.io/Skills/skills/idea-advisor/) | `Planning` |
 | Find what's using space on my Windows drive | [Disk Governance](https://unraveltao.github.io/Skills/skills/disk-governance/) | `Utilities` |
+| Draft a project README | [Awesome Copilot create-readme](https://unraveltao.github.io/Skills/docs/guides/create-readme/) | External · `Documentation` |
 
 **Explore more** through the [Unravel catalog](https://unraveltao.github.io/Skills/skills/) for Skills maintained in this repository or [Curated Skills](https://unraveltao.github.io/Skills/curated/) for external projects maintained by their authors. Curated listings distinguish a project-page review from Skill testing.
 
 ## Install one Skill
 
-1. **Read its instructions.** Open the Skill's `SKILL.md` to check requirements, usage, and limits.
+1. **Read its instructions.** Open the Skill's README and `SKILL.md` to check requirements, usage, and limits.
 2. **Copy the whole folder.** Put `skills/<name>/` in the location your Agent client uses for Skills. Keep the supporting files together.
 3. **Confirm it loads.** Reload the client if required, then try a read-only request that matches the Skill.
 
@@ -47,3 +48,5 @@ Read [AGENTS.md](AGENTS.md) first. Keep each Skill independently installable by 
 </details>
 
 [Project docs](https://unraveltao.github.io/Skills/docs/) · [Contributing guide](CONTRIBUTING.md) · [Contributors](CONTRIBUTORS.md)
+
+This repository is licensed under the [MIT License](LICENSE).

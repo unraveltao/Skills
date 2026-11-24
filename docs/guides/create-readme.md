@@ -10,6 +10,8 @@ From your project directory, use the command listed in the upstream catalog. It 
 gh skills install github/awesome-copilot create-readme
 ```
 
+We have not verified this command end to end or checked whether an Agent client discovers the installed Skill.
+
 ## Try it on an existing README
 
 Open the project in your Agent client and ask for a draft you can review:
@@ -21,3 +23,7 @@ Before publishing, check that the links work and that installation, compatibilit
 ## How we used it
 
 We applied the upstream instructions to a read-only drafting trial for Unravel Skills. The resulting layout puts common tasks and example Skills before installation and maintainer information. The trial exercised the instructions and editorial workflow. Installation and Agent-client discovery were outside its scope.
+
+## Previous Unravel README Skill
+
+Unravel previously maintained its own README Skill. Its review-only and targeted-edit examples are preserved in the [historical package guide](https://github.com/unraveltao/Skills/blob/0dbb3c07cd4cc41ed6d2d1a2880bd785e0bcb735/skills/readme/README.md). The upstream Skill documents a project README drafting workflow. Check its current instructions before relying on other behavior. If you installed the old package locally, manage that copy separately in your Agent client's Skills location.
