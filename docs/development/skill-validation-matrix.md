@@ -16,8 +16,8 @@ This pass tracks the evidence required by [Issue #71](https://github.com/unravel
 
 ## Reproduction
 
-- **Disk Governance:** Use `DataPaths` and `Store` from the runtime at [the tested revision](https://github.com/unraveltao/Skills/commit/379f51f1e7bea1a5dbebdb17e2bdafa3b77b931c). For each test path, create a fresh database using `Store.open(paths, migrate=True)`, create a marker table, and insert one row. Close it, save its bytes, and reopen with `Store.open(paths, read_only=True)`. Verify the row can be read, a write raises `sqlite3.OperationalError` for a read-only database, and the file has identical bytes after closing.
-- **Download Organizer:** From the package directory run `powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\test-organizer.ps1`. The rerun used the runtime from the same tested revision. A temporary copy of the test script added a path check before fixture cleanup without changing test cases or assertions.
+- **Disk Governance:** From the package directory run `python -B -m unittest discover -s tests -v`. The SQLite regression covers paths containing `#`, an escaped percent sequence, and a space. The stored marker remains readable, writes are denied, and database bytes are unchanged.
+- **Download Organizer:** From the package directory run `powershell -NoProfile -ExecutionPolicy Bypass -File .\tests\test-organizer.ps1`. The checked-in suite verifies the fixture path before recursive cleanup. The 19 contract assertions and their fixtures are unchanged.
 
 ## Remaining validation
 

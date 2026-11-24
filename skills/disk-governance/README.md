@@ -53,4 +53,4 @@ Validation on 2026-11-20 used Python 3.13.17 and SQLite 3.50.4. `doctor` passed;
 
 MIT licensed; see the repository [LICENSE](../../LICENSE).
 
-The follow-up SQLite regression passed on Python 3.13.17 and SQLite 3.50.4. A disposable database opened read-only from paths containing `#`, `%`, and a space. Reads returned the expected value, write attempts were rejected, and the database bytes were unchanged. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.
+Run `python -B -m unittest discover -s tests -v` from the package directory. The follow-up SQLite regression passed on Python 3.13.17 and SQLite 3.50.4. A disposable database opened read-only from paths containing `#`, `%`, and a space. Reads returned the expected value, write attempts were rejected, and the database bytes were unchanged. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

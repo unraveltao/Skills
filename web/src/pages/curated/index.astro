@@ -1,0 +1,69 @@
+---
+import Base from '../../layouts/Base.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const projects = [
+  {
+    name: 'Addy Osmani · Agent Skills',
+    type: 'Author-maintained',
+    description: 'Production-oriented engineering workflows for AI coding agents, maintained by Addy Osmani.',
+    sourceUrl: 'https://github.com/addyosmani/agent-skills',
+  },
+  {
+    name: 'GitHub Awesome Copilot',
+    type: 'Community collection · GitHub',
+    description: 'Community-contributed Skills, instructions, and other customizations for GitHub Copilot, including create-readme for drafting project READMEs.',
+    sourceUrl: 'https://github.com/github/awesome-copilot',
+  },
+  {
+    name: 'Superpowers',
+    type: 'Community framework',
+    description: 'A composable Skills framework and development methodology for planning, testing, debugging, and shipping software.',
+    sourceUrl: 'https://github.com/obra/superpowers',
+  },
+  {
+    name: 'Anthropic Skills',
+    type: 'Official collection · Claude',
+    description: 'Anthropic’s public collection of task-focused Skills and examples for Claude.',
+    sourceUrl: 'https://github.com/anthropics/skills',
+  },
+  {
+    name: 'Matt Pocock · Skills',
+    type: 'Author-maintained',
+    description: 'Practical, composable engineering Skills from Matt Pocock’s personal Agent setup.',
+    sourceUrl: 'https://github.com/mattpocock/skills',
+  },
+  {
+    name: 'Nuwa Skill',
+    type: 'Meta-Skill · Experimental',
+    description: 'Researches a person’s public work and distills patterns in how they think into a reusable perspective Skill.',
+    note: 'AI-generated perspective; not the person’s actual statement or endorsement.',
+    sourceUrl: 'https://github.com/alchaincyf/nuwa-skill',
+  },
+];
+---
+<Base title="Curated Skills — Unravel Skills" description="External Agent Skills reviewed and recommended by Unravel Skills.">
+  <section class="catalog container curated-directory">
+    <div class="breadcrumb"><a href={`${base}/`}>Home</a> / <a href={`${base}/#explore`}>Skills</a> / Curated Skills</div>
+    <span class="eyebrow small">EXTERNAL PICKS</span>
+    <h1>Curated Skills<span class="accent-dot">.</span></h1>
+    <p class="directory-lead">Useful Agent Skills created outside Unravel, selected to help you discover work worth exploring.</p>
+    <div class="curated-note">
+      <span class="collection-option-icon" aria-hidden="true">↗</span>
+      <div><h2>Maintained by their original authors</h2><p>Each listing identifies its project type and links to the original source. We distinguish project information we reviewed from Skills we have actually tested.</p></div>
+    </div>
+    <div class="curated-grid">
+      {projects.map(project => (
+        <article class="curated-card">
+          <span class="curated-type">{project.type}</span>
+          <h2>{project.name}</h2>
+          <p class="curated-card-description">{project.description}</p>
+          {project.note && <p class="curated-caution">{project.note}</p>}
+          <div class="curated-card-bottom">
+            <span class="curated-review">Project page reviewed · Not tested by Unravel</span>
+            <a class="curated-link" href={project.sourceUrl} target="_blank" rel="noopener noreferrer">Visit original <span aria-hidden="true">↗</span></a>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+</Base>

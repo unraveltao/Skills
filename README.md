@@ -20,11 +20,25 @@
 
 Unravel Skills is a collection of self-contained Skill packages. Each Skill lives under `skills/<name>/` and contains its own instructions and, when needed, references, scripts, runtime code, UI, and tests.
 
-## Explore
+## Start with a task
 
-Browse the [Unravel Skills website](https://unraveltao.github.io/Skills/) to discover available Skills and read their documentation.
+| I want to… | Start with |
+| --- | --- |
+| Understand an unfamiliar GitHub repository | [GitHub Project Coach](skills/github-project-coach/README.md) |
+| Build a learning plan and resume it later | [Learning Coach](skills/learning-coach/README.md) |
+| Turn a rough idea into a design I can review | [Idea Advisor](skills/idea-advisor/README.md) |
+| Find what's using space in a Windows folder | [Disk Governance](skills/disk-governance/README.md) |
+| Review or improve a project's README | [README Skill](skills/readme/README.md) |
 
-For project documentation, start with the [Docs](https://unraveltao.github.io/Skills/docs/).
+Browse the [Unravel Skills catalog](https://unraveltao.github.io/Skills/skills/) for Skills maintained here, or [Curated Skills](https://unraveltao.github.io/Skills/curated/) for projects maintained by their original authors.
+
+## Install one Skill
+
+1. Open the Skill's README and `SKILL.md` to check its requirements and limits.
+2. Copy the complete `skills/<name>/` directory into the Skills location supported by your Agent client.
+3. Reload the client if required and try a read-only request that matches the Skill.
+
+See the [installation guide](https://unraveltao.github.io/Skills/docs/getting-started/installation/) for compatibility and how to check whether your client loaded the Skill.
 
 ## Repository layout
 
@@ -39,12 +53,6 @@ For project documentation, start with the [Docs](https://unraveltao.github.io/Sk
 ```
 
 The root `docs/` directory describes the **repository as a whole**. Skill-specific architecture, usage details, references, scripts, and tests stay inside the corresponding `skills/<name>/` directory.
-
-## Install
-
-Copy the complete desired Skill directory into the Skills location supported by your Agent client, then read its `SKILL.md`.
-
-For the current installation guidance and compatibility notes, see [Installation](https://unraveltao.github.io/Skills/docs/getting-started/installation/).
 
 ## Development
 

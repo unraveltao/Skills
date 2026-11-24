@@ -30,7 +30,7 @@ const current = Astro.url.pathname;
           <span class="brand-mark" aria-hidden="true"><img src={`${base}/brand-mark.svg`} width="25" height="25" alt="" decoding="async" /></span><span>Unravel <strong>Skills</strong></span>
         </a>
         <nav class="desktop-nav" aria-label="Primary">
-          <a class:list={[{ active: current === `${base}/` || current.startsWith(`${base}/skills/`) }]} href={`${base}/#explore`}>Skills</a>
+          <a class:list={[{ active: current === `${base}/` || current.startsWith(`${base}/skills/`) || current.startsWith(`${base}/curated/`) }]} href={`${base}/#explore`}>Skills</a>
           <a class:list={[{ active: current.startsWith(`${base}/docs/`) }]} href={`${base}/docs/`}>Docs</a>
           <a class:list={[{ active: current.startsWith(`${base}/blog/`) }]} href={`${base}/blog/`}>Blog</a>
         </nav>

@@ -11,9 +11,9 @@ const command = `${installCommand} --skill ${skill.slug}`;
 ---
 <Base title={`${skill.name} — Unravel Skills`} description={skill.description}>
   <div class="container docs-grid">
-    <aside class="docs-sidebar"><a class="back-link" href={`${base}/#explore`}>← All Skills</a><span class="eyebrow small">SKILL CATALOG</span><p class="sidebar-current">{skill.name}</p><a href={`${base}/docs/`}>Documentation ↗</a><a href={skill.sourceUrl} target="_blank" rel="noopener noreferrer">View SKILL.md ↗</a></aside>
+    <aside class="docs-sidebar"><a class="back-link" href={`${base}/skills/`}>← Unravel Skills</a><span class="eyebrow small">SKILL CATALOG</span><p class="sidebar-current">{skill.name}</p><a href={`${base}/docs/`}>Documentation ↗</a><a href={skill.sourceUrl} target="_blank" rel="noopener noreferrer">View SKILL.md ↗</a></aside>
     <article class="article-main">
-      <div class="breadcrumb"><a href={`${base}/#explore`}>Skills</a> / {skill.name}</div>
+      <div class="breadcrumb"><a href={`${base}/skills/`}>Skills</a> / {skill.name}</div>
       <span class="eyebrow small">{categoryNames[skill.category]}</span>
       <h1>{skill.name}</h1>
       <p class="article-lead">{skill.description}</p>
