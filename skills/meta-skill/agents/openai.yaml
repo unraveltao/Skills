@@ -1,0 +1,4 @@
+interface:
+  display_name: "Meta Skill"
+  short_description: "Engineer Agent Skills through testing and evidence"
+  default_prompt: "Use $meta-skill to design, build, test, and improve an Agent Skill from a real workflow."
