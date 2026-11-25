@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 312" role="img" aria-labelledby="title description">
+  <title id="title">Diagnose a failure and design a regression pair</title>
+  <desc id="description">Preserve the run, identify the first wrong decision, correct it, and verify the failing case and the normal path.</desc>
+  <rect x="2" y="2" width="476" height="308" rx="18" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <g fill="none" stroke="#475569" stroke-width="2">
+    <path d="M240 72v20m0 48v20m0 48v19h-115v17m115-17h115v17"/>
+    <path d="m235 86 5 6 5-6m-10 68 5 6 5-6m-125 84 5 6 5-6m220 0 5 6 5-6"/>
+  </g>
+  <g fill="#172554">
+    <rect x="104" y="24" width="272" height="48" rx="9"/>
+    <rect x="104" y="92" width="272" height="48" rx="9"/>
+    <rect x="104" y="160" width="272" height="48" rx="9"/>
+  </g>
+  <g fill="#dbeafe" stroke="#3b82f6">
+    <rect x="24" y="244" width="202" height="44" rx="9"/>
+    <rect x="254" y="244" width="202" height="44" rx="9"/>
+  </g>
+  <g font-family="system-ui,sans-serif" font-size="17" font-weight="650" text-anchor="middle" fill="#fff">
+    <text x="240" y="54">Preserve the failed run</text>
+    <text x="240" y="122">Find the first wrong decision</text>
+    <text x="240" y="190">Correct the rule or tool</text>
+    <text x="125" y="272" fill="#172554">Rerun the failing case</text>
+    <text x="355" y="272" fill="#172554">Verify the normal path</text>
+  </g>
+</svg>
