@@ -39,3 +39,5 @@ The prompts and checklist in [tests/README.md](tests/README.md) are test specifi
 - Confirm a supported installation/distribution path before documenting one.
 
 See the repository [Installation guide](../../docs/getting-started/installation.md). The package does not declare a license in its Skill metadata; this README makes no license claim.
+
+The T1–T13 scenarios and the [test status record](tests/REPORT.md) were reviewed. No independently loaded Skill session was available to verify behavior. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

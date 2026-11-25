@@ -24,6 +24,6 @@ Before publishing, check that the links work and that installation, compatibilit
 
 We applied the upstream instructions to a read-only drafting trial for Unravel Skills. The resulting layout puts common tasks and example Skills before installation and maintainer information. The trial exercised the instructions and editorial workflow. Installation and Agent-client discovery were outside its scope.
 
-## Previous Unravel README Skill
+## Unravel README Skill
 
-Unravel previously maintained its own README Skill. Its review-only and targeted-edit examples are preserved in the [historical package guide](https://github.com/unraveltao/Skills/blob/0dbb3c07cd4cc41ed6d2d1a2880bd785e0bcb735/skills/readme/README.md). The upstream Skill documents a project README drafting workflow. Check its current instructions before relying on other behavior. If you installed the old package locally, manage that copy separately in your Agent client's Skills location.
+Our [README Skill](https://github.com/unraveltao/Skills/tree/main/skills/readme) remains available, including review-only and targeted-edit workflows. Awesome Copilot's `create-readme` is an additional external option, not a replacement. We have not completed comparative behavior testing; evaluate each Skill against your intended task before choosing one.

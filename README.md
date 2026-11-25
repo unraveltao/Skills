@@ -18,6 +18,7 @@
 | Build a learning plan and pick up where I left off | [Learning Coach](https://unraveltao.github.io/Skills/skills/learning-coach/) | `Learning` |
 | Turn a rough idea into a plan I can review | [Idea Advisor](https://unraveltao.github.io/Skills/skills/idea-advisor/) | `Planning` |
 | Find what's using space on my Windows drive | [Disk Governance](https://unraveltao.github.io/Skills/skills/disk-governance/) | `Utilities` |
+| Review, improve, or draft a project README | [Unravel README Skill](https://unraveltao.github.io/Skills/skills/readme/) | `Development` |
 | Draft a project README | [Awesome Copilot create-readme](https://unraveltao.github.io/Skills/docs/guides/create-readme/) | External · `Documentation` |
 
 **Explore more** through the [Unravel catalog](https://unraveltao.github.io/Skills/skills/) for Skills maintained in this repository or [Curated Skills](https://unraveltao.github.io/Skills/curated/) for external projects maintained by their authors. Curated listings distinguish a project-page review from Skill testing.
