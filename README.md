@@ -29,6 +29,7 @@ Unravel Skills is a collection of self-contained Skill packages. Each Skill live
 | Turn a rough idea into a design I can review | [Idea Advisor](skills/idea-advisor/README.md) |
 | Find what's using space in a Windows folder | [Disk Governance](skills/disk-governance/README.md) |
 | Review or improve a project's README | [README Skill](skills/readme/README.md) |
+| Design, test, and improve an Agent Skill | [Meta Skill](skills/meta-skill/README.md) |
 
 Browse the [Unravel Skills catalog](https://unraveltao.github.io/Skills/skills/) for Skills maintained here, or [Curated Skills](https://unraveltao.github.io/Skills/curated/) for projects maintained by their original authors.
 
