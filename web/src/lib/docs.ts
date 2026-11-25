@@ -13,7 +13,10 @@ export const sections: DocSection[] = [
     {slug:'getting-started/installation',title:'Installation',file:'getting-started/installation.md'},
     {slug:'getting-started/faq',title:'FAQ',file:'getting-started/faq.md'}
   ]},
-  { title: 'Guides', pages: [{slug:'guides/using-skills',title:'Using Skills',file:'guides/using-skills.md'}]},
+  { title: 'Guides', pages: [
+    {slug:'guides/using-skills',title:'Using Skills',file:'guides/using-skills.md'},
+    {slug:'guides/create-readme',title:'Create a README',file:'guides/create-readme.md'}
+  ]},
   { title: 'Concepts', pages: [{slug:'concepts/architecture',title:'Architecture',file:'concepts/architecture.md'}]},
   { title: 'Reference', pages: [
     {slug:'reference/skill-structure',title:'Skill Structure',file:'reference/skill-structure.md'},

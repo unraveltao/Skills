@@ -11,8 +11,11 @@ const projects = [
   {
     name: 'GitHub Awesome Copilot',
     type: 'Community collection · GitHub',
-    description: 'Community-contributed Skills, instructions, and other customizations for GitHub Copilot, including create-readme for drafting project READMEs.',
+    description: 'Community-contributed Agent Skills, instructions, and other customizations. Start with create-readme to draft or reorganize a project README.',
     sourceUrl: 'https://github.com/github/awesome-copilot',
+    skillUrl: 'https://github.com/github/awesome-copilot/tree/main/skills/create-readme',
+    guidePath: '/docs/guides/create-readme/',
+    review: 'create-readme drafting trial · Installation and Agent loading unverified',
   },
   {
     name: 'Superpowers',
@@ -59,9 +62,10 @@ const projects = [
           <p class="curated-card-description">{project.description}</p>
           {project.note && <p class="curated-caution">{project.note}</p>}
           <div class="curated-card-bottom">
-            <span class="curated-review">Project page reviewed · Not tested by Unravel</span>
+            <span class="curated-review">{project.review ?? 'Project page reviewed · Not tested by Unravel'}</span>
             <a class="curated-link" href={project.sourceUrl} target="_blank" rel="noopener noreferrer">Visit original <span aria-hidden="true">↗</span></a>
           </div>
+          {project.skillUrl && project.guidePath && <p><a class="curated-link" href={project.skillUrl}>Upstream create-readme</a> · <a class="curated-link" href={`${base}${project.guidePath}`}>Installation and usage</a></p>}
         </article>
       ))}
     </div>

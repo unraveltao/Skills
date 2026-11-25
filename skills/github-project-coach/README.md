@@ -44,3 +44,5 @@ The package contains no bundled scripts, references, or tests directory. No auto
 Copy the complete Skill folder into a Skills location supported by your Agent client. The location and discovery process vary by client; see the repository [Installation guide](../../docs/getting-started/installation.md) and your client's documentation.
 
 The Skill metadata declares MIT. See the repository [LICENSE](../../LICENSE).
+
+This pass found no executable package suite. Real-client behavior remains unverified. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.
