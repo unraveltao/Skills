@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 480 302" role="img" aria-labelledby="title description">
+  <title id="title">An Agent Skill package organized by decisions</title>
+  <desc id="description">SKILL.md routes to a reference for context, a script to run a check, or scenarios to evaluate behavior.</desc>
+  <rect x="2" y="2" width="476" height="298" rx="18" fill="#f1f5f9" stroke="#94a3b8" stroke-width="2"/>
+  <g fill="none" stroke="#475569" stroke-width="2">
+    <path d="M160 151h40m0-84v168m0-168h40m-40 84h40m-40 84h40"/>
+    <path d="m234 62 6 5-6 5m0 74 6 5-6 5m0 74 6 5-6 5"/>
+  </g>
+  <rect x="22" y="117" width="138" height="68" rx="10" fill="#172554"/>
+  <g fill="#dbeafe" stroke="#3b82f6">
+    <rect x="240" y="34" width="218" height="66" rx="10"/>
+    <rect x="240" y="118" width="218" height="66" rx="10"/>
+    <rect x="240" y="202" width="218" height="66" rx="10"/>
+  </g>
+  <g font-family="system-ui,sans-serif" text-anchor="middle">
+    <text x="91" y="148" font-size="18" font-weight="700" fill="#fff">SKILL.md</text>
+    <text x="91" y="171" font-size="15" fill="#dbeafe">Route the task</text>
+    <g fill="#172554" font-size="18" font-weight="700">
+      <text x="349" y="62">References</text>
+      <text x="349" y="146">Scripts</text>
+      <text x="349" y="230">Scenarios</text>
+    </g>
+    <g fill="#334155" font-size="15">
+      <text x="349" y="85">Resolve a decision</text>
+      <text x="349" y="169">Run a repeatable check</text>
+      <text x="349" y="253">Evaluate a behavior</text>
+    </g>
+  </g>
+</svg>
