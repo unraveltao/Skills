@@ -1,63 +1,53 @@
 <div align="center">
-
-<h1>Unravel Skills</h1>
-
-<p>A curated collection of independently installable Agent Skills.</p>
-
+  <img src="web/public/brand-mark.svg" alt="" width="84">
+  <h1>Unravel Skills</h1>
+  <p><strong>Pick a Skill for the task at hand.</strong></p>
+  <p>Install a reusable workflow for development, learning, planning, or everyday utilities.</p>
+  <p>
+    <a href="https://unraveltao.github.io/Skills/skills/"><img src="https://img.shields.io/badge/Browse-Unravel_Skills-6D28D9?style=flat-square" alt="Browse Unravel Skills"></a>
+    <a href="https://unraveltao.github.io/Skills/docs/getting-started/installation/"><img src="https://img.shields.io/badge/Guide-Installation-0369A1?style=flat-square" alt="Installation guide"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-15803D?style=flat-square" alt="MIT License"></a>
+  </p>
 </div>
 
-<p align="center">
-  <img src="web/public/brand-mark.svg" alt="Unravel Skills" width="96">
-</p>
+## Start with what you want to do
 
-<p align="center">
-  <a href="https://unraveltao.github.io/Skills/docs/"><img src="https://img.shields.io/badge/docs-Documentation-111111?style=flat-square" alt="Documentation"></a>
-  <a href="https://unraveltao.github.io/Skills/"><img src="https://img.shields.io/badge/catalog-Skills-111111?style=flat-square" alt="Skills catalog"></a>
-  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-2ea44f?style=flat-square" alt="MIT License"></a>
-</p>
+| I want to… | Try this Skill | Category |
+| --- | --- | --- |
+| Understand an unfamiliar GitHub project | [GitHub Project Coach](https://unraveltao.github.io/Skills/skills/github-project-coach/) | `Development` |
+| Build a learning plan and pick up where I left off | [Learning Coach](https://unraveltao.github.io/Skills/skills/learning-coach/) | `Learning` |
+| Turn a rough idea into a plan I can review | [Idea Advisor](https://unraveltao.github.io/Skills/skills/idea-advisor/) | `Planning` |
+| Find what's using space on my Windows drive | [Disk Governance](https://unraveltao.github.io/Skills/skills/disk-governance/) | `Utilities` |
+| Review, improve, or draft a project README | [Unravel README Skill](https://unraveltao.github.io/Skills/skills/readme/) | `Development` |
+| Draft a project README | [Awesome Copilot create-readme](https://unraveltao.github.io/Skills/docs/guides/create-readme/) | External · `Documentation` |
 
-<p align="center"><em>Build once, reuse across compatible Agents.</em></p>
-
-Unravel Skills is a collection of self-contained Skill packages. Each Skill lives under `skills/<name>/` and contains its own instructions and, when needed, references, scripts, runtime code, UI, and tests.
-
-## Start with a task
-
-| I want to… | Start with |
-| --- | --- |
-| Understand an unfamiliar GitHub repository | [GitHub Project Coach](skills/github-project-coach/README.md) |
-| Build a learning plan and resume it later | [Learning Coach](skills/learning-coach/README.md) |
-| Turn a rough idea into a design I can review | [Idea Advisor](skills/idea-advisor/README.md) |
-| Find what's using space in a Windows folder | [Disk Governance](skills/disk-governance/README.md) |
-| Review or improve a project's README | [README Skill](skills/readme/README.md) |
-
-Browse the [Unravel Skills catalog](https://unraveltao.github.io/Skills/skills/) for Skills maintained here, or [Curated Skills](https://unraveltao.github.io/Skills/curated/) for projects maintained by their original authors.
+**Explore more** through the [Unravel catalog](https://unraveltao.github.io/Skills/skills/) for Skills maintained in this repository or [Curated Skills](https://unraveltao.github.io/Skills/curated/) for external projects maintained by their authors. Curated listings distinguish a project-page review from Skill testing.
 
 ## Install one Skill
 
-1. Open the Skill's README and `SKILL.md` to check its requirements and limits.
-2. Copy the complete `skills/<name>/` directory into the Skills location supported by your Agent client.
-3. Reload the client if required and try a read-only request that matches the Skill.
+1. **Read its instructions.** Open the Skill's README and `SKILL.md` to check requirements, usage, and limits.
+2. **Copy the whole folder.** Put `skills/<name>/` in the location your Agent client uses for Skills. Keep the supporting files together.
+3. **Confirm it loads.** Reload the client if required, then try a read-only request that matches the Skill.
 
-See the [installation guide](https://unraveltao.github.io/Skills/docs/getting-started/installation/) for compatibility and how to check whether your client loaded the Skill.
+> [!NOTE]
+> The [installation guide](https://unraveltao.github.io/Skills/docs/getting-started/installation/) covers client locations and compatibility. The repository's candidate CLI command still awaits an end-to-end installation test.
 
-## Repository layout
+## Work on a Skill
 
-```text
-.
-├── AGENTS.md
-├── README.md
-├── docs/                 # Shared project documentation
-├── skills/               # Independently installable Skills
-├── web/                  # Static catalog and documentation site
-└── .github/workflows/    # Verification and publishing
-```
+Read [AGENTS.md](AGENTS.md) first. Keep each Skill independently installable by storing its instructions, references, runtime code, UI, and tests in its own directory as needed. Use that Skill's `SKILL.md` and supporting files as the source of truth for its behavior.
 
-The root `docs/` directory describes the **repository as a whole**. Skill-specific architecture, usage details, references, scripts, and tests stay inside the corresponding `skills/<name>/` directory.
+<details>
+<summary><strong>Repository map</strong></summary>
 
-## Development
+| Path | Contents |
+| --- | --- |
+| [`skills/`](skills/) | Independently installable Skill packages |
+| [`docs/`](docs/) | Shared guides, architecture, and development records |
+| [`web/`](web/) | Public catalog and documentation site |
+| [`.github/workflows/`](.github/workflows/) | Verification and publishing workflows |
 
-Read [AGENTS.md](AGENTS.md) before changing the repository. Use the project Docs for repository-level architecture and development records. For Skill-specific behavior, always use that Skill's own `SKILL.md` and supporting references as the source of truth.
+</details>
 
-## Contributing and license
+[Project docs](https://unraveltao.github.io/Skills/docs/) · [Contributing guide](CONTRIBUTING.md) · [Contributors](CONTRIBUTORS.md)
 
-Contributions are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for repository and documentation standards. See [CONTRIBUTORS.md](CONTRIBUTORS.md) for contributor acknowledgments. This repository is licensed under the [MIT License](LICENSE).
+This repository is licensed under the [MIT License](LICENSE).
