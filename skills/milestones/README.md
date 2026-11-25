@@ -1,5 +1,7 @@
 # Milestones
 
+> **Experimental · V0.1** — available for controlled trials. Real-client instruction loading, behavior and cross-session recovery remain unverified; do not rely on this Skill for consequential project decisions without human review.
+
 Milestones is an AI-led, document-driven project management Skill. It helps a user turn a project goal into outcome-based Milestones, keep a Roadmap aligned with actual progress, control scope, review evidence, and recover when a plan stops being viable.
 
 ## What it does
@@ -41,10 +43,10 @@ The AI leads analysis, planning, review, and recommendations. The user retains f
 
 ## Validation status
 
-The scenario suite is a **manual behavioral evaluation**, not an automated unit-test suite. The scenarios have been authored but have not yet been run in a real Agent client with this Skill loaded. Static inspection of these files does not prove automatic triggering, runtime behavior, or cross-session recovery.
+The scenario suite is a **manual behavioral evaluation**, not an automated unit-test suite. TR01 was attempted in Codex CLI 0.171.0-alpha.13: selection was observed, but reading the entry point was blocked by execution policy and fallback reading failed. TR01 is Blocked; the other 36 scenarios are Not Run; no behavior test has passed. See [PR #78](https://github.com/unraveltao/Skills/pull/78) for the recorded attempt. Static inspection of these files does not prove automatic triggering, runtime behavior, or cross-session recovery.
 
 Record the Agent client, model, date, loading evidence, prompt, observed behavior, criterion-level verdict, and supporting transcript or file evidence for each real test run.
 
 ## Version
 
-V0.1 implementation candidate. Real-client validation and user acceptance remain pending.
+Experimental V0.1. Real-client validation and user acceptance remain pending.

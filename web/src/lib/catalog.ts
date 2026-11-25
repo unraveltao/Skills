@@ -35,7 +35,7 @@ const tags: Record<string, string[]> = {
   'github-project-coach': ['github', 'repository', 'learning'],
   'qd-meta-skill': ['skill-design', 'workflow', 'codex'],
   'idea-advisor': ['ideas', 'requirements', 'research'],
-  'milestones': ['roadmap', 'milestones', 'project-management'],
+  'milestones': ['roadmap', 'milestones', 'project-management', 'experimental'],
   'readme': ['readme', 'documentation', 'technical-writing'],
   'learning-coach': ['teaching', 'learning', 'assessment'],
   'unravel': ['explanation', 'concepts', 'systems'],

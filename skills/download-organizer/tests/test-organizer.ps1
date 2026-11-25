@@ -18,6 +18,15 @@ try {
  $integ=Make-Fixture integration @('move.pdf');$ip=Join-Path $base 'integration-plan.json';$pe=Read-Envelope (& $runtime -Command Plan -Root $root -Source $integ -PlanPath $ip);$ap=Read-Envelope (& $runtime -Command Apply -Root $root -PlanPath $ip -Authorize);Assert ($ap.count -eq 1 -and (Test-Path (Join-Path $root '04-Documents\move.pdf'))) 'Apply authorized isolated move';$again=Read-Envelope (& $runtime -Command Apply -Root $root -PlanPath $ip -Authorize);Assert (!$again.success -and $again.items[0].Status -eq 'Failed' -and (Test-Path (Join-Path $root '04-Documents\move.pdf'))) 'Repeat apply fails safely without damage';$le=Read-Envelope (& $runtime -Command Locate -Root $root -Query move);Assert ($le.count -eq 1) 'Locate finds archived file';$re=Read-Envelope (& $runtime -Command Report -PlanPath $ip);Assert ($re.count -eq 1 -and $re.organized -eq 1 -and (Get-Content -Raw $re.markdownPath).StartsWith('# Download Organizer report')) 'Report integrated apply and Markdown'
  $victim=Make-Fixture outside @('keep.pdf');$outsidePlan=Join-Path $base 'outside-plan.json';$badDoc=[pscustomobject]@{schemaVersion=1;operation='Plan';success=$true;count=1;items=@([pscustomobject]@{Name='keep.pdf';Source=(Join-Path $victim 'keep.pdf');Destination=(Join-Path $base 'escape.pdf');Bytes=[long]6;Category='Documents'});errors=@()};$badDoc|ConvertTo-Json -Depth 5|Set-Content $outsidePlan;$blocked=Read-Envelope (& $runtime -Command Apply -Root $root -PlanPath $outsidePlan -Authorize);Assert (!$blocked.success -and (Test-Path (Join-Path $victim 'keep.pdf')) -and !(Test-Path (Join-Path $base 'escape.pdf'))) 'Apply rejects outside-root destination and retains source'
  $known=& $runtime -Command InspectDownloads|ConvertFrom-Json;Assert ($known.success -and (Test-Path -LiteralPath $known.windowsDownloads)) 'Known Folder readonly lookup'
-} catch { $script:fail++;Write-Host "ERROR $($_.Exception.Message)" -ForegroundColor Red } finally {Remove-Item -LiteralPath $base -Recurse -Force -ErrorAction SilentlyContinue}
+} catch { $script:fail++;Write-Host "ERROR $($_.Exception.Message)" -ForegroundColor Red } finally {
+ $resolvedBase = (Resolve-Path -LiteralPath $base).Path
+ $tempParent = (Resolve-Path -LiteralPath ([IO.Path]::GetTempPath())).Path.TrimEnd([char]92)
+ $actualParent = (Split-Path $resolvedBase -Parent).TrimEnd([char]92)
+ $safeLeaf = (Split-Path $resolvedBase -Leaf) -match '^do-contract-[0-9a-f]{32}$'
+ if (($actualParent -ine $tempParent) -or !$safeLeaf) {
+  throw 'Fixture cleanup path did not match the test directory.'
+ }
+ Remove-Item -LiteralPath $resolvedBase -Recurse -Force -ErrorAction SilentlyContinue
+}
 Write-Host "RESULT total=$($script:pass+$script:fail+$script:skip) passed=$script:pass failed=$script:fail skipped=$script:skip"
 if($script:fail){exit 1}
