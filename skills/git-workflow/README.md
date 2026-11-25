@@ -69,3 +69,7 @@ The agent first inspects the branch, remote, and divergence. If the repository p
 The full instructions cover repository inspection, selective staging and commits, branches and worktrees, remote synchronization, merges and conflicts, recovery, tags and releases, pull requests, and careful handoffs between collaborators. Rare operations such as reflog recovery, submodule surgery, and large-scale history rewriting require repository-specific expertise; the agent should not improvise when their effects are unclear.
 
 For the complete operational rules, see [SKILL.md](https://github.com/unraveltao/Skills/blob/main/skills/git-workflow/SKILL.md).
+
+## Validation status
+
+This pass did not rerun Git commands or real-client routing scenarios. The earlier guide validation is recorded in [PR #56](https://github.com/unraveltao/Skills/pull/56). See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

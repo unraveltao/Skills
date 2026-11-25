@@ -28,3 +28,5 @@ Unravel does not promise complete knowledge of every subject. For current, sourc
 The test document records static review but says real-agent behavior was Not verified in its 2026-11-15 note. This README does not claim installation, triggering, or behavior has been verified. Manual checks should be run in a session with the Skill loaded and results recorded.
 
 The package declares the unravel Skill name and MIT license in SKILL.md; no bundled runtime or external dependency is declared.
+
+The historical validation notes were reviewed. This pass did not rerun the manual behavior checks in an independently loaded Skill session. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

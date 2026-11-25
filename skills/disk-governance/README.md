@@ -41,7 +41,7 @@ For the full command list and workbench lifecycle, see [SKILL.md](SKILL.md) and 
 
 Version 0.2 provides read-only scanning, local SQLite storage, candidate review records, a local workbench, and offline reports. Cleanup, Planning, and Migration are not implemented. See the [Safety Policy](references/safety-policy.md) and [Roadmap](references/roadmap.md).
 
-This README was checked against the Skill instructions and references. Runtime tests and real-client behavior were not run for this documentation change. Any tests should use isolated temporary directories, never a real user directory.
+Validation on 2026-11-20 used Python 3.13.17 and SQLite 3.50.4. `doctor` passed; an isolated two-file scan completed; `status` and offline `report` succeeded; the source fixture remained unchanged. A generated data-directory path containing `#` also passed after correcting SQLite read-only URI construction. All nine Python sources compiled in memory. No real-client Skill activation or routing test was run.
 
 ## References
 
@@ -52,3 +52,5 @@ This README was checked against the Skill instructions and references. Runtime t
 - [Unimplemented features](references/roadmap.md)
 
 MIT licensed; see the repository [LICENSE](../../LICENSE).
+
+Run `python -B -m unittest discover -s tests -v` from the package directory. The follow-up SQLite regression passed on Python 3.13.17 and SQLite 3.50.4. A disposable database opened read-only from paths containing `#`, `%`, and a space. Reads returned the expected value, write attempts were rejected, and the database bytes were unchanged. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.

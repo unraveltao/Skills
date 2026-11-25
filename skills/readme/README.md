@@ -52,3 +52,5 @@ The scenarios are prompts and expected behavior, not test results. Static inspec
 No behavior scenario, client compatibility, installation path, or runtime outcome is claimed as verified by this README. Run scenarios against controlled fixture repositories in a clean session with evidence that the Skill loaded, then record scenario type and actual outcomes.
 
 See the repository [Installation guide](../../docs/getting-started/installation.md); supported paths depend on the client. The Skill metadata declares MIT; see the repository [LICENSE](../../LICENSE).
+
+The T01–T14 scenario specifications were identified. They were not run against controlled repositories in an independently loaded Skill session. See the [repository validation matrix](../../docs/development/skill-validation-matrix.md) for the setup, expected checks, and remaining gaps.
