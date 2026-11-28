@@ -26,6 +26,7 @@ const categories: Record<string, Category> = {
   'milestones': 'planning',
   'readme': 'development',
   'learning-coach': 'learning',
+  'teacher': 'learning',
   'unravel': 'learning',
   'disk-governance': 'utilities',
   'download-organizer': 'utilities',
@@ -38,6 +39,7 @@ const tags: Record<string, string[]> = {
   'milestones': ['roadmap', 'milestones', 'project-management', 'experimental'],
   'readme': ['readme', 'documentation', 'technical-writing'],
   'learning-coach': ['teaching', 'learning', 'assessment'],
+  'teacher': ['teaching', 'learning', 'review', 'experimental'],
   'unravel': ['explanation', 'concepts', 'systems'],
   'disk-governance': ['filesystem', 'disk', 'audit'],
   'download-organizer': ['downloads', 'files', 'organization']
@@ -50,6 +52,7 @@ const friendlyNames: Record<string, string> = {
   'milestones': 'Milestones',
   'readme': 'README',
   'learning-coach': 'Learning Coach',
+  'teacher': 'Teacher',
   'unravel': 'Unravel',
   'disk-governance': 'Disk Governance',
   'download-organizer': 'Download Organizer'
